@@ -72,6 +72,10 @@ function SearchBar() {
             });
         }
     };
+    const handleSelected = async (e) => {
+        await setSelected(e);
+        console.log("Selected =", selected);
+    }
 
     return (
         <div className="search-bar">
@@ -79,7 +83,7 @@ function SearchBar() {
                 id="stock-search"
                 onSearch={handleSearch}
                 options={allStocks}
-                onChange={setSelected}
+                onChange={handleSelected}
                 selected={selected}
                 isLoading={isLoading}
                 labelKey="stockName"

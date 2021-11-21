@@ -1,23 +1,27 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import HeikinAshi from "./../../Common/OurStockChart";
 import { getData } from "./utils";
 import { TypeChooser } from "react-stockcharts/lib/helper";
-class ChartBoard extends React.Component {
-    componentDidMount() {
-        getData().then((data) => {
-            this.setState({ data });
-        });
-    }
 
-    render() {
-        if (this.state == null) {
-            return <div>Loading...</div>;
-        }
-        return (
-            <TypeChooser>
-                {(type) => <HeikinAshi type={type} data={this.state.data} />}
-            </TypeChooser>
-        );
-    }
+function ChartBoard(props) {
+    const [data, setData] = useState(null);
+    useEffect(() => {
+        getData().then((newData) => {
+            setData(newData);
+        });
+    }, []);
+
+    return (
+        <>
+            {data === null ? (
+                <div>Loading...</div>
+            ) : (
+                <TypeChooser>
+                    {(type) => <HeikinAshi type={type} data={data} />}
+                </TypeChooser>
+            )}
+        </>
+    );
 }
+
 export default ChartBoard;
