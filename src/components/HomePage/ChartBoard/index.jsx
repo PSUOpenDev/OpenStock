@@ -1,10 +1,7 @@
 import React from "react";
-import { render } from "react-dom";
 import HeikinAshi from "./../../Common/OurStockChart";
 import { getData } from "./utils";
-
 import { TypeChooser } from "react-stockcharts/lib/helper";
-
 class ChartBoard extends React.Component {
     componentDidMount() {
         getData().then((data) => {
