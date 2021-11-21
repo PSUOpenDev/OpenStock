@@ -9,7 +9,9 @@ const firstObjectReducer = (state = initState, action) => {
     switch (action.type) {
         case ACTION_ONE: {
             const newList = [...state.firstProperty];
-            newList.push(action.payload);
+            newList.push(action.payLoad);
+            console.log(action);
+            console.log(newList);
             return {
                 ...state,
                 firstProperty: newList,

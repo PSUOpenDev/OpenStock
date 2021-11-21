@@ -8,9 +8,7 @@ function App() {
         <BrowserRouter>
             <Container>
                 <Navbar>
-                    <Container>
-                        <Navbar.Brand href="/"></Navbar.Brand>
-                    </Container>
+                    <Navbar.Brand href="/"></Navbar.Brand>
                 </Navbar>
             </Container>
             <Routes>

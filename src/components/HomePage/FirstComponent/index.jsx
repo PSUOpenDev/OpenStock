@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch } from "react-redux";
-import { ACTION_ONE } from "../../../actions/firstObject";
+import { actionOne } from "../../../actions/firstObject";
 
 function FirstComponent(props) {
     const dispatch = useDispatch();
@@ -8,10 +8,7 @@ function FirstComponent(props) {
         const newItem = "Item";
 
         //Change the state
-        dispatch({
-            type: ACTION_ONE,
-            payload: newItem,
-        });
+        dispatch(actionOne(newItem));
     };
 
     return (
