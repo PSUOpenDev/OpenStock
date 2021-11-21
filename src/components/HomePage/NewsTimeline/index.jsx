@@ -30,13 +30,12 @@ const events = [
         date: "18/01/2018",
         event: '\'<a href="#">Apple release a new iphone</a>',
     },
-
 ];
 function NewsTimeline() {
     return (
         <div className="timeline-container">
             <VerticalTimeline>
-                {events.map((event) => (
+                {events.map((event, index) => (
                     <VerticalTimelineElement
                         className="vertical-timeline-element--work"
                         date={event.date}
@@ -44,6 +43,7 @@ function NewsTimeline() {
                             background: "rgb(33, 150, 243)",
                             color: "#fff",
                         }}
+                        key={index}
                     >
                         <h3
                             className="vertical-timeline-element-title"
