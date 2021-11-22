@@ -1,13 +1,12 @@
-import { ADD_SELECTED_STOCK as SET_SELECTED_STOCK } from "../actions/selectedStock";
+import { SET_SELECTED_STOCK } from "../actions/selectedStock";
 
+const initState = null;
 
-const initState ={ };
-
-const stockReducer = (state = initState, action) => {
+const selectedStockReducer = (state = initState, action) => {
     switch (action.type) {
-        case SET_SELECTED_STOCK: {      
+        case SET_SELECTED_STOCK: {
             return {
-                ...action.payLoad
+                ...action.payLoad,
             };
         }
 
@@ -16,4 +15,4 @@ const stockReducer = (state = initState, action) => {
     }
 };
 
-export default stockReducer;
+export default selectedStockReducer;

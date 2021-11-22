@@ -3,6 +3,7 @@ import { AsyncTypeahead } from "react-bootstrap-typeahead";
 import "react-bootstrap-typeahead/css/Typeahead.css";
 import { useSelector, useDispatch } from "react-redux";
 import { addStock } from "../../../actions/stock";
+import { setSelectedStock } from "../../../actions/selectedStock";
 import axios from "axios";
 import {
     API_STOCK_QUOTE_KEY,
@@ -12,8 +13,9 @@ import {
 function SearchBar() {
     const [isLoading, setIsLoading] = useState(false);
     const { allStocks } = useSelector((state) => state.stock);
+    const [symbolSelected, setSymbolSelected] = useState([]);
     const dispatch = useDispatch();
-    const [selected, setSelected] = useState([]);
+
     const renderMenuItemChildren = (option, index) => {
         return (
             <div key={index}>
@@ -72,10 +74,10 @@ function SearchBar() {
             });
         }
     };
-    const handleSelected = async (e) => {
-        await setSelected(e);
-        console.log("Selected =", selected);
-    }
+    const handleSelectedStock = (e) => {        
+        dispatch(setSelectedStock(e[0]));
+        setSymbolSelected(e);
+    };
 
     return (
         <div className="search-bar">
@@ -83,8 +85,8 @@ function SearchBar() {
                 id="stock-search"
                 onSearch={handleSearch}
                 options={allStocks}
-                onChange={handleSelected}
-                selected={selected}
+                onChange={handleSelectedStock}
+                selected={symbolSelected}
                 isLoading={isLoading}
                 labelKey="stockName"
                 placeholder="Choose a stock..."
