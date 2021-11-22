@@ -8,6 +8,7 @@ import {
     API_URL_STOCK_CHART,
 } from "../../Common/APIUtils/Yahoo/ApiParameter";
 import axios from "axios";
+import PropTypes from "prop-types";
 
 const convertData = (arr) => {
     if (arr !== null) {
@@ -21,13 +22,15 @@ const convertData = (arr) => {
     }
     return null;
 };
+ChartBoard.propTypes = {
+    selectedStock: PropTypes.object.isRequired,
+};
 
-function ChartBoard(props) {
-    const selectedStock = useSelector((state) => state.selectedStock);
+function ChartBoard({ selectedStock }) {
     const stockHistory = useSelector((state) => state.stockHistory);
     const [data, setData] = useState(null);
-
     const dispatch = useDispatch();
+
     const fetchAPI = async (URL, API_STOCK_CONFIG, symbol, period) => {
         console.log("period", period);
         const URL_PARSED = encodeURI(
@@ -82,22 +85,21 @@ function ChartBoard(props) {
                         lastDate,
                     };
                     dispatch(updateStockHistory(payLoad));
-                    setData(convertData(stockHistory[selectedStock.symbol]));
+                    setData(
+                        convertData(stockHistory[selectedStock.symbol])
+                    );
                 }
             })
             .catch((error) => {
                 console.log("Error: ", error);
             });
     };
-    // const callBack1 = (stockHistoryData) => {
-    //     console.log("data", stockHistoryData);
 
-    //     setData(stockHistory[selectedStock.symbol].history);
-
-    // };
 
     useEffect(() => {
         setData(null);
+
+        
         if (selectedStock !== null) {
             if (stockHistory[selectedStock.symbol] === undefined) {
                 console.log("Stock data does not existed yet!");
