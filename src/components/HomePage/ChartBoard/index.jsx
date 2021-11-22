@@ -78,6 +78,8 @@ function ChartBoard(props) {
                     const payLoad = {
                         symbol: selectedStock.symbol,
                         history: result,
+                        firstDate,
+                        lastDate,
                     };
                     dispatch(updateStockHistory(payLoad));
                     setData(convertData(stockHistory[selectedStock.symbol]));
