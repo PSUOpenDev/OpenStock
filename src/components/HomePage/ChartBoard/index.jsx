@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import HeikinAshi from "./../../common/OurStockChart";
+import HeikinAshi from "./../../Common/OurStockChart";
 import { TypeChooser } from "react-stockcharts/lib/helper";
 import { useSelector, useDispatch } from "react-redux";
 import { updateStockHistory } from "../../../actions/stockHistory";
@@ -9,19 +9,26 @@ import {
 } from "../../Common/APIUtils/Yahoo/ApiParameter";
 import axios from "axios";
 
+const convertData = (arr) => {
+    if (arr !== null) {
+        const result = [];
+        const length = arr.length;
+        for (let i = 0; i < length; i++) {
+            result.push({ ...arr[i], date: new Date(arr[i].date * 1000) });
+        }
+        console.log("result =", result);
+        return result;
+    }
+    return null;
+};
+
 function ChartBoard(props) {
     const selectedStock = useSelector((state) => state.selectedStock);
     const stockHistory = useSelector((state) => state.stockHistory);
     const [data, setData] = useState(null);
-    
+
     const dispatch = useDispatch();
-    const fetchAPI = async (
-        URL,
-        API_STOCK_CONFIG,
-        symbol,
-        period,
-        callBack
-    ) => {
+    const fetchAPI = async (URL, API_STOCK_CONFIG, symbol, period) => {
         console.log("period", period);
         const URL_PARSED = encodeURI(
             URL +
@@ -59,7 +66,7 @@ function ChartBoard(props) {
                     const result = [];
                     for (let i = 0; i < length; i++) {
                         result.push({
-                            date: new Date(timeStamp[i]*1000),
+                            date: timeStamp[i],
                             open: open[i],
                             close: close[i],
                             volume: volume[i],
@@ -68,27 +75,30 @@ function ChartBoard(props) {
                         });
                     }
                     console.log("result =", result);
-                    callBack({ lastDate, firstDate, history: result });
+                    const payLoad = {
+                        symbol: selectedStock.symbol,
+                        history: result,
+                    };
+                    dispatch(updateStockHistory(payLoad));
+                    setData(convertData(stockHistory[selectedStock.symbol]));
                 }
             })
             .catch((error) => {
                 console.log("Error: ", error);
             });
     };
-    const callBack1 = (stockHistoryData) => {
-        console.log("data", stockHistoryData);
-        const payLoad = {
-            symbol: selectedStock.symbol,
-            history: stockHistoryData,
-        };
-        dispatch(updateStockHistory(payLoad));
-        setData(stockHistoryData.history);
-    };
+    // const callBack1 = (stockHistoryData) => {
+    //     console.log("data", stockHistoryData);
+
+    //     setData(stockHistory[selectedStock.symbol].history);
+
+    // };
 
     useEffect(() => {
-        setData(null)
+        setData(null);
         if (selectedStock !== null) {
             if (stockHistory[selectedStock.symbol] === undefined) {
+                console.log("Stock data does not existed yet!");
                 fetchAPI(
                     API_URL_STOCK_CHART,
                     {
@@ -99,64 +109,66 @@ function ChartBoard(props) {
                         },
                     },
                     selectedStock.symbol,
-                    "5y",
-                    callBack1
+                    "5y"
                 );
             } else {
+                console.log("Stock data  existed yet!");
                 const allKinds = ["1d", "5d", "1mo", "3mo", "6mo", "1y", "5y"];
-                let choosePeriod = "1d";
+                let choosePeriod = "";
                 for (const period of allKinds) {
-                    const currentDate = new Date();
-                    currentDate.setTime(0, 0, 0, 0);
+                    const pastDate = new Date();
+                    pastDate.setTime(0, 0, 0, 0);
 
                     switch (period) {
                         case "1d":
-                            currentDate.setDate(currentDate.getDate() - 1);
+                            pastDate.setDate(pastDate.getDate() - 1);
                             break;
                         case "5d":
-                            currentDate.setDate(currentDate.getDate() - 5);
+                            pastDate.setDate(pastDate.getDate() - 5);
                             break;
                         case "1mo":
-                            currentDate.setMonth(currentDate.getMonth() - 1);
-
+                            pastDate.setMonth(pastDate.getMonth() - 1);
                             break;
                         case "3mo":
-                            currentDate.setMonth(currentDate.getMonth() - 3);
+                            pastDate.setMonth(pastDate.getMonth() - 3);
                             break;
                         case "6mo":
-                            currentDate.setMonth(currentDate.getMonth() - 6);
+                            pastDate.setMonth(pastDate.getMonth() - 6);
                             break;
                         case "1y":
-                            currentDate.setYear(currentDate.getYear() - 1);
+                            pastDate.setYear(pastDate.getYear() - 1);
                             break;
                         case "5y":
-                            currentDate.setYear(currentDate.getYear() - 5);
+                            pastDate.setYear(pastDate.getYear() - 5);
                             break;
                         default:
                             break;
                     }
 
                     if (
-                        currentDate <
-                        stockHistory[selectedStock.symbol].lastDate
+                        pastDate < stockHistory[selectedStock.symbol].lastDate
                     ) {
                         choosePeriod = period;
                         break;
                     }
                 }
-                fetchAPI(
-                    API_URL_STOCK_CHART,
-                    {
-                        method: "GET",
-                        headers: {
-                            accept: "application/json",
-                            "X-API-KEY": API_STOCK_QUOTE_KEY,
+                if (choosePeriod !== "") {
+                    fetchAPI(
+                        API_URL_STOCK_CHART,
+                        {
+                            method: "GET",
+                            headers: {
+                                accept: "application/json",
+                                "X-API-KEY": API_STOCK_QUOTE_KEY,
+                            },
                         },
-                    },
-                    selectedStock.symbol,
-                    choosePeriod,
-                    callBack1
-                );
+                        selectedStock.symbol,
+                        choosePeriod
+                    );
+                } else {
+                    console.log("No need to call API");
+                    setData(convertData(stockHistory[selectedStock.symbol]));
+                }
             }
         }
     }, [selectedStock]);

@@ -24,7 +24,7 @@ const stockHistoryReducer = (state = initState, action) => {
                 return returnState;
             } else {
                 const newState = { ...state };
-                const insertFirstArr = [];
+
                 const firstDateOfNewData = action.payLoad.history.firstDate;
                 console.log("firstDateOfNewData", firstDateOfNewData);
                 const firstDateOfCurrentData =
@@ -42,26 +42,22 @@ const stockHistoryReducer = (state = initState, action) => {
                             action.payLoad.history.history[i].date <
                             firstDateOfCurrentData
                         ) {
-                            insertFirstArr.push(
+                            newState[action.payLoad.symbol].history.unshift(
                                 action.payLoad.history.history[i]
                             );
                         } else {
                             break;
                         }
                     }
-
-                    newState[action.payLoad.symbol].history =
-                        insertFirstArr.concat(
-                            newState[action.payLoad.symbol].history
-                        );
                     newState[action.payLoad.symbol].firstDate =
                         firstDateOfNewData;
                 }
 
-                const appendLastArr = [];
                 const lastDateOfNewData = action.payLoad.history.lastDate;
+                console.log("lastDateOfNewData", lastDateOfNewData);
                 const lastDateOfCurrentData =
                     state[action.payLoad.symbol].lastDate;
+                console.log("lastDateOfCurrentData", lastDateOfCurrentData);
                 if (lastDateOfNewData > lastDateOfCurrentData) {
                     for (
                         let i = action.payLoad.history.history.length - 1;
@@ -72,18 +68,14 @@ const stockHistoryReducer = (state = initState, action) => {
                             action.payLoad.history.history[i].date >
                             lastDateOfCurrentData
                         ) {
-                            appendLastArr.unshift(
-                                action.payLoad.symbol.history[i]
+                            newState[action.payLoad.symbol].history.push(
+                                action.payLoad.history.history[i]
                             );
                         } else {
                             break;
                         }
                     }
 
-                    newState[action.payLoad.symbol].history =
-                        newState[action.payLoad.symbol].history.concat(
-                            insertFirstArr
-                        );
                     newState[action.payLoad.symbol].lastDate =
                         lastDateOfNewData;
                 }

@@ -6,7 +6,7 @@ import {
 import "react-vertical-timeline-component/style.min.css";
 import { Card } from "react-bootstrap";
 import axios from "axios";
-import {API_NEWS_KEY, API_NEWS_URL} from "../../common/APIUtils/News/ApiParameter"
+import {API_NEWS_KEY, API_NEWS_URL} from "../../Common/APIUtils/News/ApiParameter";
 
 /* Function to get the current date */
 function currentDate() {
