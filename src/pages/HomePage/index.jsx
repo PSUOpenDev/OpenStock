@@ -22,7 +22,7 @@ function HomePage() {
                     <ChartBoard />
                 </Col>
                 <Col>
-                    <NewsTimeline />
+                    <NewsTimeline useCache />
                 </Col>
             </Row>
             <Row></Row>
