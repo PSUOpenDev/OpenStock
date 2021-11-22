@@ -47,6 +47,7 @@ const NewsTimeline = () => {
         let url = API_NEWS_URL;
         url.concat("q=Apple");
         url.concat("&from=", `${currentDate()}`);
+        url.concat("&to=", `${currentDate()}`);
         url.concat("&sortBy=popularity");
         url.concat("&apiKey=", `${API_NEWS_KEY}`);
         return url;
