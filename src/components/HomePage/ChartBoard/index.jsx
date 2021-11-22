@@ -177,7 +177,7 @@ function ChartBoard({ selectedStock }) {
             {data === null ? (
                 <div>Loading...</div>
             ) : (
-                <div>
+                <div className = "chart">
                     {selectedStock && (
                         <h6>
                             {" "}

@@ -29,6 +29,7 @@ import { ema, heikinAshi, sma } from "react-stockcharts/lib/indicator";
 import { fitWidth } from "react-stockcharts/lib/helper";
 import { last } from "react-stockcharts/lib/utils";
 
+
 class HeikinAshi extends React.Component {
     render() {
         const ha = heikinAshi();
@@ -271,7 +272,7 @@ HeikinAshi.propTypes = {
 };
 
 HeikinAshi.defaultProps = {
-    type: "hybrid",
+    type: "svg",
 };
 
 HeikinAshi = fitWidth(HeikinAshi);
