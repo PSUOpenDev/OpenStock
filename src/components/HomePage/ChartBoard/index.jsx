@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import HeikinAshi from "./../../Common/OurStockChart";
-import { TypeChooser } from "react-stockcharts/lib/helper";
 import { useSelector, useDispatch } from "react-redux";
 import { updateStockHistory } from "../../../actions/stockHistory";
 import {
@@ -9,7 +8,7 @@ import {
 } from "../../Common/APIUtils/Yahoo/ApiParameter";
 import axios from "axios";
 import PropTypes from "prop-types";
-
+import "./style.scss";
 const convertData = (arr) => {
     if (arr !== null) {
         const result = [];
@@ -85,9 +84,7 @@ function ChartBoard({ selectedStock }) {
                         lastDate,
                     };
                     dispatch(updateStockHistory(payLoad));
-                    setData(
-                        convertData(stockHistory[selectedStock.symbol])
-                    );
+                    setData(convertData(stockHistory[selectedStock.symbol]));
                 }
             })
             .catch((error) => {
@@ -95,11 +92,9 @@ function ChartBoard({ selectedStock }) {
             });
     };
 
-
     useEffect(() => {
         setData(null);
 
-        
         if (selectedStock !== null) {
             if (stockHistory[selectedStock.symbol] === undefined) {
                 console.log("Stock data does not existed yet!");
@@ -182,9 +177,20 @@ function ChartBoard({ selectedStock }) {
             {data === null ? (
                 <div>Loading...</div>
             ) : (
-                <TypeChooser>
-                    {(type) => <HeikinAshi type={type} data={data} />}
-                </TypeChooser>
+                <div>
+                    {selectedStock && (
+                        <h6>
+                            {" "}
+                            {selectedStock.stockName +
+                                " (" +
+                                selectedStock.symbol +
+                                ")"}
+                        </h6>
+                    )}
+                    <div>
+                        <HeikinAshi data={data} />
+                    </div>
+                </div>
             )}
         </>
     );

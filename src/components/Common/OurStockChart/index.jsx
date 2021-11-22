@@ -271,7 +271,7 @@ HeikinAshi.propTypes = {
 };
 
 HeikinAshi.defaultProps = {
-    type: "svg",
+    type: "hybrid",
 };
 
 HeikinAshi = fitWidth(HeikinAshi);
