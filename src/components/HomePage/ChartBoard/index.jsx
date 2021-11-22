@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import HeikinAshi from "./../../Common/OurStockChart";
+import HeikinAshi from "./../../common/OurStockChart";
 import { TypeChooser } from "react-stockcharts/lib/helper";
 import { useSelector, useDispatch } from "react-redux";
 import { updateStockHistory } from "../../../actions/stockHistory";

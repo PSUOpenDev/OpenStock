@@ -8,7 +8,7 @@ import axios from "axios";
 import {
     API_STOCK_QUOTE_KEY,
     API_URL_AUTO_COMPLETE,
-} from "../../Common/APIUtils/Yahoo/ApiParameter";
+} from "../../common/APIUtils/Yahoo/ApiParameter";
 
 function SearchBar() {
     const [isLoading, setIsLoading] = useState(false);
