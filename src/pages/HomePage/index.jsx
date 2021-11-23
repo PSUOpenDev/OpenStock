@@ -16,20 +16,20 @@ function HomePage() {
     return (
         <Container fluid>
             <Row>
-                <Col>Logo Here</Col>
-                <Col>
+                <Col md={3}>Logo Here</Col>
+                <Col md={6}>
                     <SearchBar />
                 </Col>
-                <Col>Clock</Col>
+                <Col md={3}>Clock</Col>
             </Row>
             <Row>
                 <BriefBoard />
             </Row>
             <Row>
-                <Col>
+                <Col md={8}>
                     {stock != null && <ChartBoard selectedStock={stock} />}
                 </Col>
-                <Col>{/* <NewsTimeline /> */}</Col>
+                <Col md={4}>{/* <NewsTimeline /> */}</Col>
             </Row>
             <Row></Row>
         </Container>

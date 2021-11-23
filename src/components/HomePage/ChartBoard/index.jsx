@@ -95,7 +95,7 @@ function ChartBoard({ selectedStock }) {
     useEffect(() => {
         setData(null);
 
-        if (selectedStock !== null) {
+        if (selectedStock.symbol !== undefined) {
             if (stockHistory[selectedStock.symbol] === undefined) {
                 console.log("Stock data does not existed yet!");
                 fetchAPI(
@@ -108,7 +108,7 @@ function ChartBoard({ selectedStock }) {
                         },
                     },
                     selectedStock.symbol,
-                    "5y"
+                    "max"
                 );
             } else {
                 console.log("Stock data  existed yet!");
@@ -174,11 +174,12 @@ function ChartBoard({ selectedStock }) {
 
     return (
         <>
-            {data === null ? (
-                <div>Loading...</div>
-            ) : (
-                <div className = "chart">
-                    {selectedStock && (
+            <div className="chart">
+                {data === null ? (
+                    <div>Loading...</div>
+                ) : (
+                    <div>
+                        selectedStock && (
                         <h6>
                             {" "}
                             {selectedStock.stockName +
@@ -186,12 +187,13 @@ function ChartBoard({ selectedStock }) {
                                 selectedStock.symbol +
                                 ")"}
                         </h6>
-                    )}
-                    <div>
-                        <HeikinAshi data={data} />
+                        )
+                        <div>
+                            <HeikinAshi data={data} />
+                        </div>
                     </div>
-                </div>
-            )}
+                )}
+            </div>
         </>
     );
 }

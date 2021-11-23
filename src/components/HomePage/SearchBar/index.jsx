@@ -9,6 +9,7 @@ import {
     API_STOCK_QUOTE_KEY,
     API_URL_AUTO_COMPLETE,
 } from "../../Common/APIUtils/Yahoo/ApiParameter";
+import "./style.scss";
 
 function SearchBar() {
     const [isLoading, setIsLoading] = useState(false);
@@ -18,13 +19,15 @@ function SearchBar() {
 
     const renderMenuItemChildren = (option, index) => {
         return (
-            <div key={index}>
-                <div>{option.stockName}</div>
-                <div>
-                    <small>Symbol: {option.symbol}</small>
-                </div>
-                <div>
-                    <small>Exchange: {option.exchange}</small>
+            <div className="auto-complete">
+                <div key={index}>
+                    <div>{option.stockName}</div>
+                    <div>
+                        <small>Symbol: {option.symbol}</small>
+                    </div>
+                    <div>
+                        <small>Exchange: {option.exchange}</small>
+                    </div>
                 </div>
             </div>
         );
@@ -57,14 +60,20 @@ function SearchBar() {
                     console.log("Error: ", error);
                 });
         };
+        if (query === "") {
+            console.log("Query is empty. No stock is selected!");
+            return;
+        }
         let found = false;
         for (let item of allStocks) {
-            if (item.stockName.includes(query)) {
+            if (item.stockName.toLowerCase().includes(query.toLowerCase())) {
                 found = true;
+                console.log("Stock is in the cache");
                 break;
             }
         }
         if (found === false) {
+            console.log("Stock is not in the cache.Call API");
             fetchAPI(API_URL_AUTO_COMPLETE, {
                 method: "GET",
                 headers: {
@@ -74,7 +83,7 @@ function SearchBar() {
             });
         }
     };
-    const handleSelectedStock = (e) => {        
+    const handleSelectedStock = (e) => {
         dispatch(setSelectedStock(e[0]));
         setSymbolSelected(e);
     };
