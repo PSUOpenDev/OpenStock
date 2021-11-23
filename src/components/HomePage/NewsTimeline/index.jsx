@@ -7,12 +7,9 @@ import "react-vertical-timeline-component/style.min.css";
 import { Card } from "react-bootstrap";
 import axios from "axios";
 import {API_NEWS_KEY, API_NEWS_URL} from "../../common/APIUtils/News/ApiParameter"
-
-/* Function to get the current date */
-function currentDate() {
-    let today = new Date();
-    return today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
-}
+import { currentDate } from "../../../utils/getDate"
+import { readFromCache, writeToCache } from "../../../utils/cache";
+import { getExecutionTimeToNow, SIX_HOURS } from "../../../utils/getTime";
 
 /* Function to render card newspaper item */
 const cardRender = (data) => {
@@ -43,29 +40,119 @@ const cardRender = (data) => {
 /* Function to render newspapers */
 const NewsTimeline = () => {
     const [data, setData] = useState([]);
+    const getCurrentDate = currentDate();
+
     const URL_NEWS = () => {
         let url = API_NEWS_URL;
-        url.concat("q=Apple");
-        url.concat("&from=", `${currentDate()}`);
-        url.concat("&to=", `${currentDate()}`);
-        url.concat("&sortBy=popularity");
+        url.concat("qInTitle=Apple +stock");
+        url.concat("&language=en");
+        url.concat("&from=", `${getCurrentDate}`);
+        url.concat("&to=", `${getCurrentDate}`);
+        url.concat("&sortBy=relevancy");
+        url.concat("&page=1");
+        url.concat("&pageSize=20");
         url.concat("&apiKey=", `${API_NEWS_KEY}`);
         return url;
     }
 
-    const fetchAPI = (URL) => {
-        axios.get(URL)
-            .then((res) => {
-                setData(res.data.articles)
-            })
-            .catch((error) => {
-                console.log(error)
-            })
+    const fetchNewDataAPI = async (URL, keyStorage) => {
+        let items = readFromCache("NewsAPI");
+
+        const { data } = 
+            await axios.get(URL)
+                    .then((res) => {
+                        if (res.data.status === "ok") {
+                            console.log(res.data.articles)
+                            return res.data.articles
+                        }
+                    });
+        
+        const itemToCache = {
+            "name" : keyStorage,
+            keyStorage : data,
+            "fetch_time" : new Date().getTime()
+        }
+        items.push(itemToCache);
+        writeToCache("NewsAPI", items);
+        return items;
+    }
+
+    const fetchFreshDataAPI = async (URL, keyStorage) => {
+        let items = readFromCache("NewsAPI");
+        let checkItem = items.filter(item => item["name"] === keyStorage);
+
+        let mem_index = -1;
+        let flag_checked = false;
+
+        if (checkItem.length > 0) {
+            flag_checked = true;
+            for (let i = 0; i < items.length; i++) {
+                if (items[i]["name"] === keyStorage) {
+                    if (getExecutionTimeToNow(items[i]["fetch_time"]) >= SIX_HOURS) {
+                        mem_index = i;
+                    }
+                    break;
+                }
+            }
+        }
+
+        if (mem_index === -1 && flag_checked === true) {
+            // This means item found, but no enough time
+            return items;
+        }
+
+        const { data } = 
+            await axios.get(URL)
+                .then((res) => {
+                    if (res.data.status === "ok") {
+                        console.log(res.data.articles)
+                        return res.data.articles
+                    }
+                });
+        
+        if (flag_checked === false) {
+            // Item not found
+            const itemToCache = {
+                "name" : keyStorage,
+                keyStorage : data,
+                "fetch_time" : new Date().getTime()
+            }
+            items.push(itemToCache);
+            writeToCache("NewsAPI", items);
+        } else {
+            // Item found and enough time
+            if (items[mem_index]["name"] === keyStorage) {
+                items[mem_index][keyStorage] = data;
+                items[mem_index]["fetch_time"] = new Date().getTime();
+            }
+        }
+        return items;
+    }
+
+    const getNewsAPIData = async (URL, keyStorage) => {
+        let items = [];
+        setData([])
+
+        let cachedData = readFromCache("NewsAPI");
+        
+        if (cachedData.length === 0) {
+            writeToCache("NewsAPI", []);
+            items = await fetchNewDataAPI(URL, keyStorage);
+        } else {
+            items = await fetchFreshDataAPI(URL, keyStorage);
+        }
+
+        for (let i = 0; i < items.length; i++) {
+            if (items[i]["name"] === keyStorage) {
+                setData(items[i][keyStorage]);
+                break;
+            }
+        }
     }
 
     useEffect(() => {
-        fetchAPI(URL_NEWS)
-    })
+        getNewsAPIData(URL_NEWS, "Apple +stock")
+    }, [])
 
     return (
         <div className="timeline-container">
