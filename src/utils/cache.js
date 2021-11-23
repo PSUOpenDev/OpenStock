@@ -1,3 +1,3 @@
-export const writeToCache = (url, data) => localStorage.setItem(url, JSON.stringify(data));
+export const writeToCache = (keyStorage, valueStorage) => localStorage.setItem(keyStorage, JSON.stringify(valueStorage));
 
-export const readFromCache = url => JSON.parse(localStorage.getItem(url)) || null;
+export const readFromCache = keyStorage => JSON.parse(localStorage.getItem(keyStorage)) || [];
