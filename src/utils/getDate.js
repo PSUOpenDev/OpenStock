@@ -6,6 +6,6 @@ export const currentDate = () => {
 
 export const getThreeDaysAgo = () => {
     let today = new Date();
-    let ret = today.setDate(today.getDate() - 3);
-    return ret;
+    let ret = new Date(today.setDate(today.getDate() - 3));
+    return ret.getFullYear() + '-' + (ret.getMonth() + 1) + '-' + ret.getDate();
 }
