@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
-import HeikinAshi from "./../../Common/OurStockChart";
+import HeikinAshi from "./../../common/OurStockChart";
 import { useSelector, useDispatch } from "react-redux";
 import { updateStockHistory } from "../../../actions/stockHistory";
 import {
     API_STOCK_QUOTE_KEY,
     API_URL_STOCK_CHART,
-} from "../../Common/APIUtils/Yahoo/ApiParameter";
+} from "../../common/APIUtils/Yahoo/ApiParameter";
 import axios from "axios";
 import PropTypes from "prop-types";
 import "./style.scss";

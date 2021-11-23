@@ -7,7 +7,7 @@ import "react-vertical-timeline-component/style.min.css";
 import { Card } from "react-bootstrap";
 import axios from "axios";
 import {API_NEWS_KEY, API_NEWS_URL} from "../../common/APIUtils/News/ApiParameter"
-import { currentDate } from "../../../utils/getDate"
+import { currentDate, getThreeDaysAgo } from "../../../utils/getDate"
 import { readFromCache, writeToCache } from "../../../utils/cache";
 import { getExecutionTimeToNow, SIX_HOURS } from "../../../utils/getTime";
 
@@ -39,41 +39,47 @@ const cardRender = (data) => {
 
 /* Function to render newspapers */
 const NewsTimeline = () => {
-    const [data, setData] = useState([]);
-    const getCurrentDate = currentDate();
+    const [dataItem, setData] = useState([]);
+    const getAPINewsKey = API_NEWS_KEY;
+    const getAPINewsURL = API_NEWS_URL;
 
     const URL_NEWS = () => {
-        let url = API_NEWS_URL;
-        url.concat("qInTitle=Apple +stock");
-        url.concat("&language=en");
-        url.concat("&from=", `${getCurrentDate}`);
-        url.concat("&to=", `${getCurrentDate}`);
-        url.concat("&sortBy=relevancy");
-        url.concat("&page=1");
-        url.concat("&pageSize=20");
-        url.concat("&apiKey=", `${API_NEWS_KEY}`);
+        let url = getAPINewsURL;
+        url = url.concat("q=Apple");
+        url = url.concat("&language=en");
+        url = url.concat("&from=", `${getThreeDaysAgo()}`);
+        url = url.concat("&to=", `${currentDate()}`);
+        url = url.concat("&sortBy=relevancy");
+        url = url.concat("&apiKey=", `${getAPINewsKey}`);
         return url;
+    }
+
+    const fetchAPI = async (URL) => {
+        return await axios.get(URL)
+            .then((res) => {
+                if (res.data.status === "ok") {
+                    //console.log(res.data.articles)
+                    return res.data.articles
+                } else {
+                    return []
+                }
+            })
     }
 
     const fetchNewDataAPI = async (URL, keyStorage) => {
         let items = readFromCache("NewsAPI");
 
-        const { data } = 
-            await axios.get(URL)
-                    .then((res) => {
-                        if (res.data.status === "ok") {
-                            console.log(res.data.articles)
-                            return res.data.articles
-                        }
-                    });
+        fetchAPI(URL).then((data) => {
+            const itemToCache = {
+                "name" : keyStorage,
+                keyStorage : data,
+                "fetch_time" : new Date().getTime()
+            }
+            items.push(itemToCache);
+            writeToCache("NewsAPI", items);
+        })
         
-        const itemToCache = {
-            "name" : keyStorage,
-            keyStorage : data,
-            "fetch_time" : new Date().getTime()
-        }
-        items.push(itemToCache);
-        writeToCache("NewsAPI", items);
+        
         console.log("fetchNewDataAPI")
         return items;
     }
@@ -100,41 +106,35 @@ const NewsTimeline = () => {
         if (mem_index === -1 && flag_checked === true) {
             // This means item found, but no enough time
             console.log("Caching case!")
+            console.log(items);
             return items;
         }
 
-        const { data } = 
-            await axios.get(URL)
-                .then((res) => {
-                    if (res.data.status === "ok") {
-                        console.log(res.data.articles)
-                        return res.data.articles
-                    }
-                });
-        
-        if (flag_checked === false) {
-            // Item not found
-            const itemToCache = {
-                "name" : keyStorage,
-                keyStorage : data,
-                "fetch_time" : new Date().getTime()
+        fetchAPI(URL).then((data) => {
+            if (flag_checked === false) {
+                // Item not found
+                const itemToCache = {
+                    "name" : keyStorage,
+                    keyStorage : data,
+                    "fetch_time" : new Date().getTime()
+                }
+                items.push(itemToCache);
+                writeToCache("NewsAPI", items);
+                console.log("Append case")
+            } else {
+                // Item found and enough time
+                if (items[mem_index]["name"] === keyStorage) {
+                    items[mem_index][keyStorage] = data;
+                    items[mem_index]["fetch_time"] = new Date().getTime();
+                }
+                console.log("Modify case", items[mem_index]["name"] === keyStorage)
             }
-            items.push(itemToCache);
-            writeToCache("NewsAPI", items);
-            console.log("Append case")
-        } else {
-            // Item found and enough time
-            if (items[mem_index]["name"] === keyStorage) {
-                items[mem_index][keyStorage] = data;
-                items[mem_index]["fetch_time"] = new Date().getTime();
-            }
-            console.log("Modify case", items[mem_index]["name"] === keyStorage)
-        }
+        })
         return items;
     }
 
     const getNewsAPIData = async (URL, keyStorage) => {
-        let items = [];
+        let items;
         setData([])
 
         let cachedData = readFromCache("NewsAPI");
@@ -148,20 +148,20 @@ const NewsTimeline = () => {
 
         for (let i = 0; i < items.length; i++) {
             if (items[i]["name"] === keyStorage) {
-                setData(items[i][keyStorage]);
+                setData(items[i]["keyStorage"]);
                 break;
             }
         }
     }
 
     useEffect(() => {
-        getNewsAPIData(URL_NEWS, "Apple +stock")
+        getNewsAPIData(URL_NEWS(), "Apple +stock")
     }, [])
 
     return (
         <div className="timeline-container">
             <VerticalTimeline>
-                {data.length > 0 && data.map((event, index) => (
+                {dataItem.map((event, index) => (
                     <VerticalTimelineElement
                         className="vertical-timeline-element--work"
                         date={event.publishedAt}
