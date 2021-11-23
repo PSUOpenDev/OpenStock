@@ -74,6 +74,7 @@ const NewsTimeline = () => {
         }
         items.push(itemToCache);
         writeToCache("NewsAPI", items);
+        console.log("fetchNewDataAPI")
         return items;
     }
 
@@ -98,6 +99,7 @@ const NewsTimeline = () => {
 
         if (mem_index === -1 && flag_checked === true) {
             // This means item found, but no enough time
+            console.log("Caching case!")
             return items;
         }
 
@@ -119,12 +121,14 @@ const NewsTimeline = () => {
             }
             items.push(itemToCache);
             writeToCache("NewsAPI", items);
+            console.log("Append case")
         } else {
             // Item found and enough time
             if (items[mem_index]["name"] === keyStorage) {
                 items[mem_index][keyStorage] = data;
                 items[mem_index]["fetch_time"] = new Date().getTime();
             }
+            console.log("Modify case", items[mem_index]["name"] === keyStorage)
         }
         return items;
     }
