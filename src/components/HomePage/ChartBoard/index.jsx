@@ -9,6 +9,8 @@ import {
 import axios from "axios";
 import PropTypes from "prop-types";
 import "./style.scss";
+
+
 const convertData = (arr) => {
     if (arr !== null) {
         const result = [];
@@ -21,9 +23,12 @@ const convertData = (arr) => {
     }
     return null;
 };
+
+
 ChartBoard.propTypes = {
     selectedStock: PropTypes.object.isRequired,
 };
+
 
 function ChartBoard({ selectedStock }) {
     const stockHistory = useSelector((state) => state.stockHistory);

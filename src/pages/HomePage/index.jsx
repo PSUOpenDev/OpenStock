@@ -16,7 +16,9 @@ function HomePage() {
     return (
         <Container fluid>
             <Row>
-                <Col md={3}>Logo Here</Col>
+                <Col md={3} className="font-pacifico light-pink-color text-center fs-4">
+                    OpenStock
+                </Col>
                 <Col md={6}>
                     <SearchBar />
                 </Col>
@@ -29,7 +31,7 @@ function HomePage() {
                 <Col md={8}>
                     {stock != null && <ChartBoard selectedStock={stock} />}
                 </Col>
-                <Col md={4}> <NewsTimeline /> </Col>
+                <Col md={4}> {/*<NewsTimeline />*/} </Col>
             </Row>
             <Row></Row>
         </Container>

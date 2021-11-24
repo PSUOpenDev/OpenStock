@@ -3,6 +3,9 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Container, Navbar } from "react-bootstrap";
 import HomePage from "./pages/HomePage";
 import "./App.scss";
+import "./index.css"
+
+
 function App() {
     return (
         <>
