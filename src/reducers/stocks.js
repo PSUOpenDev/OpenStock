@@ -39,6 +39,7 @@ const stockReducer = (state = initState, action) => {
                     allStocks: newAllStocks,
                 };
             }
+            break;
         }
 
         default:

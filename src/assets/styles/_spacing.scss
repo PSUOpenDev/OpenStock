@@ -1,0 +1,6 @@
+$component-margin:1em;
+$component-padding:1em;
+@mixin component-spacing{
+    margin:$component-margin;
+    padding:$component-padding;
+}

@@ -1,15 +1,29 @@
+@import './../../../assets/styles/general';
+
 .search-bar input {
-    background-color:#1e1e2f;
-    color:white;
+    @include component-color;
 }
+
 .search-bar input:focus {
-    background-color:#1e1e2f;
-    color:white;
+    @include component-color;
 }
+
 .auto-complete {
-    background-color:white;
-    color:black;
+    @include component-color;
 }
+
+.dropdown-item:hover {
+    background-color: $search-menu-hover;
+}
+
+.auto-complete:hover {
+    background-color: $search-menu-hover;
+}
+
 #stock-search {
-    background-color:white;
+    @include component-color;
 }
+
+// #stock-search:hover {
+//    background-color: $chart-tooltip-label-color;
+// }
