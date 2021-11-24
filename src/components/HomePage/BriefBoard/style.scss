@@ -1,19 +1,9 @@
-$backgroundcolor: #141629;
-.brief-board {
-    padding: 1em;
-    margin:1em;
-   
-   
+@import './../../../assets/styles/colors';
+@import './../../../assets/styles/spacing';
 
-}
-.card {
-    background: $backgroundcolor;
-    padding: 1em;
-    margin:1em;
+.card-group {
+    background: $body-background-color;
     border-radius: 20px;
+    @include component-spacing;
 }
-.card-body {
-    border-radius: 20px;
-    color:wheat;
-    border-radius: 20px;
-}
+

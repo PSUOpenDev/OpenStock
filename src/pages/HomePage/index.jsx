@@ -1,6 +1,6 @@
 import { Container, Row, Col } from "react-bootstrap";
 import BriefBoard from "../../components/HomePage/BriefBoard";
-import ChartBoard from "../../components/HomePage/ChartBoard";
+import ChartBoard from "../../components/Common/ChartBoard";
 import NewsTimeline from "../../components/HomePage/NewsTimeline";
 import SearchBar from "../../components/HomePage/SearchBar";
 import { useSelector } from "react-redux";
@@ -27,7 +27,7 @@ function HomePage() {
             </Row>
             <Row>
                 <Col md={8}>
-                    {stock != null && <ChartBoard selectedStock={stock} />}
+                    {stock != null && <ChartBoard selectedStock={stock}  chartType="HeikinAshi" showStockName= {true} />}
                 </Col>
                 <Col md={4}>{/* <NewsTimeline /> */}</Col>
             </Row>
