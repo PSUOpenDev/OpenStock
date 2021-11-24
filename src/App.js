@@ -2,7 +2,7 @@ import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Container, Navbar } from "react-bootstrap";
 import HomePage from "./pages/HomePage";
-
+import './App.scss';
 function App() {
     return (
         <>

@@ -1,0 +1,20 @@
+.brief-board{
+    $text_color: antiquewhite;
+    $backgroundcolor: #141629;
+    $tooltip-label_color: blueviolet;
+    $bar-color: grey;
+    padding: 0em;
+    margin:1em;
+    background:black;
+    border-radius: 15px;
+    .card-group {
+        width: 100%;
+    }
+    .card {
+        background: $backgroundcolor;
+        color: $text_color;
+        border-radius: 15px;
+        
+    }
+}
+

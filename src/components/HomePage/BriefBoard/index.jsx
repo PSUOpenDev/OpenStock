@@ -5,7 +5,7 @@ function BriefBoard(props) {
     return (
         <div className="brief-board">
             <CardGroup>
-                <Card style={{ width: "18rem" }}>
+                <Card >
                     <Card.Body>
                         <Card.Title>APPLE</Card.Title>
                         <Card.Text>100.3 +3%</Card.Text>

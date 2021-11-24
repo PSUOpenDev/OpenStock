@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import HeikinAshi from "./../../Common/OurStockChart";
+import HeikinAshi from "./../../Common/HeikinAshiChart";
 import { useSelector, useDispatch } from "react-redux";
 import { updateStockHistory } from "../../../actions/stockHistory";
 import {
@@ -94,8 +94,8 @@ function ChartBoard({ selectedStock }) {
 
     useEffect(() => {
         setData(null);
-
-        if (selectedStock !== null) {
+        console.log(selectedStock);
+        if (selectedStock.symbol !== undefined) {
             if (stockHistory[selectedStock.symbol] === undefined) {
                 console.log("Stock data does not existed yet!");
                 fetchAPI(
@@ -174,24 +174,25 @@ function ChartBoard({ selectedStock }) {
 
     return (
         <>
-            {data === null ? (
-                <div>Loading...</div>
-            ) : (
-                <div className = "chart">
-                    {selectedStock && (
-                        <h6>
-                            {" "}
-                            {selectedStock.stockName +
-                                " (" +
-                                selectedStock.symbol +
-                                ")"}
-                        </h6>
-                    )}
+            <div className="chart">
+                {data === null ? (
+                    <div>Loading...</div>
+                ) : (
                     <div>
+                        {selectedStock && (
+                            <h6>
+                                {" "}
+                                {selectedStock.stockName +
+                                    " (" +
+                                    selectedStock.symbol +
+                                    ")"}
+                            </h6>
+                        )}
+
                         <HeikinAshi data={data} />
                     </div>
-                </div>
-            )}
+                )}
+            </div>
         </>
     );
 }

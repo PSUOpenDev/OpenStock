@@ -5,6 +5,7 @@ import NewsTimeline from "../../components/HomePage/NewsTimeline";
 import SearchBar from "../../components/HomePage/SearchBar";
 import { useSelector } from "react-redux";
 import React, { useState, useEffect } from "react";
+import "./style.scss";
 /* TEST API COMPONENTS */
 function HomePage() {
     const selectedStock = useSelector((state) => state.selectedStock);
@@ -14,7 +15,7 @@ function HomePage() {
         console.log("Change select stock to", selectedStock);
     }, [selectedStock]);
     return (
-        <Container fluid>
+        <Container className="home-page-container" fluid>
             <Row>
                 <Col>Logo Here</Col>
                 <Col>
@@ -26,10 +27,10 @@ function HomePage() {
                 <BriefBoard />
             </Row>
             <Row>
-                <Col>
+                <Col md={8}>
                     {stock != null && <ChartBoard selectedStock={stock} />}
                 </Col>
-                <Col>{/* <NewsTimeline /> */}</Col>
+                <Col md={4}>{/* <NewsTimeline /> */}</Col>
             </Row>
             <Row></Row>
         </Container>

@@ -3,9 +3,10 @@
     $backgroundcolor: #141629;
     $tooltip-label_color: blueviolet;
     $bar-color: grey;
-
+    padding: 2em;
+    margin:1em;
     background: $backgroundcolor;
-
+    border-radius: 15px;
     h6 {
         color: $text_color;
     }

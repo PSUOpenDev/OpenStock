@@ -30,7 +30,7 @@ function SearchBar() {
         );
     };
 
-    const handleSearch = async (query) => {
+    const handleSearch = (query) => {
         const fetchAPI = (URL, API_STOCK_CONFIG) => {
             const URL_PARSED = encodeURI(URL + query);
             setIsLoading(true);
@@ -47,7 +47,6 @@ function SearchBar() {
                                 };
                             }
                         );
-                        console.log("dataFound", dataFound);
                         dispatch(addStock(dataFound));
                     }
 
@@ -58,13 +57,23 @@ function SearchBar() {
                 });
         };
         let found = false;
+        console.log("query=",query);
+
+        if (query ==="") {
+            dispatch(setSelectedStock(null));
+            return;
+        }
         for (let item of allStocks) {
-            if (item.stockName.includes(query)) {
+            console.log("query=",query);
+            console.log(item.stockName.toLowerCase().includes(query.toLowerCase));
+            if (item.stockName.toLowerCase().includes(query.toLowerCase())) {
+                console.log("The stock is caching!");
                 found = true;
                 break;
             }
         }
         if (found === false) {
+            console.log("Call API to get the stock!");
             fetchAPI(API_URL_AUTO_COMPLETE, {
                 method: "GET",
                 headers: {
@@ -74,7 +83,7 @@ function SearchBar() {
             });
         }
     };
-    const handleSelectedStock = (e) => {        
+    const handleSelectedStock = (e) => {
         dispatch(setSelectedStock(e[0]));
         setSymbolSelected(e);
     };

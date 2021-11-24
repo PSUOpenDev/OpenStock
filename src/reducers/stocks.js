@@ -11,33 +11,34 @@ const initState =
           }
         : JSON.parse(item);
 
-
 const stockReducer = (state = initState, action) => {
     console.log(action);
     switch (action.type) {
         case ADD_STOCK: {
-            const newAllStocks = [...state.allStocks];
-            const newStockDic = { ...state.stockDic };
-            console.log("payLoad", action);
-            for (let item of action.payLoad) {
-                if (newStockDic[item.symbol] === undefined) {
-                    newStockDic[item.symbol] = item.symbol;
-                    newAllStocks.push(item);
+            if (action.payLoad !== undefined) {
+                const newAllStocks = [...state.allStocks];
+                const newStockDic = { ...state.stockDic };
+                console.log("payLoad", action);
+                for (let item of action.payLoad) {
+                    if (newStockDic[item.symbol] === undefined) {
+                        newStockDic[item.symbol] = item.symbol;
+                        newAllStocks.push(item);
+                    }
                 }
-            }
 
-            localStorage.setItem(
-                "stock",
-                JSON.stringify({
+                localStorage.setItem(
+                    "stock",
+                    JSON.stringify({
+                        stockDic: newStockDic,
+                        allStocks: newAllStocks,
+                    })
+                );
+
+                return {
                     stockDic: newStockDic,
                     allStocks: newAllStocks,
-                })
-            );
-
-            return {
-                stockDic: newStockDic,
-                allStocks: newAllStocks,
-            };
+                };
+            }
         }
 
         default:
