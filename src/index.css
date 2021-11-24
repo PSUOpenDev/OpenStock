@@ -16,11 +16,6 @@ body {
   background-color: var(--dark) !important;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
-}
-
 .section-bg { background-color: var(--sectionbg) !important; }
 .light-pink-color { color: var(--lightpink) !important; }
 .font-pacifico { font-family: 'Pacifico', cursive; }
