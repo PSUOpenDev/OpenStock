@@ -1,28 +1,21 @@
+@import './../../../assets/styles/general';
+
 .search-bar input {
-<<<<<<< HEAD
-    background-color:#292C3A ;
-    color:#A1A2A9;
+    @include component-style;
 }
+
 .search-bar input:focus {
-    background-color:#292C3A ;
-    color:#A1A2A9;
+    @include component-style;
 }
+
 .auto-complete {
-    background-color:#292C3A ;
-    color:#A1A2A9;
-=======
-    background-color:#1e1e2f;
-    color:white;
+    @include component-style;
 }
-.search-bar input:focus {
-    background-color:#1e1e2f;
-    color:white;
+
+.auto-complete:hover {
+    background-color: $chart-bar-color;
 }
-.auto-complete {
-    background-color:white;
-    color:black;
->>>>>>> 426cc1a152de2b60d7994479f4bf482b3dc0cc67
-}
+
 #stock-search {
-    background-color:white;
+    @include component-style;
 }
