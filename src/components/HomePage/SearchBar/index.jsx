@@ -7,8 +7,12 @@ import { setSelectedStock } from "../../../actions/selectedStock";
 import {
     API_STOCK_QUOTE_KEY,
     API_URL_AUTO_COMPLETE,
+<<<<<<< HEAD
 } from "../../Common/APIUtils/Yahoo/ApiParameter";
 import useAPI from "./../../Common/APIUtils/useAPI";
+=======
+} from "../../common/APIUtils/Yahoo/ApiParameter";
+>>>>>>> 426cc1a152de2b60d7994479f4bf482b3dc0cc67
 import "./style.scss";
 
 function SearchBar() {
@@ -25,7 +29,7 @@ function SearchBar() {
         return (
             <div className="auto-complete">
                 <div key={index}>
-                    <div>{option.stockName}</div>
+                    <strong>{option.stockName}</strong>
                     <div>
                         <small>Symbol: {option.symbol}</small>
                     </div>

@@ -1,4 +1,5 @@
 .search-bar input {
+<<<<<<< HEAD
     background-color:#292C3A ;
     color:#A1A2A9;
 }
@@ -9,7 +10,19 @@
 .auto-complete {
     background-color:#292C3A ;
     color:#A1A2A9;
+=======
+    background-color:#1e1e2f;
+    color:white;
+}
+.search-bar input:focus {
+    background-color:#1e1e2f;
+    color:white;
+}
+.auto-complete {
+    background-color:white;
+    color:black;
+>>>>>>> 426cc1a152de2b60d7994479f4bf482b3dc0cc67
 }
 #stock-search {
-    background-color:#292C3A ;
+    background-color:white;
 }

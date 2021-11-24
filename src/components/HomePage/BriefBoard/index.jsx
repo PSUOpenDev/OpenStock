@@ -15,6 +15,7 @@ import {
     timestampToDate,
     dateToTimestamp,
 } from "./../../Common/utils";
+
 function BriefBoard(props) {
     const stockIndex = useSelector((state) => state.stockIndex);
     const dispatch = useDispatch();
