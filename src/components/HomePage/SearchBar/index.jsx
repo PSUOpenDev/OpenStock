@@ -4,84 +4,78 @@ import "react-bootstrap-typeahead/css/Typeahead.css";
 import { useSelector, useDispatch } from "react-redux";
 import { addStock } from "../../../actions/stock";
 import { setSelectedStock } from "../../../actions/selectedStock";
-import axios from "axios";
 import {
     API_STOCK_QUOTE_KEY,
     API_URL_AUTO_COMPLETE,
 } from "../../Common/APIUtils/Yahoo/ApiParameter";
+import useAPI from "./../../Common/APIUtils/useAPI";
+
+import "./style.scss";
 
 function SearchBar() {
-    const [isLoading, setIsLoading] = useState(false);
     const { allStocks } = useSelector((state) => state.stock);
     const [symbolSelected, setSymbolSelected] = useState([]);
     const dispatch = useDispatch();
-
+    const [isLoading, data, setApiParam] = useAPI({
+        noRun: "yes",
+    });
+    console.log("walk1");
     const renderMenuItemChildren = (option, index) => {
         return (
-            <div key={index}>
-                <div>{option.stockName}</div>
-                <div>
-                    <small>Symbol: {option.symbol}</small>
-                </div>
-                <div>
-                    <small>Exchange: {option.exchange}</small>
+            <div className="auto-complete">
+                <div key={index}>
+                    <strong>{option.stockName}</strong>
+                    <div>
+                        <small>Symbol: {option.symbol}</small>
+                    </div>
+                    <div>
+                        <small>Exchange: {option.exchange}</small>
+                    </div>
                 </div>
             </div>
         );
     };
 
-    const handleSearch = (query) => {
-        const fetchAPI = (URL, API_STOCK_CONFIG) => {
-            const URL_PARSED = encodeURI(URL + query);
-            setIsLoading(true);
-            axios
-                .get(URL_PARSED, API_STOCK_CONFIG)
-                .then((res) => {
-                    if (res.result !== null) {
-                        let dataFound = res.data.ResultSet.Result.map(
-                            ({ exch, name, symbol }) => {
-                                return {
-                                    symbol,
-                                    exchange: exch,
-                                    stockName: name,
-                                };
-                            }
-                        );
-                        dispatch(addStock(dataFound));
-                    }
-
-                    setIsLoading(false);
-                })
-                .catch((error) => {
-                    console.log("Error: ", error);
-                });
+    const handleSearch = async (query) => {
+        const handleParsingAndFiltering = (rawData) => {
+            console.log(rawData);
+            let dataFound = rawData.ResultSet.Result.map(
+                ({ exch, name, symbol }) => {
+                    return {
+                        symbol,
+                        exchange: exch,
+                        stockName: name,
+                    };
+                }
+            );
+            return dataFound;
         };
-        let found = false;
-        console.log("query=",query);
 
-        if (query ==="") {
-            dispatch(setSelectedStock(null));
-            return;
-        }
-        for (let item of allStocks) {
-            console.log("query=",query);
-            console.log(item.stockName.toLowerCase().includes(query.toLowerCase));
-            if (item.stockName.toLowerCase().includes(query.toLowerCase())) {
-                console.log("The stock is caching!");
-                found = true;
-                break;
+        const handleSaving = (dataFound) => {
+            dispatch(addStock(dataFound));
+        };
+
+        const handleSelecting = () => {
+            for (let item of allStocks) {
+                if (
+                    item.stockName.toLowerCase().includes(query.toLowerCase())
+                ) {
+                    console.log("Stock is in the cache");
+                    return allStocks;
+                }
             }
-        }
-        if (found === false) {
-            console.log("Call API to get the stock!");
-            fetchAPI(API_URL_AUTO_COMPLETE, {
-                method: "GET",
-                headers: {
-                    accept: "application/json",
-                    "X-API-KEY": API_STOCK_QUOTE_KEY,
-                },
-            });
-        }
+            console.log("Stock is not in the cache.Call API");
+            return null;
+        };
+
+        setApiParam({
+            url: API_URL_AUTO_COMPLETE,
+            queryString: query,
+            apiKey: API_STOCK_QUOTE_KEY,
+            onParsingAnFiltering: handleParsingAndFiltering,
+            onSaving: handleSaving,
+            onSelecting: handleSelecting,
+        });
     };
     const handleSelectedStock = (e) => {
         dispatch(setSelectedStock(e[0]));
@@ -93,7 +87,7 @@ function SearchBar() {
             <AsyncTypeahead
                 id="stock-search"
                 onSearch={handleSearch}
-                options={allStocks}
+                options={data !== null ? data : allStocks}
                 onChange={handleSelectedStock}
                 selected={symbolSelected}
                 isLoading={isLoading}

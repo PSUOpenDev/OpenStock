@@ -1,0 +1,31 @@
+@import './../../../assets/styles/general';
+.chart {
+    @include component-style;
+    h6 {
+        color: $component-text-color;
+    }
+
+    text {
+        fill: $component-text-color;
+    }
+
+    tspan {
+        fill: $component-text-color;
+    }
+
+    .react-stockcharts-tooltip-label {
+        fill: $chart-tooltip-label-color;
+    }
+
+    line {
+        stroke: $component-text-color;
+    }
+
+    path {
+        stroke: $chart-bar-color;
+    }
+
+    rect {
+        stroke: $chart-bar-color;
+    }
+}

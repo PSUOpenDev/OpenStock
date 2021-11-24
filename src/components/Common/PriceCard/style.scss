@@ -1,0 +1,8 @@
+@import './../../../assets/styles/general';
+
+.price-card {
+    background-color: $component-background-color;
+    color: $component-text-color;
+    @include component-spacing;
+    border-radius: 15px;
+}

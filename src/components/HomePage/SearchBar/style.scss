@@ -1,0 +1,29 @@
+@import './../../../assets/styles/general';
+
+.search-bar input {
+    @include component-color;
+}
+
+.search-bar input:focus {
+    @include component-color;
+}
+
+.auto-complete {
+    @include component-color;
+}
+
+.dropdown-item:hover {
+    background-color: $search-menu-hover;
+}
+
+.auto-complete:hover {
+    background-color: $search-menu-hover;
+}
+
+#stock-search {
+    @include component-color;
+}
+
+// #stock-search:hover {
+//    background-color: $chart-tooltip-label-color;
+// }
