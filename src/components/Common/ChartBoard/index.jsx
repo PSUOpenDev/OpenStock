@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import HeikinAshi from "../Charts/HeikinAshi";
 import { useSelector, useDispatch } from "react-redux";
 import { updateStockHistory } from "../../../actions/stockHistory";
@@ -35,10 +35,9 @@ ChartBoard.defaultProps = {
 function ChartBoard({ selectedStock, showStockName, chartType }) {
     const stockHistory = useSelector((state) => state.stockHistory);
     const dispatch = useDispatch();
-    const [apiParam, setApiParam] = useState({
+    const [isLoading, data, setApiParam] = useAPI({
         noRun: "yes",
     });
-    const [isLoading, data] = useAPI(apiParam);
 
     useEffect(() => {
         const handleSelecting = (param) => {
@@ -173,7 +172,7 @@ function ChartBoard({ selectedStock, showStockName, chartType }) {
             onSaving: handleSaving,
             onSelecting: handleSelecting,
         });
-    }, [selectedStock]);
+    }, [selectedStock,dispatch,setApiParam,stockHistory]);
 
     return (
         <>

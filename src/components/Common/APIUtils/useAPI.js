@@ -10,21 +10,23 @@ const initialState = {
     onSelecting: undefined,
     onError: undefined,
 };
-const useAPI = (parameters = initialState) => {
+const useAPI = (initialParam = initialState) => {
     const [isLoading, setIsLoading] = useState(true);
-    const [data, setData] = useState(null);
-
-    useEffect(() => {
-        async function dispatchAxios() {
+    const [data, setData] = useState(null); 
+    const [parameter,setParameter] = useState(initialParam);
+    useEffect(()=>{
+        console.log("Run useEffect");
+        const dispatchAxios = async () => {
             try {
-                if (parameters.noRun !== undefined) {
+                if (parameter.noRun !== undefined) {
                     setIsLoading(false);
+                    console.log("Oh no you set me norun=",parameter.noRun)
                     return;
                 }
                 setIsLoading(true);
                 let tempData = null;
-                if (parameters.onSelecting !== undefined) {
-                    tempData = parameters.onSelecting(parameters);
+                if (parameter.onSelecting !== undefined) {
+                    tempData = parameter.onSelecting(parameter);
                     console.log("tempdata =", tempData);
                 }
                 if (tempData === undefined) {
@@ -33,44 +35,45 @@ const useAPI = (parameters = initialState) => {
                 if (tempData === null) {
                     console.log(
                         "Call API(" +
-                            encodeURI(parameters.url + parameters.queryString) +
+                            encodeURI(parameter.url + parameter.queryString) +
                             ")"
                     );
                     let response = null;
-                    if (parameters.apiKey !== "") {
+                    if (parameter.apiKey !== "") {
                         response = await axios.get(
-                            encodeURI(parameters.url + parameters.queryString),
+                            encodeURI(parameter.url + parameter.queryString),
                             {
                                 method: "GET",
                                 headers: {
                                     accept: "application/json",
-                                    "X-API-KEY": parameters.apiKey,
+                                    "X-API-KEY": parameter.apiKey,
                                 },
                             }
                         );
+                        
                     } else {
                         response = await axios.get(
-                            encodeURI(parameters.url + parameters.queryString)
+                            encodeURI(parameter.url + parameter.queryString)
                         );
                     }
-
+                    console.log("return here");
                     tempData = response.data;
-
+    
                     if (tempData === null) {
                         throw new Error("No data return from API!");
                     }
-
-                    if (parameters.onParsingAnFiltering !== undefined) {
-                        tempData = parameters.onParsingAnFiltering(tempData);
+    
+                    if (parameter.onParsingAnFiltering !== undefined) {
+                        tempData = parameter.onParsingAnFiltering(tempData);
                     }
-                    if (parameters.onSaving !== undefined) {
-                        parameters.onSaving(tempData);
+                    if (parameter.onSaving !== undefined) {
+                        parameter.onSaving(tempData);
                     }
                     if (
-                        parameters.onSaving !== undefined &&
-                        parameters.onSelecting !== undefined
+                        parameter.onSaving !== undefined &&
+                        parameter.onSelecting !== undefined
                     ) {
-                        tempData = parameters.onSelecting(parameters);
+                        tempData = parameter.onSelecting(parameter);
                     }
                 }
                 console.log("set Data = ", tempData);
@@ -78,16 +81,18 @@ const useAPI = (parameters = initialState) => {
                 setIsLoading(false);
             } catch (error) {
                 console.log(error);
-                if (parameters.onError !== undefined) {
-                    parameters.onError(error);
+                if (parameter.onError !== undefined) {
+                    parameter.onError(error);
                 }
                 setIsLoading(false);
+                console.log("lo roi ", error);
             }
-        }
+        };
         dispatchAxios();
-    }, [parameters]);
+    },[parameter])
+    
 
-    return [isLoading, data];
+    return [isLoading, data,setParameter];
 };
 
 export default useAPI;
