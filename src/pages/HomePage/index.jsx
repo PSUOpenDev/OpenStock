@@ -36,7 +36,7 @@ function HomePage() {
                 <Col md={8}>
                     {stock != null && <ChartBoard selectedStock={stock} />}
                 </Col>
-                <Col md={4}> {/*<NewsTimeline />*/} </Col>
+                <Col md={4}> <NewsTimeline /> </Col>
             </Row>
             <Row></Row>
         </Container>

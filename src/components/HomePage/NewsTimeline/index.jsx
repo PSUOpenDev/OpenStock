@@ -10,6 +10,7 @@ import {API_NEWS_KEY, API_NEWS_URL} from "../../common/APIUtils/News/ApiParamete
 import { currentDate, getThreeDaysAgo } from "../../../utils/getDate"
 import { readFromCache, writeToCache } from "../../../utils/cache";
 import { getExecutionTimeToNow, SIX_HOURS } from "../../../utils/getTime";
+import { useSelector } from "react-redux";
 
 /* Function to render card newspaper item */
 const cardRender = (data) => {
@@ -28,7 +29,7 @@ const cardRender = (data) => {
                 </Card.Text>
                 <a 
                     href={data.url} 
-                    class="text-decoration-none text-danger stretched-link"
+                    className="text-decoration-none text-danger stretched-link"
                 >
                     Continue reading
                 </a>
@@ -40,16 +41,24 @@ const cardRender = (data) => {
 /* Function to render newspapers */
 const NewsTimeline = () => {
     const [dataItem, setData] = useState([]);
+    const selectedStock = useSelector((state) => state.selectedStock);
+    const [stock, setstock] = useState(selectedStock);
+    /*useEffect(() => {
+        setstock(selectedStock);
+        console.log("News API updates to", selectedStock);
+    }, [selectedStock]);*/
+
     const getAPINewsKey = API_NEWS_KEY;
     const getAPINewsURL = API_NEWS_URL;
 
     const URL_NEWS = () => {
         let url = getAPINewsURL;
-        url = url.concat("q=Apple");
+        url = url.concat("q=", `${(stock === null) ? "" : stock.stockName.split(" ")[0]}`, " +stock");
         url = url.concat("&language=en");
         url = url.concat("&from=", `${getThreeDaysAgo()}`);
         url = url.concat("&to=", `${currentDate()}`);
         url = url.concat("&sortBy=relevancy");
+        url = url.concat("&pageSize=20");
         url = url.concat("&apiKey=", `${getAPINewsKey}`);
         return url;
     }
@@ -72,7 +81,7 @@ const NewsTimeline = () => {
         fetchAPI(URL).then((data) => {
             const itemToCache = {
                 "name" : keyStorage,
-                keyStorage : data,
+                "keyStorage" : data,
                 "fetch_time" : new Date().getTime()
             }
             items.push(itemToCache);
@@ -115,7 +124,7 @@ const NewsTimeline = () => {
                 // Item not found
                 const itemToCache = {
                     "name" : keyStorage,
-                    keyStorage : data,
+                    "keyStorage" : data,
                     "fetch_time" : new Date().getTime()
                 }
                 items.push(itemToCache);
@@ -124,7 +133,7 @@ const NewsTimeline = () => {
             } else {
                 // Item found and enough time
                 if (items[mem_index]["name"] === keyStorage) {
-                    items[mem_index][keyStorage] = data;
+                    items[mem_index]["keyStorage"] = data;
                     items[mem_index]["fetch_time"] = new Date().getTime();
                 }
                 console.log("Modify case", items[mem_index]["name"] === keyStorage)
@@ -155,8 +164,10 @@ const NewsTimeline = () => {
     }
 
     useEffect(() => {
-        getNewsAPIData(URL_NEWS(), "Apple +stock")
-    }, [])
+        setstock(selectedStock);
+        console.log("News API updates to", selectedStock);
+        getNewsAPIData(URL_NEWS(), "".concat(`${(stock === null) ? "" : stock.stockName.split(" ")[0]}`, " +stock"));
+    }, [selectedStock])
 
     return (
         <div className="timeline-container">
