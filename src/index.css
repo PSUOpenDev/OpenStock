@@ -4,6 +4,7 @@
   --sectionbg: #1e1e2f;
   --dark: #000;
   --lightpink: #e14eca;
+  --clearyellow: #FFD700;
 }
 
 body {
@@ -18,4 +19,5 @@ body {
 
 .section-bg { background-color: var(--sectionbg) !important; }
 .light-pink-color { color: var(--lightpink) !important; }
+.clear-yellow { color: var(--clearyellow) !important; }
 .font-pacifico { font-family: 'Pacifico', cursive; }
