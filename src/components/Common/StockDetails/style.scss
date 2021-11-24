@@ -1,0 +1,13 @@
+@import './../../../assets/styles/general';
+.stock-details {
+    @include component-style;
+    .rstm-toggle-icon {
+        display: inline-block;
+    }
+    ul {
+        list-style-type: none;
+    }
+    .rstm-tree-item:hover {
+        background-color: $search-menu-hover;
+    }
+}
