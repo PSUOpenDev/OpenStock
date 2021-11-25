@@ -1,34 +1,31 @@
-import React from "react";
-import PropTypes from "prop-types";
-
-import { format } from "d3-format";
-import { timeFormat } from "d3-time-format";
-
-import { ChartCanvas, Chart } from "react-stockcharts";
 import {
-    BarSeries,
     AreaSeries,
+    BarSeries,
     CandlestickSeries,
     LineSeries,
 } from "react-stockcharts/lib/series";
-import { XAxis, YAxis } from "react-stockcharts/lib/axes";
+import { Chart, ChartCanvas } from "react-stockcharts";
 import {
     CrossHairCursor,
-    EdgeIndicator,
     CurrentCoordinate,
+    EdgeIndicator,
     MouseCoordinateX,
     MouseCoordinateY,
 } from "react-stockcharts/lib/coordinates";
-
-import { discontinuousTimeScaleProvider } from "react-stockcharts/lib/scale";
 import {
-    OHLCTooltip,
     MovingAverageTooltip,
+    OHLCTooltip,
 } from "react-stockcharts/lib/tooltip";
+import { XAxis, YAxis } from "react-stockcharts/lib/axes";
 import { ema, heikinAshi, sma } from "react-stockcharts/lib/indicator";
-import { fitWidth } from "react-stockcharts/lib/helper";
-import { last } from "react-stockcharts/lib/utils";
 
+import PropTypes from "prop-types";
+import React from "react";
+import { discontinuousTimeScaleProvider } from "react-stockcharts/lib/scale";
+import { fitWidth } from "react-stockcharts/lib/helper";
+import { format } from "d3-format";
+import { last } from "react-stockcharts/lib/utils";
+import { timeFormat } from "d3-time-format";
 
 class HeikinAshi extends React.Component {
     render() {

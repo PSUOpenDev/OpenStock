@@ -1,7 +1,8 @@
 @import './colors';
 @import './spacing';
+
 @mixin component-style {
     background-color: $component-background-color;
-    color:$component-text-color;
+    color: $component-text-color;
     @include component-spacing;
 }

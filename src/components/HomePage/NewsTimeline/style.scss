@@ -1,7 +1,14 @@
 @import './../../../assets/styles/general';
+
 .vertical-timeline-element-date {
-    color: $component-text-color ;
+    color: $component-text-color;
 }
-.vertical-timeline-element-content, .card-body {
+
+.vertical-timeline-element-content,
+.card-body {
     @include component-color;
+}
+
+.vertical-timeline-element-icon {
+    display: none;
 }

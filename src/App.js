@@ -1,10 +1,11 @@
-import React from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Container, Navbar } from "react-bootstrap";
-import HomePage from "./pages/HomePage";
 import "./App.scss";
-import "./index.css"
+import "./index.css";
 
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { Container, Navbar } from "react-bootstrap";
+
+import HomePage from "./pages/HomePage";
+import React from "react";
 
 function App() {
     return (

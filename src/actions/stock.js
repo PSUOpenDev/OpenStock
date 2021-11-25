@@ -1,12 +1,10 @@
-import nextAction from './nextAction';
+import nextAction from "./nextAction";
 
 export const ADD_STOCK = nextAction();
 
-
-export const addStock = (dataForAction)  => {
+export const addStock = (dataForAction) => {
     return {
-        type : ADD_STOCK,
-        payLoad: dataForAction
-    }
-}
-
+        type: ADD_STOCK,
+        payLoad: dataForAction,
+    };
+};

@@ -1,25 +1,26 @@
-import React, { useState } from "react";
-import { AsyncTypeahead } from "react-bootstrap-typeahead";
 import "react-bootstrap-typeahead/css/Typeahead.css";
-import { useSelector, useDispatch } from "react-redux";
-import { addStock } from "../../../actions/stock";
-import { setSelectedStock } from "../../../actions/selectedStock";
+import "./style.scss";
+
 import {
     API_STOCK_QUOTE_KEY,
     API_URL_AUTO_COMPLETE,
 } from "../../Common/APIUtils/Yahoo/ApiParameter";
-import useAPI from "./../../Common/APIUtils/useAPI";
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
-import "./style.scss";
+import { AsyncTypeahead } from "react-bootstrap-typeahead";
+import { addStock } from "../../../actions/stock";
+import { setSelectedStock } from "../../../actions/selectedStock";
+import useAPI from "./../../Common/APIUtils/useAPI";
 
 function SearchBar() {
     const { allStocks } = useSelector((state) => state.stock);
     const [symbolSelected, setSymbolSelected] = useState([]);
     const dispatch = useDispatch();
-    const [isLoading, data, setApiParam] = useAPI({
+    const [isLoading, data, callAPI] = useAPI({
         noRun: "yes",
     });
-    console.log("walk1");
+
     const renderMenuItemChildren = (option, index) => {
         return (
             <div className="auto-complete">
@@ -37,8 +38,7 @@ function SearchBar() {
     };
 
     const handleSearch = async (query) => {
-        const handleParsingAndFiltering = (rawData) => {
-            console.log(rawData);
+        const handleParsingAndFiltering = ({ rawData }) => {
             let dataFound = rawData.ResultSet.Result.map(
                 ({ exch, name, symbol }) => {
                     return {
@@ -51,8 +51,8 @@ function SearchBar() {
             return dataFound;
         };
 
-        const handleSaving = (dataFound) => {
-            dispatch(addStock(dataFound));
+        const handleSaving = ({ data }) => {
+            dispatch(addStock(data));
         };
 
         const handleSelecting = () => {
@@ -60,15 +60,13 @@ function SearchBar() {
                 if (
                     item.stockName.toLowerCase().includes(query.toLowerCase())
                 ) {
-                    console.log("Stock is in the cache");
                     return allStocks;
                 }
             }
-            console.log("Stock is not in the cache.Call API");
             return null;
         };
 
-        setApiParam({
+        callAPI({
             url: API_URL_AUTO_COMPLETE,
             queryString: query,
             apiKey: API_STOCK_QUOTE_KEY,
@@ -77,6 +75,7 @@ function SearchBar() {
             onSelecting: handleSelecting,
         });
     };
+
     const handleSelectedStock = (e) => {
         dispatch(setSelectedStock(e[0]));
         setSymbolSelected(e);

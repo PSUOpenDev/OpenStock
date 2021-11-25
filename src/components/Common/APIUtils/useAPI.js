@@ -1,5 +1,7 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
+
 import axios from "axios";
+
 const initialState = {
     url: "",
     queryString: "",
@@ -15,19 +17,20 @@ const useAPI = (initialParam = initialState) => {
     const [data, setData] = useState(null);
     const [parameter, setParameter] = useState(initialParam);
     useEffect(() => {
-        console.log("Run useEffect");
         const dispatchAxios = async () => {
             try {
                 if (parameter.noRun !== undefined) {
                     setIsLoading(false);
-                    console.log("Oh no you set me norun=", parameter.noRun);
+
                     return;
                 }
                 setIsLoading(true);
                 let tempData = null;
                 if (parameter.onSelecting !== undefined) {
-                    tempData = parameter.onSelecting(parameter,tempData);
-                    console.log("tempdata =", tempData);
+                    tempData = parameter.onSelecting({
+                        apiParameter: parameter,
+                        data: tempData,
+                    });
                 }
                 if (tempData === undefined) {
                     return;
@@ -55,7 +58,7 @@ const useAPI = (initialParam = initialState) => {
                             encodeURI(parameter.url + parameter.queryString)
                         );
                     }
-                    console.log("return here");
+
                     tempData = response.data;
 
                     if (tempData === null) {
@@ -63,28 +66,35 @@ const useAPI = (initialParam = initialState) => {
                     }
 
                     if (parameter.onParsingAnFiltering !== undefined) {
-                        tempData = parameter.onParsingAnFiltering(tempData);
+                        tempData = parameter.onParsingAnFiltering({
+                            rawData: tempData,
+                        });
                     }
                     if (parameter.onSaving !== undefined) {
-                        parameter.onSaving(tempData);
+                        parameter.onSaving({ data: tempData });
                     }
                     if (
                         parameter.onSaving !== undefined &&
                         parameter.onSelecting !== undefined
                     ) {
-                        tempData = parameter.onSelecting(parameter,tempData);
+                        tempData = parameter.onSelecting({
+                            apiParameter: parameter,
+                            data: tempData,
+                        });
                     }
                 }
-                console.log("set Data = ", tempData);
+
                 setData(tempData);
                 setIsLoading(false);
             } catch (error) {
-                console.log(error);
                 if (parameter.onError !== undefined) {
-                    parameter.onError(error);
+                    parameter.onError({
+                        apiParameter: parameter,
+                        error,
+                        setData,
+                    });
                 }
                 setIsLoading(false);
-                console.log("lo roi ", error);
             }
         };
         dispatchAxios();

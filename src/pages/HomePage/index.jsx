@@ -1,18 +1,20 @@
-import { Container, Row, Col } from "react-bootstrap";
+import "./style.scss";
+
+import { Col, Container, Row } from "react-bootstrap";
+import React, { useEffect, useState } from "react";
+
 import BriefBoard from "../../components/HomePage/BriefBoard";
 import ChartBoard from "../../components/Common/ChartBoard";
 import NewsTimeline from "../../components/HomePage/NewsTimeline";
 import SearchBar from "../../components/HomePage/SearchBar";
-import { useSelector } from "react-redux";
-import React, { useState, useEffect } from "react";
-import "./style.scss";
 import StockDetails from "../../components/Common/StockDetails";
+import { useSelector } from "react-redux";
+
 /* TEST API COMPONENTS */
 function HomePage() {
     const selectedStock = useSelector((state) => state.selectedStock);
     const [stock, setStock] = useState(selectedStock);
     useEffect(() => {
-        console.log("change selected stock to ", selectedStock);
         setStock(
             selectedStock !== null &&
                 selectedStock !== undefined &&
@@ -21,7 +23,6 @@ function HomePage() {
                 ? selectedStock
                 : { symbol: "^DJI", stockName: "Dow Jones Industrial Average" }
         );
-        console.log("Change select stock to", selectedStock);
     }, [selectedStock]);
     return (
         <Container className="home-page-container" fluid>
@@ -74,7 +75,6 @@ function HomePage() {
                     </Row>
                 </Col>
                 <Col md={4}>
-                    
                     <NewsTimeline />
                 </Col>
             </Row>

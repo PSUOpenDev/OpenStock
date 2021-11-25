@@ -4,7 +4,8 @@ $chart-tooltip-label-color: blueviolet;
 $chart-bar-color: grey;
 $body-background-color:black;
 $search-menu-hover:#25294e;
+
 @mixin component-color {
     background-color: $component-background-color;
-    color:$component-text-color;
+    color: $component-text-color;
 }

@@ -1,51 +1,45 @@
-import React, {  useEffect } from "react";
+import "./style.scss";
+import "./style.scss";
+
+import {
+    API_STOCK_QUOTE_KEY,
+    API_URL_MARKET_SUMMARY,
+} from "./../../Common/APIUtils/Yahoo/ApiParameter";
+import React, { useEffect } from "react";
+import {
+    dateToTimestamp,
+    durationInMilliseconds,
+    isExpired,
+    timestampToDate,
+} from "../../../utils/timeStamp";
+import { useDispatch, useSelector } from "react-redux";
+
 import { CardGroup } from "react-bootstrap";
 import PriceCard from "../../Common/PriceCard";
-import "./style.scss";
-import useAPI from "./../../Common/APIUtils/useAPI";
-import {
-    API_URL_MARKET_SUMMARY,
-    API_STOCK_QUOTE_KEY,
-} from "./../../Common/APIUtils/Yahoo/ApiParameter";
 import { updateStockIndex } from "./../../../actions/stockIndex";
-import { useSelector, useDispatch } from "react-redux";
-import {
-    isExpired,
-    durationInMilliseconds,
-    timestampToDate,
-    dateToTimestamp,
-} from "./../../Common/utils";
-import './style.scss';
+import useAPI from "./../../Common/APIUtils/useAPI";
 
 function BriefBoard(props) {
     const stockIndex = useSelector((state) => state.stockIndex);
     const dispatch = useDispatch();
-    const [isLoading, data,setApiParam ] = useAPI({
+    const [isLoading, data, callAPI] = useAPI({
         noRun: "yes",
     });
     useEffect(() => {
-        console.log("run2");
-        //parsing data from api
-        const handleParsingAndFiltering = (rawData) => {
+        const handleParsingAndFiltering = ({ rawData }) => {
             let result = [];
-            console.log("handleParsingAndFiltering rawData", rawData);
-            console.log(
-                "handleParsingAndFiltering stockIndex.allAllIndexes",
-                stockIndex.allAllIndexes
-            );
+
             const currentTimeStamp = dateToTimestamp(new Date());
             const arrayIndex = rawData.marketSummaryResponse.result;
             const hashIndex = {};
+
             for (const dataItem of stockIndex.allAllIndexes) {
                 hashIndex[dataItem.shortName] = dataItem;
                 result.push(dataItem);
             }
+
             for (const item of arrayIndex) {
                 if (item.shortName !== undefined) {
-                    console.log(
-                        " hashIndex[item.shortName] ",
-                        hashIndex[item.shortName]
-                    );
                     if (hashIndex[item.shortName] !== undefined) {
                         hashIndex[item.shortName].shortName = item.shortName;
                         hashIndex[item.shortName].currentValue =
@@ -58,18 +52,17 @@ function BriefBoard(props) {
                     }
                 }
             }
+
             for (const item of result) {
                 item.apiTime = currentTimeStamp;
             }
-            console.log("result = ", result);
+
             return result;
         };
+
         const handleSelecting = () => {
             const currentTime = new Date();
-            console.log(
-                "handleSelecting stockIndex.allAllIndexes = ",
-                stockIndex.allAllIndexes
-            );
+
             for (let item of stockIndex.allAllIndexes) {
                 if (
                     isExpired(
@@ -84,25 +77,26 @@ function BriefBoard(props) {
 
             return stockIndex.allAllIndexes;
         };
-        const handleSaving = (newData) => {
-            console.log("newData = ", newData);
-            dispatch(updateStockIndex(newData));
-            console.log(
-                "handleSaving stockIndex.allAllIndexes = ",
-                stockIndex.allAllIndexes
-            );
+
+        const handleSaving = ({ data }) => {
+            dispatch(updateStockIndex(data));
+
             return stockIndex.allAllIndexes;
         };
-        setApiParam({
+
+        const handleError = ({ setData }) => {
+            setData(stockIndex.allAllIndexes);
+        };
+        callAPI({
             url: API_URL_MARKET_SUMMARY,
             queryString: "",
             apiKey: API_STOCK_QUOTE_KEY,
             onParsingAnFiltering: handleParsingAndFiltering,
             onSaving: handleSaving,
             onSelecting: handleSelecting,
+            onError: handleError,
         });
-        console.log("hey api ...run")
-    }, [dispatch,setApiParam,stockIndex]);
+    }, [dispatch, callAPI, stockIndex]);
 
     return (
         <CardGroup>

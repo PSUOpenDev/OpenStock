@@ -1,11 +1,10 @@
-import React from "react";
-import { Accordion, Alert, Badge } from "react-bootstrap";
-import PropTypes from "prop-types";
 import "./style.scss";
 
-// PriceCard.propTypes = {
-//     symbol: PropTypes.object.isRequired,
-// };
+import { Accordion, Alert, Badge } from "react-bootstrap";
+
+import PropTypes from "prop-types";
+import React from "react";
+
 TreePanelToggle.propTypes = {
     id: PropTypes.number,
     label: PropTypes.string,
@@ -29,7 +28,7 @@ function TreePanelToggle({ id, label, data, nodes }) {
                         <Accordion.Body>
                             {nodes.map((item) => (
                                 <TreePanelToggle
-                                    key = {item.id}
+                                    key={item.id}
                                     {...item}
                                 ></TreePanelToggle>
                             ))}

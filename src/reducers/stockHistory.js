@@ -8,7 +8,6 @@ const initState = item === null ? {} : JSON.parse(item);
 const stockHistoryReducer = (state = initState, action) => {
     switch (action.type) {
         case UPDATE_HIS_DATA: {
-            console.log("action ", action);
             if (state[action.payLoad.symbol] === undefined) {
                 const symbol = action.payLoad.symbol;
                 const symbolData = action.payLoad.history;
@@ -16,7 +15,7 @@ const stockHistoryReducer = (state = initState, action) => {
                 const returnState = {
                     ...state,
                 };
-                console.log("stock is not exist, new state is ", returnState);
+
                 localStorage.setItem(
                     "stockHistory",
                     JSON.stringify(returnState)
@@ -24,13 +23,10 @@ const stockHistoryReducer = (state = initState, action) => {
                 return returnState;
             } else {
                 const newState = { ...state };
-
                 const firstDateOfNewData = action.payLoad.history.firstDate;
-                console.log("firstDateOfNewData", firstDateOfNewData);
+
                 const firstDateOfCurrentData =
                     state[action.payLoad.symbol].firstDate;
-
-                console.log("firstDateOfCurrentData", firstDateOfCurrentData);
 
                 if (firstDateOfNewData < firstDateOfCurrentData) {
                     for (
@@ -54,10 +50,9 @@ const stockHistoryReducer = (state = initState, action) => {
                 }
 
                 const lastDateOfNewData = action.payLoad.history.lastDate;
-                console.log("lastDateOfNewData", lastDateOfNewData);
                 const lastDateOfCurrentData =
                     state[action.payLoad.symbol].lastDate;
-                console.log("lastDateOfCurrentData", lastDateOfCurrentData);
+
                 if (lastDateOfNewData > lastDateOfCurrentData) {
                     for (
                         let i = action.payLoad.history.history.length - 1;
@@ -79,7 +74,6 @@ const stockHistoryReducer = (state = initState, action) => {
                     newState[action.payLoad.symbol].lastDate =
                         lastDateOfNewData;
                 }
-                console.log("stock is exist, new state is ", newState);
                 localStorage.setItem("stockHistory", JSON.stringify(newState));
                 return newState;
             }

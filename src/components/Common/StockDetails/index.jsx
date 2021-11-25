@@ -1,17 +1,19 @@
-import React, { useEffect } from "react";
-import PropTypes from "prop-types";
 import "./style.scss";
-import useAPI from "./../../Common/APIUtils/useAPI";
+
 import {
     API_STOCK_QUOTE_KEY,
-    API_URL_STOCK_SUMMARY,
     API_URI_STOCK_QUOTE,
+    API_URL_STOCK_SUMMARY,
 } from "./../../Common/APIUtils/Yahoo/ApiParameter";
-import TreePanelToggle from "../TreePanelToggle";
-import { useSelector, useDispatch } from "react-redux";
-import { addStockInfo } from "./../../../actions/stockInfo";
-import { dateToTimestamp } from "./../../Common/utils";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+
+import PropTypes from "prop-types";
 import { Spinner } from "react-bootstrap";
+import TreePanelToggle from "../TreePanelToggle";
+import { addStockInfo } from "./../../../actions/stockInfo";
+import { dateToTimestamp } from "../../../utils/timeStamp";
+import useAPI from "./../../Common/APIUtils/useAPI";
 
 StockDetails.propTypes = {};
 
@@ -23,8 +25,9 @@ function StockDetails({ selectedStock }) {
     });
 
     useEffect(() => {
-        const handleParsingAndFiltering = (rawData) => {
-            console.log("handle parsing , rawData", rawData);
+        const handleParsingAndFiltering = ({rawData}) => {
+            let childKey = 0;
+
             const convertLabel = (label) => {
                 const isUpperCase = (string) => /^[A-Z]*$/.test(string);
 
@@ -32,15 +35,17 @@ function StockDetails({ selectedStock }) {
 
                 for (let i = 0; i < len; i++) {
                     if (isUpperCase(label.charAt(i)) && i > 0) {
+                        //insert at i
                         label =
                             label.substring(0, i) +
                             " " +
                             label.substring(i, len);
                         len = label.length;
                         i = i + 1;
-                        //console.log(label);
                     }
                 }
+
+                //capitalize the first letter
                 len = label.length;
                 if (len > 1) {
                     label =
@@ -49,75 +54,86 @@ function StockDetails({ selectedStock }) {
 
                 return label;
             };
-            let childKey = 0;
+
             const convert = (result, rawData) => {
-                if (Array.isArray(rawData)) {
-                    for (const item of rawData) {
-                        childKey = childKey + 1;
-                        if (item != null)
-                            result.nodes.push(
-                                convert(
-                                    {
-                                        id: childKey,
-                                        label: "#",
-                                        data: "",
-                                        nodes: [],
-                                    },
-                                    item
-                                )
-                            );
+                while (true) {
+                    if (Array.isArray(rawData)) {
+                        for (const item of rawData) {
+                            childKey = childKey + 1;
+                            if (item != null)
+                                result.nodes.push(
+                                    convert(
+                                        {
+                                            id: childKey,
+                                            label: "#",
+                                            data: "",
+                                            nodes: [],
+                                        },
+                                        item
+                                    )
+                                );
+                        }
+                        break;
                     }
-                } else {
+
                     if (typeof rawData === "object") {
                         if (rawData["fmt"] !== undefined) {
                             result.data = rawData["fmt"];
                             return result;
-                        } else {
-                            const listKey = Object.keys(rawData);
-                            const indexOfMaxAge = listKey.indexOf("maxAge");
+                        }
 
-                            if (indexOfMaxAge >= 0)
-                                listKey.splice(indexOfMaxAge, 1);
+                        //remove some fields that not need
+                        const listKey = Object.keys(rawData);
+                        const indexOfMaxAge = listKey.indexOf("maxAge");
 
-                            if (listKey.length === 0) {
-                                result.data = ": N/A";
-                                return result;
+                        if (indexOfMaxAge >= 0)
+                            listKey.splice(indexOfMaxAge, 1);
+
+                        if (listKey.length === 0) {
+                            result.data = ": N/A";
+                            return result;
+                        }
+
+                        for (const item of listKey) {
+                            childKey = childKey + 1;
+
+                            if (item === "name" && result.label === "#") {
+                                result.label = rawData[item];
                             }
 
-                            for (const item of listKey) {
-                                childKey = childKey + 1;
-
-                                if (item === "name" && result.label === "#") {
-                                    result.label = rawData[item];
-                                }
-                                if (rawData[item] != null) {
-                                    // console.log(item);
-                                    result.nodes.push(
-                                        convert(
-                                            {
-                                                id: childKey,
-                                                label: convertLabel(item),
-                                                data: "",
-                                                nodes: [],
-                                            },
-                                            rawData[item]
-                                        )
-                                    );
-                                }
+                            if (rawData[item] != null) {
+                                result.nodes.push(
+                                    convert(
+                                        {
+                                            id: childKey,
+                                            label: convertLabel(item),
+                                            data: "",
+                                            nodes: [],
+                                        },
+                                        rawData[item]
+                                    )
+                                );
                             }
                         }
-                    } else {
-                        result.data =
-                            rawData === null || rawData === "null"
-                                ? "N/A"
-                                : rawData;
+                        break;
                     }
+
+                    result.data =
+                        rawData === null || rawData === "null"
+                            ? "N/A"
+                            : rawData;
+
+                    break;
                 }
-                console.log("result of convert = ", result);
+
                 return result;
             };
+
             let data;
-            if ( rawData.quoteSummary !==undefined && rawData.quoteSummary.result[0] !== undefined)
+            if (
+                rawData.quoteSummary !== undefined &&
+                rawData.quoteSummary.result[0] !== undefined
+            )
                 data = convert(
                     { id: 0, label: "#", data: "", nodes: [] },
                     rawData.quoteSummary.result[0]
@@ -127,23 +143,21 @@ function StockDetails({ selectedStock }) {
                     { id: 0, label: "#", data: "", nodes: [] },
                     rawData.quoteResponse.result[0]
                 );
-            console.log("After parse raw data =", data);
 
             return data.nodes;
         };
 
-        const handleSaving = (dataFound) => {
+        const handleSaving = ({data}) => {
             const saveData = {
                 symbol: selectedStock.symbol,
                 date: dateToTimestamp(new Date()),
-                stockInfo: dataFound,
+                stockInfo: data,
             };
             dispatch(addStockInfo(saveData));
         };
 
-        const handleSelecting = (param, data) => {
+        const handleSelecting = ({data}) => {
             if (selectedStock.symbol !== undefined) {
-                console.log(" stockInfo.stockInfoDic", stockInfo.stockInfoDic);
                 if (
                     stockInfo.stockInfoDic[selectedStock.symbol] ===
                         undefined &&
@@ -154,7 +168,13 @@ function StockDetails({ selectedStock }) {
             }
             return data;
         };
-        console.log("THe selected stocks is ", selectedStock);
+
+        const handleError = ({setData}) => {
+            
+            if (stockInfo.stockInfoDic[selectedStock.symbol] !== undefined) {
+                setData(stockInfo.stockInfoDic[selectedStock.symbol].stockInfo);
+            }
+        };
 
         if (selectedStock !== null)
             if (selectedStock.symbol === "^DJI") {
@@ -165,6 +185,7 @@ function StockDetails({ selectedStock }) {
                     onParsingAnFiltering: handleParsingAndFiltering,
                     onSaving: handleSaving,
                     onSelecting: handleSelecting,
+                    onError: handleError,
                 });
             } else {
                 setApiParam({
@@ -176,6 +197,7 @@ function StockDetails({ selectedStock }) {
                     onParsingAnFiltering: handleParsingAndFiltering,
                     onSaving: handleSaving,
                     onSelecting: handleSelecting,
+                    onError: handleError,
                 });
             }
     }, [selectedStock]);

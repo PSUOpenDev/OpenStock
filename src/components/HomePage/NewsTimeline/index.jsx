@@ -1,20 +1,23 @@
-import React, { useEffect, useState } from "react";
-import {
-    VerticalTimeline,
-    VerticalTimelineElement,
-} from "react-vertical-timeline-component";
 import "react-vertical-timeline-component/style.min.css";
-import { Card } from "react-bootstrap";
-import axios from "axios";
+import "./style.scss";
+
 import {
     API_NEWS_KEY,
     API_NEWS_URL,
 } from "../../Common/APIUtils/News/ApiParameter";
+import React, { useEffect, useState } from "react";
+import { SIX_HOURS, getExecutionTimeToNow } from "../../../utils/getTime";
+import {
+    VerticalTimeline,
+    VerticalTimelineElement,
+} from "react-vertical-timeline-component";
 import { currentDate, getThreeDaysAgo } from "../../../utils/getDate";
 import { readFromCache, writeToCache } from "../../../utils/cache";
-import { getExecutionTimeToNow, SIX_HOURS } from "../../../utils/getTime";
+
+import { Card } from "react-bootstrap";
+import axios from "axios";
 import { useSelector } from "react-redux";
-import "./style.scss";
+
 /* Function to render card newspaper item */
 const cardRender = (data) => {
     return (

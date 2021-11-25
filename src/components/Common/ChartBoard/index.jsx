@@ -1,16 +1,18 @@
-import React, { useEffect } from "react";
-import HeikinAshi from "../Charts/HeikinAshi";
-import { useSelector, useDispatch } from "react-redux";
-import { updateStockHistory } from "../../../actions/stockHistory";
-import PropTypes from "prop-types";
 import "./style.scss";
-import AreaChart from "../Charts/AreaChart";
-import useAPI from "./../../Common/APIUtils/useAPI";
+
 import {
     API_STOCK_QUOTE_KEY,
     API_URL_STOCK_CHART,
 } from "./../../Common/APIUtils/Yahoo/ApiParameter";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+
+import AreaChart from "../Charts/AreaChart";
+import HeikinAshi from "../Charts/HeikinAshi";
+import PropTypes from "prop-types";
 import { Spinner } from "react-bootstrap";
+import { updateStockHistory } from "../../../actions/stockHistory";
+import useAPI from "./../../Common/APIUtils/useAPI";
 
 const convertData = (arr) => {
     if (arr !== null) {
@@ -19,7 +21,6 @@ const convertData = (arr) => {
         for (let i = 0; i < length; i++) {
             result.push({ ...arr[i], date: new Date(arr[i].date * 1000) });
         }
-        console.log("result =", result);
         return result;
     }
     return null;
@@ -37,111 +38,89 @@ ChartBoard.defaultProps = {
 function ChartBoard({ selectedStock, showStockName, chartType }) {
     const stockHistory = useSelector((state) => state.stockHistory);
     const dispatch = useDispatch();
-    const [isLoading, data, setApiParam] = useAPI({
+
+    const [isLoading, data, callAPI] = useAPI({
         noRun: "yes",
     });
 
     useEffect(() => {
-        const handleSelecting = (param) => {
-            console.log(
-                "handleSelecting selectedStock.symbol",
-                selectedStock.symbol
-            );
-            if (selectedStock.symbol !== undefined) {
-                if (stockHistory[selectedStock.symbol] === undefined) {
-                    console.log("Stock data does not existed yet!");
-                    param.queryString =
-                        selectedStock.symbol +
-                        "?range=max&region=US&interval=1d&lang=en&events=div%2Csplit";
-                    return null;
-                } else {
-                    console.log("Stock data existed already!");
-                    const allKinds = [
-                        "1d",
-                        "5d",
-                        "1mo",
-                        "3mo",
-                        "6mo",
-                        "1y",
-                        "5y",
-                    ];
-                    let choosePeriod = "";
-                    for (const period of allKinds) {
-                        const pastDate = new Date();
-                        pastDate.setTime(0, 0, 0, 0);
+        const handleSelecting = ({ apiParameter }) => {
+            if (selectedStock.symbol === undefined) {
+                return undefined;
+            }
 
-                        switch (period) {
-                            case "1d":
-                                pastDate.setDate(pastDate.getDate() - 1);
-                                break;
-                            case "5d":
-                                pastDate.setDate(pastDate.getDate() - 5);
-                                break;
-                            case "1mo":
-                                pastDate.setMonth(pastDate.getMonth() - 1);
-                                break;
-                            case "3mo":
-                                pastDate.setMonth(pastDate.getMonth() - 3);
-                                break;
-                            case "6mo":
-                                pastDate.setMonth(pastDate.getMonth() - 6);
-                                break;
-                            case "1y":
-                                pastDate.setYear(pastDate.getYear() - 1);
-                                break;
-                            case "5y":
-                                pastDate.setYear(pastDate.getYear() - 5);
-                                break;
-                            default:
-                                break;
-                        }
+            if (stockHistory[selectedStock.symbol] === undefined) {
+                apiParameter.queryString =
+                    selectedStock.symbol +
+                    "?range=max&region=US&interval=1d&lang=en&events=div%2Csplit";
+                return null;
+            }
 
-                        if (
-                            pastDate <
-                            stockHistory[selectedStock.symbol].lastDate
-                        ) {
-                            choosePeriod = period;
-                            break;
-                        }
-                    }
-                    if (choosePeriod !== "") {
-                        param.queryString =
-                            selectedStock.symbol +
-                            "?range=" +
-                            choosePeriod +
-                            "&region=US&interval=1d&lang=en&events=div%2Csplit";
-                        return null;
-                    } else {
-                        const returnValue = convertData(
-                            stockHistory[selectedStock.symbol]
-                        );
-                        console.log("returnValue", returnValue);
-                        return returnValue;
-                    }
+            const allKinds = ["1d", "5d", "1mo", "3mo", "6mo", "1y", "5y"];
+            let choosePeriod = "";
+            for (const period of allKinds) {
+                const pastDate = new Date();
+                pastDate.setTime(0, 0, 0, 0);
+
+                switch (period) {
+                    case "1d":
+                        pastDate.setDate(pastDate.getDate() - 1);
+                        break;
+                    case "5d":
+                        pastDate.setDate(pastDate.getDate() - 5);
+                        break;
+                    case "1mo":
+                        pastDate.setMonth(pastDate.getMonth() - 1);
+                        break;
+                    case "3mo":
+                        pastDate.setMonth(pastDate.getMonth() - 3);
+                        break;
+                    case "6mo":
+                        pastDate.setMonth(pastDate.getMonth() - 6);
+                        break;
+                    case "1y":
+                        pastDate.setYear(pastDate.getYear() - 1);
+                        break;
+                    case "5y":
+                        pastDate.setYear(pastDate.getYear() - 5);
+                        break;
+                    default:
+                        break;
+                }
+
+                if (pastDate < stockHistory[selectedStock.symbol].lastDate) {
+                    choosePeriod = period;
+                    break;
                 }
             }
+
+            if (choosePeriod !== "") {
+                apiParameter.queryString =
+                    selectedStock.symbol +
+                    "?range=" +
+                    choosePeriod +
+                    "&region=US&interval=1d&lang=en&events=div%2Csplit";
+                return null;
+            }
+
+            const returnValue = convertData(stockHistory[selectedStock.symbol]);
+            return returnValue;
         };
-        const handleParsingAndFiltering = (rawData) => {
+
+        const handleParsingAndFiltering = ({ rawData }) => {
             if (rawData !== null) {
-                console.log("handleParsingAndFiltering rawData", rawData);
                 const timeStamp = rawData.chart.result[0].timestamp;
-                console.log("timeStamp", timeStamp);
                 const theQuote = rawData.chart.result[0].indicators.quote[0];
-                console.log("theQuote", theQuote);
                 const high = theQuote.high;
-                console.log("high", high);
                 const low = theQuote.low;
-                console.log("low", low);
                 const open = theQuote.open;
-                console.log("open", open);
                 const volume = theQuote.volume;
-                console.log("volume", volume);
                 const close = theQuote.close;
-                console.log("close", close);
                 const length = timeStamp.length;
                 const firstDate = timeStamp[0];
                 const lastDate = timeStamp[length - 1];
                 const result = [];
+
                 for (let i = 0; i < length; i++) {
                     result.push({
                         date: timeStamp[i],
@@ -152,7 +131,6 @@ function ChartBoard({ selectedStock, showStockName, chartType }) {
                         low: low[i],
                     });
                 }
-                console.log("result =", result);
 
                 return {
                     symbol: selectedStock.symbol,
@@ -163,10 +141,12 @@ function ChartBoard({ selectedStock, showStockName, chartType }) {
             }
             return null;
         };
-        const handleSaving = (payLoad) => {
-            dispatch(updateStockHistory(payLoad));
+
+        const handleSaving = ({ data }) => {
+            dispatch(updateStockHistory(data));
         };
-        setApiParam({
+
+        callAPI({
             url: API_URL_STOCK_CHART,
             queryString: "",
             apiKey: API_STOCK_QUOTE_KEY,
@@ -174,14 +154,14 @@ function ChartBoard({ selectedStock, showStockName, chartType }) {
             onSaving: handleSaving,
             onSelecting: handleSelecting,
         });
-    }, [selectedStock,dispatch,setApiParam,stockHistory]);
+    }, [selectedStock, dispatch, callAPI, stockHistory]);
 
     return (
         <>
             <div className="chart">
-                {data === null || isLoading === true ? (
-                    <Spinner animation="border" />
-                ) : (
+                {isLoading && <Spinner animation="border" />}
+
+                {isLoading === false && (
                     <div>
                         {selectedStock && showStockName && (
                             <h6>

@@ -1,12 +1,10 @@
-import nextAction from './nextAction';
+import nextAction from "./nextAction";
 
 export const SET_SELECTED_STOCK = nextAction();
 
-
-export const setSelectedStock = (dataForAction)  => {
+export const setSelectedStock = (dataForAction) => {
     return {
-        type : SET_SELECTED_STOCK,
-        payLoad: dataForAction
-    }
-}
-
+        type: SET_SELECTED_STOCK,
+        payLoad: dataForAction,
+    };
+};
