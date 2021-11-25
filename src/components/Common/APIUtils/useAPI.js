@@ -12,21 +12,21 @@ const initialState = {
 };
 const useAPI = (initialParam = initialState) => {
     const [isLoading, setIsLoading] = useState(true);
-    const [data, setData] = useState(null); 
-    const [parameter,setParameter] = useState(initialParam);
-    useEffect(()=>{
+    const [data, setData] = useState(null);
+    const [parameter, setParameter] = useState(initialParam);
+    useEffect(() => {
         console.log("Run useEffect");
         const dispatchAxios = async () => {
             try {
                 if (parameter.noRun !== undefined) {
                     setIsLoading(false);
-                    console.log("Oh no you set me norun=",parameter.noRun)
+                    console.log("Oh no you set me norun=", parameter.noRun);
                     return;
                 }
                 setIsLoading(true);
                 let tempData = null;
                 if (parameter.onSelecting !== undefined) {
-                    tempData = parameter.onSelecting(parameter);
+                    tempData = parameter.onSelecting(parameter,tempData);
                     console.log("tempdata =", tempData);
                 }
                 if (tempData === undefined) {
@@ -50,7 +50,6 @@ const useAPI = (initialParam = initialState) => {
                                 },
                             }
                         );
-                        
                     } else {
                         response = await axios.get(
                             encodeURI(parameter.url + parameter.queryString)
@@ -58,11 +57,11 @@ const useAPI = (initialParam = initialState) => {
                     }
                     console.log("return here");
                     tempData = response.data;
-    
+
                     if (tempData === null) {
                         throw new Error("No data return from API!");
                     }
-    
+
                     if (parameter.onParsingAnFiltering !== undefined) {
                         tempData = parameter.onParsingAnFiltering(tempData);
                     }
@@ -73,7 +72,7 @@ const useAPI = (initialParam = initialState) => {
                         parameter.onSaving !== undefined &&
                         parameter.onSelecting !== undefined
                     ) {
-                        tempData = parameter.onSelecting(parameter);
+                        tempData = parameter.onSelecting(parameter,tempData);
                     }
                 }
                 console.log("set Data = ", tempData);
@@ -89,10 +88,9 @@ const useAPI = (initialParam = initialState) => {
             }
         };
         dispatchAxios();
-    },[parameter])
-    
+    }, [parameter]);
 
-    return [isLoading, data,setParameter];
+    return [isLoading, data, setParameter];
 };
 
 export default useAPI;

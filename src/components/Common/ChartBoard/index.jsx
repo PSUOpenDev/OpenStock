@@ -10,6 +10,8 @@ import {
     API_STOCK_QUOTE_KEY,
     API_URL_STOCK_CHART,
 } from "./../../Common/APIUtils/Yahoo/ApiParameter";
+import { Spinner } from "react-bootstrap";
+
 const convertData = (arr) => {
     if (arr !== null) {
         const result = [];
@@ -178,7 +180,7 @@ function ChartBoard({ selectedStock, showStockName, chartType }) {
         <>
             <div className="chart">
                 {data === null || isLoading === true ? (
-                    <div>Loading...</div>
+                    <Spinner animation="border" />
                 ) : (
                     <div>
                         {selectedStock && showStockName && (

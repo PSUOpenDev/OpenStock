@@ -1,0 +1,19 @@
+@import './../../../assets/styles/general';
+
+.stock-details {
+    @include component-style;
+}
+
+.alert-secondary,
+.accordion-body,
+.accordion-button  {
+    @include component-color;
+
+}
+.accordion-button::after {
+    color:$component-text-color
+}
+
+.bg-success {
+    background-color: $body-background-color !important;
+}

@@ -6,37 +6,35 @@ import {
 import "react-vertical-timeline-component/style.min.css";
 import { Card } from "react-bootstrap";
 import axios from "axios";
-import {API_NEWS_KEY, API_NEWS_URL} from "../../Common/APIUtils/News/ApiParameter"
-import { currentDate, getThreeDaysAgo } from "../../../utils/getDate"
+import {
+    API_NEWS_KEY,
+    API_NEWS_URL,
+} from "../../Common/APIUtils/News/ApiParameter";
+import { currentDate, getThreeDaysAgo } from "../../../utils/getDate";
 import { readFromCache, writeToCache } from "../../../utils/cache";
 import { getExecutionTimeToNow, SIX_HOURS } from "../../../utils/getTime";
 import { useSelector } from "react-redux";
-
+import "./style.scss";
 /* Function to render card newspaper item */
 const cardRender = (data) => {
     return (
         <Card>
-            <Card.Img 
-                variant="top" 
-                src={data.urlToImage} 
-            />
+            <Card.Img variant="top" src={data.urlToImage} />
             <Card.Body>
-                <Card.Subtitle> 
-                    { data.title } 
-                </Card.Subtitle>
+                <Card.Subtitle>{data.title}</Card.Subtitle>
                 <Card.Text className="fw-normal mb-2">
                     {data.content.slice(0, 100) + "..."}
                 </Card.Text>
-                <a 
-                    href={data.url} 
+                <a
+                    href={data.url}
                     className="text-decoration-none text-danger stretched-link"
                 >
                     Continue reading
                 </a>
             </Card.Body>
         </Card>
-    )
-}
+    );
+};
 
 /* Function to render newspapers */
 const NewsTimeline = () => {
@@ -53,7 +51,11 @@ const NewsTimeline = () => {
 
     const URL_NEWS = () => {
         let url = getAPINewsURL;
-        url = url.concat("q=", `${(stock === null) ? "" : stock.stockName.split(" ")[0]}`, " +stock");
+        url = url.concat(
+            "q=",
+            `${stock === null ? "" : stock.stockName.split(" ")[0]}`,
+            " +stock"
+        );
         url = url.concat("&language=en");
         url = url.concat("&from=", `${getThreeDaysAgo()}`);
         url = url.concat("&to=", `${currentDate()}`);
@@ -61,41 +63,39 @@ const NewsTimeline = () => {
         url = url.concat("&pageSize=20");
         url = url.concat("&apiKey=", `${getAPINewsKey}`);
         return url;
-    }
+    };
 
     const fetchAPI = async (URL) => {
-        return await axios.get(URL)
-            .then((res) => {
-                if (res.data.status === "ok") {
-                    //console.log(res.data.articles)
-                    return res.data.articles
-                } else {
-                    return []
-                }
-            })
-    }
+        return await axios.get(URL).then((res) => {
+            if (res.data.status === "ok") {
+                //console.log(res.data.articles)
+                return res.data.articles;
+            } else {
+                return [];
+            }
+        });
+    };
 
     const fetchNewDataAPI = async (URL, keyStorage) => {
         let items = readFromCache("NewsAPI");
 
         fetchAPI(URL).then((data) => {
             const itemToCache = {
-                "name" : keyStorage,
-                "keyStorage" : data,
-                "fetch_time" : new Date().getTime()
-            }
+                name: keyStorage,
+                keyStorage: data,
+                fetch_time: new Date().getTime(),
+            };
             items.push(itemToCache);
             writeToCache("NewsAPI", items);
-        })
-        
-        
-        console.log("fetchNewDataAPI")
+        });
+
+        console.log("fetchNewDataAPI");
         return items;
-    }
+    };
 
     const fetchFreshDataAPI = async (URL, keyStorage) => {
         let items = readFromCache("NewsAPI");
-        let checkItem = items.filter(item => item["name"] === keyStorage);
+        let checkItem = items.filter((item) => item["name"] === keyStorage);
 
         let mem_index = -1;
         let flag_checked = false;
@@ -104,7 +104,10 @@ const NewsTimeline = () => {
             flag_checked = true;
             for (let i = 0; i < items.length; i++) {
                 if (items[i]["name"] === keyStorage) {
-                    if (getExecutionTimeToNow(items[i]["fetch_time"]) >= SIX_HOURS) {
+                    if (
+                        getExecutionTimeToNow(items[i]["fetch_time"]) >=
+                        SIX_HOURS
+                    ) {
                         mem_index = i;
                     }
                     break;
@@ -114,7 +117,7 @@ const NewsTimeline = () => {
 
         if (mem_index === -1 && flag_checked === true) {
             // This means item found, but no enough time
-            console.log("Caching case!")
+            console.log("Caching case!");
             console.log(items);
             return items;
         }
@@ -123,31 +126,34 @@ const NewsTimeline = () => {
             if (flag_checked === false) {
                 // Item not found
                 const itemToCache = {
-                    "name" : keyStorage,
-                    "keyStorage" : data,
-                    "fetch_time" : new Date().getTime()
-                }
+                    name: keyStorage,
+                    keyStorage: data,
+                    fetch_time: new Date().getTime(),
+                };
                 items.push(itemToCache);
                 writeToCache("NewsAPI", items);
-                console.log("Append case")
+                console.log("Append case");
             } else {
                 // Item found and enough time
                 if (items[mem_index]["name"] === keyStorage) {
                     items[mem_index]["keyStorage"] = data;
                     items[mem_index]["fetch_time"] = new Date().getTime();
                 }
-                console.log("Modify case", items[mem_index]["name"] === keyStorage)
+                console.log(
+                    "Modify case",
+                    items[mem_index]["name"] === keyStorage
+                );
             }
-        })
+        });
         return items;
-    }
+    };
 
     const getNewsAPIData = async (URL, keyStorage) => {
         let items;
-        setData([])
+        setData([]);
 
         let cachedData = readFromCache("NewsAPI");
-        
+
         if (cachedData.length === 0) {
             writeToCache("NewsAPI", []);
             items = await fetchNewDataAPI(URL, keyStorage);
@@ -161,13 +167,19 @@ const NewsTimeline = () => {
                 break;
             }
         }
-    }
+    };
 
     useEffect(() => {
         setstock(selectedStock);
         console.log("News API updates to", selectedStock);
-        getNewsAPIData(URL_NEWS(), "".concat(`${(stock === null) ? "" : stock.stockName.split(" ")[0]}`, " +stock"));
-    }, [selectedStock])
+        getNewsAPIData(
+            URL_NEWS(),
+            "".concat(
+                `${stock === null ? "" : stock.stockName.split(" ")[0]}`,
+                " +stock"
+            )
+        );
+    }, [selectedStock]);
 
     return (
         <div className="timeline-container">
@@ -180,18 +192,18 @@ const NewsTimeline = () => {
                             background: "rgb(33, 150, 243)",
                             color: "#fff",
                         }}
-                        key={ index }
+                        key={index}
                     >
                         <h3
                             className="vertical-timeline-element-title"
                             dangerouslySetInnerHTML={{ __html: event.event }}
                         />
-                        { cardRender(event) }
+                        {cardRender(event)}
                     </VerticalTimelineElement>
                 ))}
             </VerticalTimeline>
         </div>
     );
-}
+};
 
 export default NewsTimeline;
