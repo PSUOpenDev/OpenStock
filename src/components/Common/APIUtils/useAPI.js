@@ -26,7 +26,7 @@ const useAPI = (initialParam = initialState) => {
                 setIsLoading(true);
                 let tempData = null;
                 if (parameter.onSelecting !== undefined) {
-                    tempData = parameter.onSelecting(parameter);
+                    tempData = parameter.onSelecting(parameter,tempData);
                     console.log("tempdata =", tempData);
                 }
                 if (tempData === undefined) {
@@ -72,7 +72,7 @@ const useAPI = (initialParam = initialState) => {
                         parameter.onSaving !== undefined &&
                         parameter.onSelecting !== undefined
                     ) {
-                        tempData = parameter.onSelecting(parameter);
+                        tempData = parameter.onSelecting(parameter,tempData);
                     }
                 }
                 console.log("set Data = ", tempData);

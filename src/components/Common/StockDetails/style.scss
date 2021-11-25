@@ -1,13 +1,22 @@
 @import './../../../assets/styles/general';
+
 .stock-details {
     @include component-style;
-    .rstm-toggle-icon {
-        display: inline-block;
-    }
-    ul {
-        list-style-type: none;
-    }
-    .rstm-tree-item:hover {
-        background-color: $search-menu-hover;
-    }
+}
+
+.alert-secondary,
+.accordion,
+.accordion-item,
+.accordion-header,
+.accordion-body,
+.accordion-button  {
+    @include component-color;
+
+}
+.accordion-button::after {
+    color:$component-text-color
+}
+
+.bg-success {
+    background-color: $body-background-color !important;
 }
