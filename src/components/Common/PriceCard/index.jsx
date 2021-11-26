@@ -2,12 +2,15 @@ import React from "react";
 import PropTypes from "prop-types";
 import { 
     Card,
-    Badge
+    Badge,
+    Row,
+    Col
 } from "react-bootstrap";
 import "./style.scss";
+import ChartBoard from "../../Common/ChartBoard"
 
 PriceCard.propTypes = {
-    symbol: PropTypes.object.isRequired,
+    stockSymbol: PropTypes.object.isRequired,
 };
 
 const up = { color: "green" };
@@ -15,33 +18,40 @@ const down = { color: "red" };
 const badge_up = { bg: "success" };
 const badge_down = { bg: "danger" };
 
-function PriceCard({ symbol }) {
+function PriceCard({ stockSymbol }) {
     return (
-        <Card className="price-card">
-            <Card.Title className="fs-4">
-                {symbol.shortName}
-            </Card.Title>
-            <Card.Text className="price-card-value fw-bold fs-5">
-                {symbol.currentValue.toLocaleString()}
-            </Card.Text>
-            <Card.Text
-                style={symbol.currentValueChange > 0 ? up : down}
-                className="price-card-change"
-            >
-                {(symbol.currentValueChange > 0) ? 
-                    "+" + symbol.currentValueChange.toFixed(3) :
-                    symbol.currentValueChange.toFixed(3)
-                }
-                <span className="ms-2">
-                    <Badge bg={symbol.currentValueChange > 0 ? badge_up.bg : badge_down.bg} className="fs-6">
-                        {(symbol.currentValueChange > 0) ? 
-                            "+" + symbol.currentValueChangePercent.toFixed(3) + "%" :
-                            symbol.currentValueChangePercent.toFixed(3) + "%"
+        <Row>
+            <Col md={8}>
+                <Card className="price-card">
+                    <Card.Title className="fs-4">
+                        { stockSymbol.shortName }
+                    </Card.Title>
+                    <Card.Text className="price-card-value fw-bold fs-5">
+                        { stockSymbol.currentValue.toLocaleString() }
+                    </Card.Text>
+                    <Card.Text
+                        style={ stockSymbol.currentValueChange > 0 ? up : down }
+                        className="price-card-change"
+                    >
+                        {(stockSymbol.currentValueChange > 0) ? 
+                            "+" + stockSymbol.currentValueChange.toFixed(3) :
+                            stockSymbol.currentValueChange.toFixed(3)
                         }
-                    </Badge>
-                </span>
-            </Card.Text>
-        </Card>
+                        <span className="ms-2">
+                            <Badge bg={ stockSymbol.currentValueChange > 0 ? badge_up.bg : badge_down.bg } className="fs-6">
+                                {(stockSymbol.currentValueChange > 0) ? 
+                                    "+" + stockSymbol.currentValueChangePercent.toFixed(3) + "%" :
+                                    stockSymbol.currentValueChangePercent.toFixed(3) + "%"
+                                }
+                            </Badge>
+                        </span>
+                    </Card.Text>
+                </Card>
+            </Col>
+                { /*stockSymbol.symbol !== undefined && <ChartBoard selectedStock={stockSymbol}  chartType="AreaChart" showStockName= {false} /> */}
+            <Col md={4}>
+            </Col>
+        </Row>
     );
 }
 

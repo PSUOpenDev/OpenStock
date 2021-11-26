@@ -28,31 +28,27 @@ function BriefBoard(props) {
         const handleParsingAndFiltering = (rawData) => {
             let result = [];
             console.log("handleParsingAndFiltering rawData", rawData);
-            console.log(
-                "handleParsingAndFiltering stockIndex.allAllIndexes",
-                stockIndex.allAllIndexes
-            );
+            console.log("handleParsingAndFiltering stockIndex.allAllIndexes", stockIndex.allAllIndexes);
+
             const currentTimeStamp = dateToTimestamp(new Date());
             const arrayIndex = rawData.marketSummaryResponse.result;
             const hashIndex = {};
+
             for (const dataItem of stockIndex.allAllIndexes) {
                 hashIndex[dataItem.shortName] = dataItem;
                 result.push(dataItem);
             }
+
             for (const item of arrayIndex) {
                 if (item.shortName !== undefined) {
-                    console.log(
-                        " hashIndex[item.shortName] ",
-                        hashIndex[item.shortName]
-                    );
+                    console.log(" hashIndex[item.shortName] ", hashIndex[item.shortName]);
+
                     if (hashIndex[item.shortName] !== undefined) {
                         hashIndex[item.shortName].shortName = item.shortName;
-                        hashIndex[item.shortName].currentValue =
-                            item.regularMarketPrice.raw;
-                        hashIndex[item.shortName].currentValueChange =
-                            item.regularMarketChange.raw;
-                        hashIndex[item.shortName].currentValueChangePercent =
-                            item.regularMarketChangePercent.raw;
+                        hashIndex[item.shortName].currentValue = item.regularMarketPrice.raw;
+                        hashIndex[item.shortName].currentValueChange = item.regularMarketChange.raw;
+                        hashIndex[item.shortName].currentValueChangePercent = item.regularMarketChangePercent.raw;
+                        hashIndex[item.shortName].symbol = item.symbol.slice(1);
                         hashIndex[item.shortName].apiTime = currentTimeStamp;
                     }
                 }
@@ -65,10 +61,8 @@ function BriefBoard(props) {
         };
         const handleSelecting = () => {
             const currentTime = new Date();
-            console.log(
-                "handleSelecting stockIndex.allAllIndexes = ",
-                stockIndex.allAllIndexes
-            );
+            console.log("handleSelecting stockIndex.allAllIndexes = ", stockIndex.allAllIndexes);
+
             for (let item of stockIndex.allAllIndexes) {
                 if (
                     isExpired(
@@ -86,10 +80,7 @@ function BriefBoard(props) {
         const handleSaving = (newData) => {
             console.log("newData = ", newData);
             dispatch(updateStockIndex(newData));
-            console.log(
-                "handleSaving stockIndex.allAllIndexes = ",
-                stockIndex.allAllIndexes
-            );
+            console.log("handleSaving stockIndex.allAllIndexes = ",stockIndex.allAllIndexes);
             return stockIndex.allAllIndexes;
         };
         setApiParam({
@@ -108,7 +99,7 @@ function BriefBoard(props) {
             {isLoading === false &&
                 data &&
                 data.map((symbol, index) => (
-                    <PriceCard key={index} symbol={symbol}></PriceCard>
+                    <PriceCard key={index} stockSymbol={symbol}></PriceCard>
                 ))}
         </CardGroup>
     );
