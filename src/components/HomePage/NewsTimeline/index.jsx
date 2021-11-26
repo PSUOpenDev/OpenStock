@@ -44,10 +44,6 @@ const NewsTimeline = () => {
     const [dataItem, setData] = useState([]);
     const selectedStock = useSelector((state) => state.selectedStock);
     const [stock, setstock] = useState(selectedStock);
-    /*useEffect(() => {
-        setstock(selectedStock);
-        console.log("News API updates to", selectedStock);
-    }, [selectedStock]);*/
 
     const getAPINewsKey = API_NEWS_KEY;
     const getAPINewsURL = API_NEWS_URL;
@@ -71,7 +67,6 @@ const NewsTimeline = () => {
     const fetchAPI = async (URL) => {
         return await axios.get(URL).then((res) => {
             if (res.data.status === "ok") {
-                //console.log(res.data.articles)
                 return res.data.articles;
             } else {
                 return [];
@@ -186,7 +181,7 @@ const NewsTimeline = () => {
 
     return (
         <div className="timeline-container">
-            <VerticalTimeline>
+            <VerticalTimeline layout="1-column">
                 {dataItem.map((event, index) => (
                     <VerticalTimelineElement
                         className="vertical-timeline-element--work"
