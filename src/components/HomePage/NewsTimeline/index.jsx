@@ -104,10 +104,7 @@ const NewsTimeline = () => {
             flag_checked = true;
             for (let i = 0; i < items.length; i++) {
                 if (items[i]["name"] === keyStorage) {
-                    if (
-                        getExecutionTimeToNow(items[i]["fetch_time"]) >=
-                        SIX_HOURS
-                    ) {
+                    if (getExecutionTimeToNow(Number(items[i]["fetch_time"])) >= SIX_HOURS) {
                         mem_index = i;
                     }
                     break;
