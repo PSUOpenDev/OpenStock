@@ -1,6 +1,6 @@
 import "./style.scss";
 
-import { Accordion, Alert, Badge } from "react-bootstrap";
+import { Accordion, Alert, Badge, ListGroup } from "react-bootstrap";
 
 import PropTypes from "prop-types";
 import React from "react";
@@ -16,10 +16,10 @@ function TreePanelToggle({ id, label, data, nodes }) {
     return (
         <>
             {nodes !== undefined && nodes.length === 0 && (
-                <Alert variant={"secondary"}>
-                    <Badge bg="success"> {label}</Badge>
-                    {"    " + data}
-                </Alert>
+                <ListGroup.Item className="bg-transparent text-white">
+                    <span className="clear-yellow fw-bold me-2">{label}: </span>
+                    {data}
+                </ListGroup.Item>
             )}
             {nodes !== undefined && nodes.length > 0 && (
                 <Accordion defaultActiveKey={id} style={{ margin: "1em" }}>

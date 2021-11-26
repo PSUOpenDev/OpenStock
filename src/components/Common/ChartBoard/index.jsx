@@ -158,7 +158,7 @@ function ChartBoard({ selectedStock, showStockName, chartType }) {
 
     return (
         <>
-            <div className="chart">
+            <div className="chart border-radius-20">
                 {isLoading && <Spinner animation="border" />}
 
                 {isLoading === false && (

@@ -104,7 +104,7 @@ function BriefBoard(props) {
     }, [dispatch, callAPI, stockIndex]);
 
     return (
-        <CardGroup>
+        <CardGroup className="dark-bg">
             {isLoading === false &&
                 data &&
                 data.map((symbol, index) => (

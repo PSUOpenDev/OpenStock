@@ -104,10 +104,7 @@ const NewsTimeline = () => {
             flag_checked = true;
             for (let i = 0; i < items.length; i++) {
                 if (items[i]["name"] === keyStorage) {
-                    if (
-                        getExecutionTimeToNow(items[i]["fetch_time"]) >=
-                        SIX_HOURS
-                    ) {
+                    if (getExecutionTimeToNow(Number(items[i]["fetch_time"])) >= SIX_HOURS) {
                         mem_index = i;
                     }
                     break;
@@ -183,7 +180,7 @@ const NewsTimeline = () => {
 
     return (
         <div className="timeline-container">
-            <div className="fs-4 fw-bold text-center text-warning ms-5">
+            <div className="fs-4 fw-bold text-center clear-yellow ms-5">
                 <span className="me-2 pb-1">
                     <svg 
                         xmlns="http://www.w3.org/2000/svg" 

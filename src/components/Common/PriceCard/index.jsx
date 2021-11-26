@@ -21,7 +21,7 @@ const badge_down = { bg: "danger" };
 function PriceCard({ stockSymbol }) {
     return (
         <Row>
-            <Col md={12}>
+            <Col md={8}>
                 <Card className="price-card">
                     <Card.Title className="fs-4 text-white fw-bold">
                         { stockSymbol.shortName }
@@ -31,7 +31,7 @@ function PriceCard({ stockSymbol }) {
                     </Card.Text>
                     <Card.Text
                         style={ stockSymbol.currentValueChange > 0 ? up : down }
-                        className="price-card-change"
+                        className="price-card-change fw-bold"
                     >
                         {(stockSymbol.currentValueChange > 0) ? 
                             "+" + stockSymbol.currentValueChange.toFixed(3) :
@@ -48,7 +48,7 @@ function PriceCard({ stockSymbol }) {
                     </Card.Text>
                 </Card>
             </Col>
-            <Col md={12}>
+            <Col md={4}>
                 { /*stockSymbol.symbol !== undefined && <ChartBoard selectedStock={stockSymbol}  chartType="AreaChart" showStockName= {false} /> */}
             </Col>
         </Row>
