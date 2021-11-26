@@ -60,7 +60,7 @@ function HomePage() {
                 <BriefBoard />
             </Row>
             <Row>
-                <Col md={8} xl={9}>
+                <Col md={7} xl={9}>
                     <Row>
                         {stock != null && (
                             <ChartBoard
@@ -74,7 +74,7 @@ function HomePage() {
                         <StockDetails selectedStock={stock}> </StockDetails>
                     </Row>
                 </Col>
-                <Col md={4} xl={3}>
+                <Col md={5} xl={3}>
                     <NewsTimeline />
                 </Col>
             </Row>
