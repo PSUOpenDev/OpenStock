@@ -28,6 +28,8 @@ function BriefBoard(props) {
     useEffect(() => {
         const handleParsingAndFiltering = ({ rawData }) => {
             let result = [];
+            console.log("handleParsingAndFiltering rawData", rawData);
+            console.log("handleParsingAndFiltering stockIndex.allAllIndexes", stockIndex.allAllIndexes);
 
             const currentTimeStamp = dateToTimestamp(new Date());
             const arrayIndex = rawData.marketSummaryResponse.result;
@@ -42,12 +44,10 @@ function BriefBoard(props) {
                 if (item.shortName !== undefined) {
                     if (hashIndex[item.shortName] !== undefined) {
                         hashIndex[item.shortName].shortName = item.shortName;
-                        hashIndex[item.shortName].currentValue =
-                            item.regularMarketPrice.raw;
-                        hashIndex[item.shortName].currentValueChange =
-                            item.regularMarketChange.raw;
-                        hashIndex[item.shortName].currentValueChangePercent =
-                            item.regularMarketChangePercent.raw;
+                        hashIndex[item.shortName].currentValue = item.regularMarketPrice.raw;
+                        hashIndex[item.shortName].currentValueChange = item.regularMarketChange.raw;
+                        hashIndex[item.shortName].currentValueChangePercent = item.regularMarketChangePercent.raw;
+                        hashIndex[item.shortName].symbol = item.symbol.slice(1);
                         hashIndex[item.shortName].apiTime = currentTimeStamp;
                     }
                 }
@@ -77,10 +77,9 @@ function BriefBoard(props) {
 
             return stockIndex.allAllIndexes;
         };
-
+        
         const handleSaving = ({ data }) => {
             dispatch(updateStockIndex(data));
-
             return stockIndex.allAllIndexes;
         };
 
@@ -103,7 +102,7 @@ function BriefBoard(props) {
             {isLoading === false &&
                 data &&
                 data.map((symbol, index) => (
-                    <PriceCard key={index} symbol={symbol}></PriceCard>
+                    <PriceCard key={index} stockSymbol={symbol}></PriceCard>
                 ))}
         </CardGroup>
     );
