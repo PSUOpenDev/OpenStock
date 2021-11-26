@@ -25,12 +25,12 @@ const cardRender = (data) => {
             <Card.Img variant="top" src={data.urlToImage} />
             <Card.Body>
                 <Card.Subtitle>{data.title}</Card.Subtitle>
-                <Card.Text className="fw-normal mb-2">
+                <Card.Text className="fw-normal mb-2 d-none d-lg-block">
                     {data.content.slice(0, 100) + "..."}
                 </Card.Text>
                 <a
                     href={data.url}
-                    className="text-decoration-none text-danger stretched-link"
+                    className="text-decoration-none text-danger stretched-link d-none d-lg-block"
                 >
                     Continue reading
                 </a>
