@@ -21,9 +21,9 @@ const badge_down = { bg: "danger" };
 function PriceCard({ stockSymbol }) {
     return (
         <Row>
-            <Col md={8}>
+            <Col md={12}>
                 <Card className="price-card">
-                    <Card.Title className="fs-4">
+                    <Card.Title className="fs-4 text-white fw-bold">
                         { stockSymbol.shortName }
                     </Card.Title>
                     <Card.Text className="price-card-value fw-bold fs-5">
@@ -48,8 +48,8 @@ function PriceCard({ stockSymbol }) {
                     </Card.Text>
                 </Card>
             </Col>
+            <Col md={12}>
                 { /*stockSymbol.symbol !== undefined && <ChartBoard selectedStock={stockSymbol}  chartType="AreaChart" showStockName= {false} /> */}
-            <Col md={4}>
             </Col>
         </Row>
     );
