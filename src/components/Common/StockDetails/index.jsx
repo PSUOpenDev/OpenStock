@@ -20,12 +20,12 @@ StockDetails.propTypes = {};
 function StockDetails({ selectedStock }) {
     const stockInfo = useSelector((state) => state.stockInfo);
     const dispatch = useDispatch();
-    const [isLoading, data, setApiParam] = useAPI({
+    const [isLoading, data, callAPI] = useAPI({
         noRun: "yes",
     });
 
     useEffect(() => {
-        const handleParsingAndFiltering = ({rawData}) => {
+        const handleParsingAndFiltering = ({ rawData }) => {
             let childKey = 0;
 
             const convertLabel = (label) => {
@@ -147,7 +147,7 @@ function StockDetails({ selectedStock }) {
             return data.nodes;
         };
 
-        const handleSaving = ({data}) => {
+        const handleSaving = ({ data }) => {
             const saveData = {
                 symbol: selectedStock.symbol,
                 date: dateToTimestamp(new Date()),
@@ -156,7 +156,7 @@ function StockDetails({ selectedStock }) {
             dispatch(addStockInfo(saveData));
         };
 
-        const handleSelecting = ({data}) => {
+        const handleSelecting = ({ data }) => {
             if (selectedStock.symbol !== undefined) {
                 if (
                     stockInfo.stockInfoDic[selectedStock.symbol] ===
@@ -169,8 +169,7 @@ function StockDetails({ selectedStock }) {
             return data;
         };
 
-        const handleError = ({setData}) => {
-            
+        const handleError = ({ setData }) => {
             if (stockInfo.stockInfoDic[selectedStock.symbol] !== undefined) {
                 setData(stockInfo.stockInfoDic[selectedStock.symbol].stockInfo);
             }
@@ -178,7 +177,7 @@ function StockDetails({ selectedStock }) {
 
         if (selectedStock !== null)
             if (selectedStock.symbol === "^DJI") {
-                setApiParam({
+                callAPI({
                     url: API_URI_STOCK_QUOTE,
                     queryString: selectedStock.symbol,
                     apiKey: API_STOCK_QUOTE_KEY,
@@ -188,7 +187,7 @@ function StockDetails({ selectedStock }) {
                     onError: handleError,
                 });
             } else {
-                setApiParam({
+                callAPI({
                     url: API_URL_STOCK_SUMMARY,
                     queryString:
                         selectedStock.symbol +
@@ -204,8 +203,8 @@ function StockDetails({ selectedStock }) {
 
     return (
         <div className="stock-details">
-            {data === null && <Spinner animation="border" />}
-            {data !== null &&
+            {isLoading && <Spinner animation="border" />}
+            {isLoading === false &&
                 Array.isArray(data) &&
                 data.map((item) => (
                     <TreePanelToggle key={item.id} {...item}></TreePanelToggle>
