@@ -202,7 +202,21 @@ function StockDetails({ selectedStock }) {
     }, [selectedStock]);
 
     return (
-        <div className="stock-details">
+        <div className="stock-details border-radius-20">
+            <div className="fs-4 fw-bold text-center clear-yellow ms-5">
+                ALL DETAILED INFORMATIONS
+                <span className="ms-2 pb-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" 
+                        width="30" 
+                        height="30" 
+                        fill="currentColor" 
+                        className="bi bi-caret-down-fill" 
+                        viewBox="0 0 16 16"
+                    >
+                        <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
+                    </svg>
+                </span>
+            </div>
             {isLoading && <Spinner animation="border" />}
             {isLoading === false &&
                 Array.isArray(data) &&

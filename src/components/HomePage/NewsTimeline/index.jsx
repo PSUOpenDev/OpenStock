@@ -183,7 +183,7 @@ const NewsTimeline = () => {
 
     return (
         <div className="timeline-container">
-            <div className="fs-4 fw-bold text-center text-warning ms-5">
+            <div className="fs-4 fw-bold text-center clear-yellow ms-5">
                 <span className="me-2 pb-1">
                     <svg 
                         xmlns="http://www.w3.org/2000/svg" 

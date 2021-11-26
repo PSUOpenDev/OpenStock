@@ -18,6 +18,8 @@ body {
 }
 
 .section-bg { background-color: var(--sectionbg) !important; }
+.dark-bg { background-color: var(--dark) !important; }
 .light-pink-color { color: var(--lightpink) !important; }
 .clear-yellow { color: var(--clearyellow) !important; }
 .font-pacifico { font-family: 'Pacifico', cursive; }
+.border-radius-20 { border-radius: 20px; }
