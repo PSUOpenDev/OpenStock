@@ -14,6 +14,7 @@ const initState =
                       currentValueChange: 14.91,
                       currentValueChangePercent: -0.32,
                       apiTime: 0,
+                      symbol: '^GSPC'
                   },
                   {
                       shortName: "Down 30",
@@ -21,6 +22,7 @@ const initState =
                       currentValueChange: 17.07,
                       currentValueChangePercent: 0.05,
                       apiTime: 0,
+                      symbol: '^DJI'
                   },
                   {
                       shortName: "Nasdaq",
@@ -28,6 +30,7 @@ const initState =
                       currentValueChange: -14.91,
                       currentValueChangePercent: -1.0,
                       apiTime: 0,
+                      symbol:'^IXIC'
                   },
                   {
                       shortName: "Cruid Oil",
@@ -35,6 +38,7 @@ const initState =
                       currentValueChange: 1.06,
                       currentValueChangePercent: +1.38,
                       apiTime: 0,
+                      symbol:'CL=F'
                   },
                   {
                       shortName: "Gold",
@@ -42,6 +46,7 @@ const initState =
                       currentValueChange: -21.4,
                       currentValueChangePercent: -1.18,
                       apiTime: 0,
+                      symbol: 'GC=F'
                   },
               ],
           }

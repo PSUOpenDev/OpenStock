@@ -1,13 +1,13 @@
-import { UPDATE_HIS_DATA } from "../actions/stockHistory";
+import { UPDATE_HIS_DATA_IN_MINUTE } from "../actions/stockHistoryInMinute";
 
 //Load initial State from local storage
-const item = localStorage.getItem("stockHistory");
+const item = localStorage.getItem("stockHistoryInMinute");
 
 const initState = item === null ? {} : JSON.parse(item);
 
-const stockHistoryReducer = (state = initState, action) => {
+const stockHistoryInMinuteReducer = (state = initState, action) => {
     switch (action.type) {
-        case UPDATE_HIS_DATA: {
+        case UPDATE_HIS_DATA_IN_MINUTE: {
             if (state[action.payLoad.symbol] === undefined) {
                 const symbol = action.payLoad.symbol;
                 const symbolData = action.payLoad.history;
@@ -17,7 +17,7 @@ const stockHistoryReducer = (state = initState, action) => {
                 };
 
                 localStorage.setItem(
-                    "stockHistory",
+                    "stockHistoryInMinute",
                     JSON.stringify(returnState)
                 );
                 return returnState;
@@ -83,4 +83,4 @@ const stockHistoryReducer = (state = initState, action) => {
     }
 };
 
-export default stockHistoryReducer;
+export default stockHistoryInMinuteReducer;

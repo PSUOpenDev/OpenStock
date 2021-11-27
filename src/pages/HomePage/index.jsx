@@ -50,7 +50,7 @@ function HomePage() {
                     </Row>
                 </Col>
                 <Col md={5} xl={3}>
-                    <NewsTimeline />
+                    {/* <NewsTimeline /> */}
                 </Col>
             </Row>
         </Container>
