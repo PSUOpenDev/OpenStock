@@ -25,8 +25,8 @@ class AreaChart extends React.Component {
             <ChartCanvas
                 ratio={ratio}
                 width={width}
-                height={100}
-                margin={{ left: 50, right: 50, top: 10, bottom: 30 }}
+                height = {100}
+                margin={{ left: 0, right: 0, top: 0, bottom: 0 }}
                 seriesName="MSFT"
                 data={data}
                 type={type}
@@ -60,8 +60,8 @@ class AreaChart extends React.Component {
                             />
                         </linearGradient>
                     </defs>
-                    {/* <XAxis axisAt="bottom" orient="bottom" ticks={6} />
-                    <YAxis axisAt="left" orient="left" /> */}
+                    {/* <XAxis axisAt="bottom" orient="bottom" ticks={6} /> */}
+                    {/* <YAxis axisAt="left" orient="left" /> */}
                     <AreaSeries
                         yAccessor={(d) => d.close}
                         fill="url(#MyGradient)"

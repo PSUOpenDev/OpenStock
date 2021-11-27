@@ -4,7 +4,11 @@ import {
     API_STOCK_QUOTE_KEY,
     API_URL_STOCK_CHART,
 } from "./../../Common/APIUtils/Yahoo/ApiParameter";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import {
+    getDateOfDurationString,
+    getStringOfDurationFromCurrentTo,
+} from "./../../../utils/timeStamp";
 import { useDispatch, useSelector } from "react-redux";
 
 import AreaChart from "../Charts/AreaChart";
@@ -14,25 +18,23 @@ import { Spinner } from "react-bootstrap";
 import { updateStockHistory } from "../../../actions/stockHistory";
 import { updateStockHistoryInMinute } from "../../../actions/stockHistoryInMinute";
 import useAPI from "./../../Common/APIUtils/useAPI";
-import {
-    getStringOfDurationFromCurrentTo,
-    getDateOfDurationString,
-} from "./../../../utils/timeStamp";
-import { timeParse } from "d3-time-format";
 
 const convertData = (arr, fromDate) => {
     if (arr !== null) {
         const result = [];
         const length = arr.length;
         for (let i = 0; i < length; i++) {
-            if (arr[i].close !== null && arr[i].date !== null) {
+            if (
+                arr[i].close !== null &&
+                arr[i].date !== null &&
+                arr[i].open !== null &&
+                arr[i].high !== null &&
+                arr[i].low !== null &&
+                arr[i].volume !== null
+            ) {
                 const newDate = new Date(arr[i].date * 1000);
-                newDate.setHours(0);
-                newDate.setMinutes(0);
-                newDate.setSeconds(0);
-                newDate.setMilliseconds(0);
 
-                if (fromDate === null || (fromDate !== null && newDate < fromDate)) continue;
+                if (fromDate !== null && newDate < fromDate) continue;
                 result.push({
                     close: arr[i].close,
                     open: arr[i].open,
@@ -52,16 +54,29 @@ ChartBoard.propTypes = {
     chartType: PropTypes.string,
     showStockName: PropTypes.bool,
     dataRange: PropTypes.string,
+    width: PropTypes.number,
+    height: PropTypes.number,
 };
 ChartBoard.defaultProps = {
     chartType: "AreaChart",
     showStockName: false,
-    dataRange: "1mo",
+    dataRange: "1d",
 };
 
-function ChartBoard({ selectedStock, showStockName, chartType, dataRange }) {
+function ChartBoard({
+    selectedStock,
+    showStockName,
+    chartType,
+    dataRange,
+    width,
+    height,
+}) {
     const [range, setRange] = useState(dataRange);
     const stockHistory = useSelector((state) => state.stockHistory);
+    const chartRef = useRef(null);
+    const stockHistoryInMinute = useSelector(
+        (state) => state.stockHistoryInMinute
+    );
     const dispatch = useDispatch();
 
     const [isLoading, data, callAPI] = useAPI({
@@ -69,13 +84,14 @@ function ChartBoard({ selectedStock, showStockName, chartType, dataRange }) {
     });
 
     useEffect(() => {
-        const handleSelecting = ({ apiParameter }) => {
+        const handleSelecting = ({ apiParameter, data }) => {
             let choosePeriod;
             let chooseInterval;
 
             if (selectedStock.symbol === undefined) {
                 return undefined;
             }
+            console.log("selected stock",selectedStock.symbol);
             if (range === "1d") {
                 choosePeriod = "1d";
                 chooseInterval = "1m";
@@ -83,7 +99,11 @@ function ChartBoard({ selectedStock, showStockName, chartType, dataRange }) {
                 choosePeriod = "5y";
                 chooseInterval = "1d";
             }
-            if (stockHistory[selectedStock.symbol] === undefined) {
+            if (
+                (range !== "1d" &&
+                    stockHistory[selectedStock.symbol] === undefined) ||
+                (range === "1d" && data === null)
+            ) {
                 apiParameter.queryString =
                     selectedStock.symbol +
                     "?range=" +
@@ -101,7 +121,7 @@ function ChartBoard({ selectedStock, showStockName, chartType, dataRange }) {
                 chooseInterval = "1d";
             }
 
-            if (choosePeriod !== "") {
+            if (range !== "1d" && choosePeriod !== "") {
                 apiParameter.queryString =
                     selectedStock.symbol +
                     "?range=" +
@@ -112,30 +132,21 @@ function ChartBoard({ selectedStock, showStockName, chartType, dataRange }) {
                 return null;
             }
             let returnValue;
-            console.log(
-                "stockHistory[selectedStock.symbol]",
-                stockHistory[selectedStock.symbol]
-            );
+
             if (range !== "1d") {
                 const fromDate = getDateOfDurationString(range);
-                console.log("fromDate=", fromDate);
+
                 returnValue = convertData(
                     stockHistory[selectedStock.symbol],
                     fromDate
                 );
             } else {
                 returnValue = convertData(
-                    stockHistory[selectedStock.symbol],
+                    stockHistoryInMinute[selectedStock.symbol],
                     null
                 );
             }
-            const testReturn = convertData(
-                stockHistory[selectedStock.symbol],
-                null
-            );
-            console.log("testReturn=", testReturn);
             console.log("returnValue=", returnValue);
-            console.log("selectedStock.symbol", selectedStock.symbol);
             return returnValue;
         };
 
@@ -165,7 +176,7 @@ function ChartBoard({ selectedStock, showStockName, chartType, dataRange }) {
                         low: low[i],
                     });
                 }
-
+                console.log("result = ", result);
                 return {
                     symbol: selectedStock.symbol,
                     history: result,
@@ -181,6 +192,34 @@ function ChartBoard({ selectedStock, showStockName, chartType, dataRange }) {
             else dispatch(updateStockHistory(data));
         };
 
+        const handleError = ({ setData }) => {
+            if (range === "1d") {
+                if (
+                    selectedStock !== null &&
+                    stockHistoryInMinute[selectedStock.symbol] !== undefined
+                )
+                    setData(
+                        convertData(
+                            stockHistoryInMinute[selectedStock.symbol],
+                            null
+                        )
+                    );
+            } else {
+                if (
+                    selectedStock !== null &&
+                    stockHistoryInMinute[selectedStock.symbol] !== undefined
+                ) {
+                    const fromDate = getDateOfDurationString(range);
+                    setData(
+                        convertData(
+                            stockHistory[selectedStock.symbol],
+                            fromDate
+                        )
+                    );
+                }
+            }
+        };
+
         callAPI({
             url: API_URL_STOCK_CHART,
             queryString: "",
@@ -188,15 +227,20 @@ function ChartBoard({ selectedStock, showStockName, chartType, dataRange }) {
             onParsingAnFiltering: handleParsingAndFiltering,
             onSaving: handleSaving,
             onSelecting: handleSelecting,
+            onError: handleError,
         });
     }, [selectedStock, dispatch, callAPI, stockHistory]);
 
     return (
         <>
-            <div className="chart border-radius-20">
+            <div
+                ref={chartRef}
+                style={width !== null ? { width, height } : null}
+                className="chart border-radius-20"
+            >
                 {isLoading && <Spinner animation="border" />}
 
-                {isLoading === false && (
+                {isLoading === false && data != null && (
                     <div>
                         {selectedStock && showStockName && (
                             <h6>

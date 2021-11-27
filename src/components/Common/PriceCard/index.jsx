@@ -1,8 +1,10 @@
 import "./style.scss";
+
+import { Badge, Card, Col, Row } from "react-bootstrap";
+import React, {useRef} from "react";
+
 import ChartBoard from "../../Common/ChartBoard";
-import { Card, Badge, Row, Col } from "react-bootstrap";
 import PropTypes from "prop-types";
-import React from "react";
 
 PriceCard.propTypes = {
     stockSymbol: PropTypes.object.isRequired,
@@ -14,9 +16,10 @@ const badge_up = { bg: "success" };
 const badge_down = { bg: "danger" };
 
 function PriceCard({ stockSymbol }) {
+    const priceCarRef = useRef(null);
     return (
         <div className = "index-component">
-            <div className="card-index">
+            <div ref = {priceCarRef} className="card-index">
                 <Card className="price-card">
                     <Card.Title className="fs-4 text-white fw-bold">
                         {stockSymbol.shortName}

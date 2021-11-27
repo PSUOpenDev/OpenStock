@@ -48,7 +48,11 @@ function BriefBoard(props) {
                             item.regularMarketChange.raw;
                         hashIndex[item.shortName].currentValueChangePercent =
                             item.regularMarketChangePercent.raw;
-                        hashIndex[item.shortName].symbol = item.regularMarketChangePercent.symbol;
+                        console.log(
+                            "item.regularMarketChangePercent.symbol",
+                            item.regularMarketChangePercent.symbol
+                        );
+                       
                         hashIndex[item.shortName].apiTime = currentTimeStamp;
                     }
                 }
@@ -103,7 +107,7 @@ function BriefBoard(props) {
             {isLoading === false &&
                 data &&
                 data.map((symbol, index) => (
-                    <PriceCard key={index} stockSymbol={symbol} ></PriceCard>
+                    <PriceCard key={index} stockSymbol={symbol}></PriceCard>
                 ))}
         </CardGroup>
     );

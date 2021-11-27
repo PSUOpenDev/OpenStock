@@ -73,7 +73,7 @@ const stockHistoryInMinuteReducer = (state = initState, action) => {
                     newState[action.payLoad.symbol].lastDate =
                         lastDateOfNewData;
                 }
-                localStorage.setItem("stockHistory", JSON.stringify(newState));
+                localStorage.setItem("stockHistoryInMinute", JSON.stringify(newState));
                 return newState;
             }
         }

@@ -60,6 +60,7 @@ export const getStringOfDurationFromCurrentTo = (comparedDate) => {
     return choosePeriod;
 };
 
+
 export const getDateOfDurationString = (durationString) => {
     console.log(durationString);
     const date = new Date();

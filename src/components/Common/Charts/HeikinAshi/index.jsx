@@ -72,7 +72,7 @@ class HeikinAshi extends React.Component {
                 height={400}
                 ratio={ratio}
                 width={width}
-                margin={{ left: 80, right: 80, top: 10, bottom: 30 }}
+                margin={{ left: 50, right: 70, top: 10, bottom: 30 }}
                 type={type}
                 seriesName="MSFT"
                 data={data}
