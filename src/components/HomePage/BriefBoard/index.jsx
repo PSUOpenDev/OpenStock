@@ -1,10 +1,11 @@
 import "./style.scss";
-
 import {
     API_STOCK_QUOTE_KEY,
     API_URL_MARKET_SUMMARY,
 } from "./../../Common/APIUtils/Yahoo/ApiParameter";
-import React, { useEffect } from "react";
+import React, { 
+    useEffect 
+} from "react";
 import {
     dateToTimestamp,
     durationInMilliseconds,
@@ -12,7 +13,6 @@ import {
     timestampToDate,
 } from "../../../utils/timeStamp";
 import { useDispatch, useSelector } from "react-redux";
-
 import { CardGroup } from "react-bootstrap";
 import PriceCard from "../../Common/PriceCard";
 import { updateStockIndex } from "./../../../actions/stockIndex";
@@ -43,7 +43,6 @@ function BriefBoard() {
                     }
                 }
             }
-
             return stockIndex.allAllIndexes;
         };
 

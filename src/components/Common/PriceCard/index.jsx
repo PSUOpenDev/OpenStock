@@ -1,8 +1,11 @@
 import "./style.scss";
-
-import { Badge, Card, Col, Row } from "react-bootstrap";
-import React, {useRef} from "react";
-
+import {
+    Badge, 
+    Card 
+} from "react-bootstrap";
+import React, {
+    useRef
+} from "react";
 import ChartBoard from "../../Common/ChartBoard";
 import PropTypes from "prop-types";
 

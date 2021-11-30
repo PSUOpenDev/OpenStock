@@ -1,10 +1,11 @@
-import { Chart, ChartCanvas } from "react-stockcharts";
-import { XAxis, YAxis } from "react-stockcharts/lib/axes";
+import { 
+    Chart, 
+    ChartCanvas 
+} from "react-stockcharts";
 import {
     createVerticalLinearGradient,
     hexToRGBA,
 } from "react-stockcharts/lib/utils";
-
 import { AreaSeries } from "react-stockcharts/lib/series";
 import PropTypes from "prop-types";
 import React from "react";
