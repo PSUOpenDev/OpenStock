@@ -72,12 +72,12 @@ const NewsTimeline = () => {
 
     const URL_NEWS = () => {
         let url = getAPINewsURL;
-        url = url.concat("q=", getStockParameter());
+        url = url.concat("qInTitle=", getStockParameter(), " +stock");
         url = url.concat("&language=en");
         url = url.concat("&from=", `${getThreeDaysAgo()}`);
         url = url.concat("&to=", `${currentDate()}`);
         url = url.concat("&sortBy=relevancy");
-        url = url.concat("&pageSize=20");
+        url = url.concat("&pageSize=5");
         url = url.concat("&apiKey=", `${getAPINewsKey}`);
         return url;
     };
