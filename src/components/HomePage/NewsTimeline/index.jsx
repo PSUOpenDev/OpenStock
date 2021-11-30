@@ -1,19 +1,30 @@
 import "react-vertical-timeline-component/style.min.css";
 import "./style.scss";
-
 import {
     API_NEWS_KEY,
     API_NEWS_URL,
 } from "../../Common/APIUtils/News/ApiParameter";
-import React, { useEffect, useState } from "react";
-import { SIX_HOURS, getExecutionTimeToNow } from "../../../utils/getTime";
+import React, 
+{ 
+    useEffect, 
+    useState 
+} from "react";
+import { 
+    SIX_HOURS, 
+    getExecutionTimeToNow 
+} from "../../../utils/getTime";
 import {
     VerticalTimeline,
     VerticalTimelineElement,
 } from "react-vertical-timeline-component";
-import { currentDate, getThreeDaysAgo } from "../../../utils/getDate";
-import { readFromCache, writeToCache } from "../../../utils/cache";
-
+import { 
+    currentDate, 
+    getThreeDaysAgo 
+} from "../../../utils/getDate";
+import { 
+    readFromCache, 
+    writeToCache 
+} from "../../../utils/cache";
 import { Card } from "react-bootstrap";
 import axios from "axios";
 import { useSelector } from "react-redux";
@@ -72,7 +83,7 @@ const NewsTimeline = () => {
 
     const URL_NEWS = () => {
         let url = getAPINewsURL;
-        url = url.concat("qInTitle=", getStockParameter(), " OR stock AND stock ");
+        url = url.concat("qInTitle=", getStockParameter(), " AND stock");
         url = url.concat("&language=en");
         url = url.concat("&from=", `${getThreeDaysAgo()}`);
         url = url.concat("&to=", `${currentDate()}`);
@@ -159,7 +170,6 @@ const NewsTimeline = () => {
 
     const getNewsAPIData = async (URL, name) => {
         let items;
-
         let cachedData = readFromCache("NewsAPI");
 
         if (cachedData.length === 0) {
