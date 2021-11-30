@@ -33,6 +33,14 @@ const initState =
                       symbol:'^IXIC'
                   },
                   {
+                    shortName: "Bitcoin",
+                    currentValue: 54937.332,
+                    currentValueChange: 619.53125,
+                    currentValueChangePercent: +1.1405708,
+                    apiTime: 0,
+                    symbol:'BTC-USD'
+                },
+                  {
                       shortName: "Cruid Oil",
                       currentValue: 77.81,
                       currentValueChange: 1.06,

@@ -1,0 +1,17 @@
+@import './../../../assets/styles/general';
+.nav-link,
+.nav-item,
+.nav-tabs {
+    @include component-header-color;
+    font-weight: bold;
+}
+.tree-panel-toggle {
+
+
+
+    .accordion-header,
+    .accordion-button {
+        @include component-header-color;
+        font-weight: bold;
+    }
+}

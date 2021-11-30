@@ -1,8 +1,8 @@
 @import './../../../assets/styles/general';
 
-.search-bar input {
-    @include component-color;
-}
+// .search-bar input {
+//     @include component-color;
+// }
 
 .search-bar input:focus {
     @include component-color;

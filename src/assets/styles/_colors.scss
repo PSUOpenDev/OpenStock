@@ -3,13 +3,20 @@ $component-text-color: white;
 /*$component-background-color: #141629;*/
 $component-background-color: rgb(29, 26, 26);
 /*$chart-tooltip-label-color: blueviolet;*/
-$chart-tooltip-label-color: #FFD700;
+
+$component-header-text-color: #FFD700;
+$chart-tooltip-label-color:$component-header-text-color;
 $chart-bar-color: grey;
 /*$body-background-color:black;*/
 $body-background-color:#1e1e2f;
 $search-menu-hover:#25294e;
 
 @mixin component-color {
-    background-color: $component-background-color;
-    color: $component-text-color;
+    background-color: $component-background-color !important;
+    color: $component-text-color !important;
+}
+
+@mixin component-header-color {
+    background-color: $component-background-color !important;
+    color: $component-header-text-color !important;
 }

@@ -20,7 +20,7 @@ import { updateStockHistoryInMinute } from "../../../actions/stockHistoryInMinut
 import useAPI from "./../../Common/APIUtils/useAPI";
 
 const convertData = (arr, fromDate) => {
-    if (arr !== null) {
+    if (arr !== null && arr !== undefined) {
         const result = [];
         const length = arr.length;
         for (let i = 0; i < length; i++) {
@@ -60,7 +60,7 @@ ChartBoard.propTypes = {
 ChartBoard.defaultProps = {
     chartType: "AreaChart",
     showStockName: false,
-    dataRange: "1d",
+    dataRange: "1mo",
 };
 
 function ChartBoard({
@@ -91,7 +91,6 @@ function ChartBoard({
             if (selectedStock.symbol === undefined) {
                 return undefined;
             }
-            console.log("selected stock",selectedStock.symbol);
             if (range === "1d") {
                 choosePeriod = "1d";
                 chooseInterval = "1m";
@@ -146,7 +145,6 @@ function ChartBoard({
                     null
                 );
             }
-            console.log("returnValue=", returnValue);
             return returnValue;
         };
 
@@ -176,7 +174,6 @@ function ChartBoard({
                         low: low[i],
                     });
                 }
-                console.log("result = ", result);
                 return {
                     symbol: selectedStock.symbol,
                     history: result,

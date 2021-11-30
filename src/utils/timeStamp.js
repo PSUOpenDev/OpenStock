@@ -1,5 +1,5 @@
-export const isExpired = (pastTime, currentTime, duration) => {
-    return currentTime - pastTime > duration;
+export const isExpired = (lastTime, currentTime, duration) => {
+    return currentTime - lastTime > duration;
 };
 export const timestampToDate = (timestamp) => {
     return new Date(timestamp * 1000);
@@ -62,14 +62,14 @@ export const getStringOfDurationFromCurrentTo = (comparedDate) => {
 
 
 export const getDateOfDurationString = (durationString) => {
-    console.log(durationString);
+    
     const date = new Date();
-    console.log("date", date);
+    
     date.setHours(0);
     date.setMinutes(0);
     date.setSeconds(0);
     date.setMilliseconds(0);
-    console.log("date 2", date);
+
     switch (durationString) {
         case "1d":
             date.setDate(date.getDate() - 1);

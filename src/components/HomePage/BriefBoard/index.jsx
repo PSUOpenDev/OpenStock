@@ -1,5 +1,4 @@
 import "./style.scss";
-import "./style.scss";
 
 import {
     API_STOCK_QUOTE_KEY,
@@ -19,7 +18,7 @@ import PriceCard from "../../Common/PriceCard";
 import { updateStockIndex } from "./../../../actions/stockIndex";
 import useAPI from "./../../Common/APIUtils/useAPI";
 
-function BriefBoard(props) {
+function BriefBoard() {
     const stockIndex = useSelector((state) => state.stockIndex);
     const dispatch = useDispatch();
     const [isLoading, data, callAPI] = useAPI({
@@ -41,18 +40,12 @@ function BriefBoard(props) {
             for (const item of arrayIndex) {
                 if (item.shortName !== undefined) {
                     if (hashIndex[item.shortName] !== undefined) {
-                        hashIndex[item.shortName].shortName = item.shortName;
                         hashIndex[item.shortName].currentValue =
                             item.regularMarketPrice.raw;
                         hashIndex[item.shortName].currentValueChange =
                             item.regularMarketChange.raw;
                         hashIndex[item.shortName].currentValueChangePercent =
                             item.regularMarketChangePercent.raw;
-                        console.log(
-                            "item.regularMarketChangePercent.symbol",
-                            item.regularMarketChangePercent.symbol
-                        );
-                       
                         hashIndex[item.shortName].apiTime = currentTimeStamp;
                     }
                 }
@@ -91,6 +84,7 @@ function BriefBoard(props) {
         const handleError = ({ setData }) => {
             setData(stockIndex.allAllIndexes);
         };
+
         callAPI({
             url: API_URL_MARKET_SUMMARY,
             queryString: "",
