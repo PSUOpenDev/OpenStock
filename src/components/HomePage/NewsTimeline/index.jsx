@@ -53,7 +53,7 @@ const NewsTimeline = () => {
     const URL_NEWS = () => {
         let url = getAPINewsURL;
         url = url.concat(
-            "q=",
+            "qInTitle=",
             `${stock === null ? "" : stock.stockName.split(" ")[0]}`,
             " +stock"
         );
@@ -61,7 +61,7 @@ const NewsTimeline = () => {
         url = url.concat("&from=", `${getThreeDaysAgo()}`);
         url = url.concat("&to=", `${currentDate()}`);
         url = url.concat("&sortBy=relevancy");
-        url = url.concat("&pageSize=20");
+        url = url.concat("&pageSize=15");
         url = url.concat("&apiKey=", `${getAPINewsKey}`);
         return url;
     };
