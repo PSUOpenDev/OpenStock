@@ -49,7 +49,7 @@ const NewsTimeline = () => {
     const getAPINewsURL = API_NEWS_URL;
 
     const getKeyWord = (orString) => {
-        const keywords = selectedStock.stockName.split(" ");
+        const keywords = orString.split(" ");
         for (let keyword of keywords) {
             keyword = keyword.toLowerCase();
             if (keyword !== "and" && keyword !== "the" && keyword.length > 3) {
@@ -72,7 +72,7 @@ const NewsTimeline = () => {
 
     const URL_NEWS = () => {
         let url = getAPINewsURL;
-        url = url.concat("qInTitle=", getStockParameter(), " +stock");
+        url = url.concat("qInTitle=", getStockParameter(), " OR stock AND stock ");
         url = url.concat("&language=en");
         url = url.concat("&from=", `${getThreeDaysAgo()}`);
         url = url.concat("&to=", `${currentDate()}`);
