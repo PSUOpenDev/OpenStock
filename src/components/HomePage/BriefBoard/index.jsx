@@ -26,36 +26,25 @@ function BriefBoard() {
     });
     useEffect(() => {
         const handleParsingAndFiltering = ({ rawData }) => {
-            let result = [];
-
             const currentTimeStamp = dateToTimestamp(new Date());
-            const arrayIndex = rawData.marketSummaryResponse.result;
-            const hashIndex = {};
-
-            for (const dataItem of stockIndex.allAllIndexes) {
-                hashIndex[dataItem.shortName] = dataItem;
-                result.push(dataItem);
-            }
-
-            for (const item of arrayIndex) {
-                if (item.shortName !== undefined) {
-                    if (hashIndex[item.shortName] !== undefined) {
-                        hashIndex[item.shortName].currentValue =
+            for (const item of rawData.marketSummaryResponse.result) {
+                if (item.symbol !== undefined) {
+                    if (stockIndex.indexDic[item.symbol] !== undefined) {
+                        stockIndex.indexDic[item.symbol].currentValue =
                             item.regularMarketPrice.raw;
-                        hashIndex[item.shortName].currentValueChange =
+                        stockIndex.indexDic[item.symbol].currentValueChange =
                             item.regularMarketChange.raw;
-                        hashIndex[item.shortName].currentValueChangePercent =
+                        stockIndex.indexDic[
+                            item.symbol
+                        ].currentValueChangePercent =
                             item.regularMarketChangePercent.raw;
-                        hashIndex[item.shortName].apiTime = currentTimeStamp;
+                        stockIndex.indexDic[item.symbol].apiTime =
+                            currentTimeStamp;
                     }
                 }
             }
 
-            for (const item of result) {
-                item.apiTime = currentTimeStamp;
-            }
-
-            return result;
+            return stockIndex.allAllIndexes;
         };
 
         const handleSelecting = () => {

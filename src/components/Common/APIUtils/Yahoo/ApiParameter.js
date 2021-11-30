@@ -1,4 +1,6 @@
-export const API_STOCK_QUOTE_KEY = "JDzU3O03kz4P1HXVsYtgu7VVENDVaTZc6E4O8A3R";
+import {durationInMilliseconds} from "./../../../../utils/timeStamp"
+
+export const API_STOCK_QUOTE_KEY = "oJDrYLOmyI2zFi0V2pEBU9OeS639BMXIabdtpr0J";
 export const API_URL_AUTO_COMPLETE =
     "https://yfapi.net/v6/finance/autocomplete?region=US&lang=en&query=";
 
@@ -10,3 +12,6 @@ export const API_URL_STOCK_SUMMARY =
 
 export const API_URI_STOCK_QUOTE =
     "https://yfapi.net/v6/finance/quote?region=US&lang=en&symbols=";
+
+
+export const TIME_TO_REFRESH_STOCK_DETAILS =  durationInMilliseconds(0, 1, 0, 0);

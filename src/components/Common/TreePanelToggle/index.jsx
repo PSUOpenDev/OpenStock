@@ -79,10 +79,10 @@ function TreePanelToggle({ id, label, data, nodes, tab }) {
                 )}
             {label === "##drawChart##" && (
                 <Accordion
-                    defaultActiveKey={id === 0 ? 0 : null}
+                    defaultActiveKey={"Share Ratio"}
                     style={{ margin: "1em" }}
                 >
-                    <Accordion.Item eventKey={"0"}>
+                    <Accordion.Item eventKey={"Share Ratio"} expand={true}>
                         <Accordion.Header>{"Share Ratio"}</Accordion.Header>
                         <Accordion.Body>
                             <div className="chart-container">
@@ -124,10 +124,10 @@ function TreePanelToggle({ id, label, data, nodes, tab }) {
             )}
             {label === "Quarterly" && (
                 <Accordion
-                    defaultActiveKey={id === 0 ? 0 : null}
+                    defaultActiveKey={label}
                     style={{ margin: "1em" }}
                 >
-                    <Accordion.Item eventKey={"0"}>
+                    <Accordion.Item eventKey={label} expand={true}>
                         <Accordion.Header>{label}</Accordion.Header>
                         <Accordion.Body>
                             <Bar
@@ -186,10 +186,10 @@ function TreePanelToggle({ id, label, data, nodes, tab }) {
 
             {label === "Yearly" && (
                 <Accordion
-                    defaultActiveKey={id === 0 ? 0 : null}
+                    defaultActiveKey={label}
                     style={{ margin: "1em" }}
                 >
-                    <Accordion.Item eventKey={"0"}>
+                    <Accordion.Item eventKey={label} expand={true}>
                         <Accordion.Header>{label}</Accordion.Header>
                         <Accordion.Body>
                             <Bar
@@ -261,10 +261,10 @@ function TreePanelToggle({ id, label, data, nodes, tab }) {
                     })
                 ) : (
                     <Accordion
-                        defaultActiveKey={id === 0 ? 0 : null}
+                        defaultActiveKey={label}
                         style={{ margin: "1em" }}
                     >
-                        <Accordion.Item eventKey={"0"}>
+                        <Accordion.Item eventKey={label}  expand={true}>
                             <Accordion.Header>{label}</Accordion.Header>
                             <Accordion.Body>
                                 {nodes.map((item) => (
