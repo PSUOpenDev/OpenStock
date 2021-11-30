@@ -1,13 +1,17 @@
 @import './../../../assets/styles/general';
+
 .nav-link,
 .nav-item,
 .nav-tabs {
     @include component-header-color;
     font-weight: bold;
 }
+
 .tree-panel-toggle {
 
-
+    .chart-container {
+        width: 30%;
+    }
 
     .accordion-header,
     .accordion-button {

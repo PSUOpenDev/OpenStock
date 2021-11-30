@@ -1,19 +1,38 @@
 import "./style.scss";
 
-import { Accordion, ListGroup, Tab } from "react-bootstrap";
-import { Col, Container, Row } from "react-bootstrap";
+import { Accordion, ListGroup } from "react-bootstrap";
+import {
+    ArcElement,
+    BarElement,
+    CategoryScale,
+    Chart as ChartJS,
+    Legend,
+    LinearScale,
+    Title,
+    Tooltip,
+} from "chart.js";
+import { Bar, Doughnut } from "react-chartjs-2";
+import { convertStringToNumber, formatData } from "./../../../utils/formatData";
 
-import { Doughnut } from "react-chartjs-2";
 import PropTypes from "prop-types";
 import React from "react";
-import { formatData } from "./../../../utils/formatData";
+
+ChartJS.register(
+    ArcElement,
+    Tooltip,
+    Legend,
+    BarElement,
+    CategoryScale,
+    LinearScale,
+    Title
+);
 
 TreePanelToggle.propTypes = {
     id: PropTypes.number,
     label: PropTypes.string,
     data: PropTypes.any,
     nodes: PropTypes.array,
-    tab:PropTypes.string
+    tab: PropTypes.string,
 };
 
 const backgroundColors = [
@@ -44,8 +63,7 @@ const borderColors = [
     "rgba(78, 52, 199, 1)",
 ];
 
-function TreePanelToggle({ id, label, data, nodes,tab }) {
- 
+function TreePanelToggle({ id, label, data, nodes, tab }) {
     return (
         <div className="tree-panel-toggle">
             {nodes !== undefined &&
@@ -67,26 +85,158 @@ function TreePanelToggle({ id, label, data, nodes,tab }) {
                     <Accordion.Item eventKey={"0"}>
                         <Accordion.Header>{"Share Ratio"}</Accordion.Header>
                         <Accordion.Body>
+                            <div className="chart-container">
                             <Doughnut
+                               
+                               options={{
+                                   responsive: true,
+                                   maintainAspectRatio: true,
+                                 
+                               }}
+                               data={{
+                                   labels: nodes.map((item) => {
+                                       return item.label;
+                                   }),
+                                   datasets: [
+                                       {
+                                           label: "",
+                                           backgroundColor: nodes.map(
+                                               (item, index) =>
+                                                   backgroundColors[index]
+                                           ),
+                                           borderColor: nodes.map(
+                                               (item, index) =>
+                                                   borderColors[index]
+                                           ),
+                                           borderWidth: 1,
+                                           data: nodes.map((item) => {
+                                               return item.data;
+                                           }),
+                                       },
+                                   ],
+                               }}
+                           />
+                            </div>
+                           
+                        </Accordion.Body>
+                    </Accordion.Item>
+                </Accordion>
+            )}
+            {label === "Quarterly" && (
+                <Accordion
+                    defaultActiveKey={id === 0 ? 0 : null}
+                    style={{ margin: "1em" }}
+                >
+                    <Accordion.Item eventKey={"0"}>
+                        <Accordion.Header>{label}</Accordion.Header>
+                        <Accordion.Body>
+                            <Bar
+                                options={{
+                                    indexAxis: "y",
+                                    elements: {
+                                        bar: {
+                                            borderWidth: 2,
+                                        },
+                                    },
+                                    responsive: true,
+                                    plugins: {
+                                        legend: {
+                                            position: "right",
+                                        },
+                                        title: {
+                                            display: true,
+                                            text: "Bar Chart",
+                                        },
+                                    },
+                                }}
                                 data={{
-                                    labels: nodes.map((item) => {
-                                        return item.label;
-                                    }),
+                                    labels: nodes.map(
+                                        (item) => item.nodes[0].data
+                                    ),
                                     datasets: [
                                         {
-                                            label: "",
-                                            backgroundColor: nodes.map(
-                                                (item, index) =>
-                                                    backgroundColors[index]
+                                            label: nodes[0].nodes[1].label,
+                                            data: nodes.map((item) =>
+                                                convertStringToNumber(
+                                                    item.nodes[1].data
+                                                )
                                             ),
-                                            borderColor: nodes.map(
-                                                (item, index) =>
-                                                    borderColors[index]
+                                            borderColor: "rgb(255, 99, 132)",
+                                            backgroundColor:
+                                                "rgba(255, 99, 132, 0.5)",
+                                        },
+                                        {
+                                            label: nodes[0].nodes[2].label,
+                                            data: nodes.map((item) =>
+                                                convertStringToNumber(
+                                                    item.nodes[2].data
+                                                )
                                             ),
-                                            borderWidth: 1,
-                                            data: nodes.map((item) => {
-                                                return item.data;
-                                            }),
+                                            borderColor: "rgb(53, 162, 235)",
+                                            backgroundColor:
+                                                "rgba(53, 162, 235, 0.5)",
+                                        },
+                                    ],
+                                }}
+                            />
+                        </Accordion.Body>
+                    </Accordion.Item>
+                </Accordion>
+            )}
+
+            {label === "Yearly" && (
+                <Accordion
+                    defaultActiveKey={id === 0 ? 0 : null}
+                    style={{ margin: "1em" }}
+                >
+                    <Accordion.Item eventKey={"0"}>
+                        <Accordion.Header>{label}</Accordion.Header>
+                        <Accordion.Body>
+                            <Bar
+                                options={{
+                                    indexAxis: "y",
+                                    elements: {
+                                        bar: {
+                                            borderWidth: 2,
+                                        },
+                                    },
+                                    responsive: true,
+                                    plugins: {
+                                        legend: {
+                                            position: "right",
+                                        },
+                                        title: {
+                                            display: true,
+                                            text: "Bar Chart",
+                                        },
+                                    },
+                                }}
+                                data={{
+                                    labels: nodes.map(
+                                        (item) => item.nodes[0].data
+                                    ),
+                                    datasets: [
+                                        {
+                                            label: nodes[0].nodes[1].label,
+                                            data: nodes.map((item) =>
+                                                convertStringToNumber(
+                                                    item.nodes[1].data
+                                                )
+                                            ),
+                                            borderColor: "rgb(255, 99, 132)",
+                                            backgroundColor:
+                                                "rgba(255, 99, 132, 0.5)",
+                                        },
+                                        {
+                                            label: nodes[0].nodes[2].label,
+                                            data: nodes.map((item) =>
+                                                convertStringToNumber(
+                                                    item.nodes[2].data
+                                                )
+                                            ),
+                                            borderColor: "rgb(53, 162, 235)",
+                                            backgroundColor:
+                                                "rgba(53, 162, 235, 0.5)",
                                         },
                                     ],
                                 }}
@@ -98,16 +248,16 @@ function TreePanelToggle({ id, label, data, nodes,tab }) {
             {nodes !== undefined &&
                 nodes.length > 0 &&
                 label !== "##drawChart##" &&
-                (tab ==="true" ? (
+                label !== "Quarterly" &&
+                label !== "Yearly" &&
+                (tab === "true" ? (
                     nodes.map((item) => {
-                        console.log("LET RUN");
                         return (
                             <TreePanelToggle
                                 key={item.id}
-                               
                                 {...item}
                             ></TreePanelToggle>
-                        )
+                        );
                     })
                 ) : (
                     <Accordion
@@ -120,7 +270,6 @@ function TreePanelToggle({ id, label, data, nodes,tab }) {
                                 {nodes.map((item) => (
                                     <TreePanelToggle
                                         key={item.id}
-                                       
                                         {...item}
                                     ></TreePanelToggle>
                                 ))}
