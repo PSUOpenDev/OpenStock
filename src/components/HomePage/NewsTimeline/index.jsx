@@ -56,16 +56,16 @@ const NewsTimeline = () => {
                 return keyword;
             }
         }
-        return "";
+        return "stock";
     };
 
     const getStockParameter = () => {
         return `${
             selectedStock === null || selectedStock === undefined
-                ? ""
+                ? "stock"
                 : selectedStock.stockName === null ||
                   selectedStock.stockName === undefined
-                ? ""
+                ? "stock"
                 : getKeyWord(selectedStock.stockName)
         }`;
     };
@@ -77,8 +77,10 @@ const NewsTimeline = () => {
         url = url.concat("&from=", `${getThreeDaysAgo()}`);
         url = url.concat("&to=", `${currentDate()}`);
         url = url.concat("&sortBy=relevancy");
-        url = url.concat("&pageSize=20");
+        url = url.concat("&pageSize=5");
         url = url.concat("&apiKey=", `${getAPINewsKey}`);
+        url = encodeURI(url);
+
         return url;
     };
 
@@ -95,17 +97,15 @@ const NewsTimeline = () => {
     const fetchNewDataAPI = async (URL, name) => {
         let items = readFromCache("NewsAPI");
 
-        fetchAPI(URL).then((data) => {
-            const itemToCache = {
-                name,
-                keyStorage: data,
-                fetch_time: new Date().getTime(),
-            };
-            items.push(itemToCache);
-            writeToCache("NewsAPI", items);
-        });
+        const data = await fetchAPI(URL);
 
-        console.log("fetchNewDataAPI");
+        const itemToCache = {
+            name,
+            keyStorage: data,
+            fetch_time: new Date().getTime(),
+        };
+        items.push(itemToCache);
+        writeToCache("NewsAPI", items);
         return items;
     };
 
@@ -133,35 +133,27 @@ const NewsTimeline = () => {
 
         if (mem_index === -1 && flag_checked === true) {
             // This means item found, but no enough time
-            console.log("Caching case!");
-            console.log(items);
             return items;
         }
 
-        fetchAPI(URL).then((data) => {
-            if (flag_checked === false) {
-                // Item not found
-                const itemToCache = {
-                    name: name,
-                    keyStorage: data,
-                    fetch_time: new Date().getTime(),
-                };
-                items.push(itemToCache);
-                writeToCache("NewsAPI", items);
-                console.log("Append case");
-            } else {
-                if (mem_index >0) {
-                    if (items[mem_index].name === name) {
-                        items[mem_index].keyStorage = data;
-                        items[mem_index].fetch_time = new Date().getTime();
-                    }
-                    console.log(
-                        "Modify case",
-                        items[mem_index].name === name
-                    );
+        const data = await fetchAPI(URL);
+        if (flag_checked === false) {
+            // Item not found
+            const itemToCache = {
+                name: name,
+                keyStorage: data,
+                fetch_time: new Date().getTime(),
+            };
+            items.push(itemToCache);
+            writeToCache("NewsAPI", items);
+        } else {
+            if (mem_index > 0) {
+                if (items[mem_index].name === name) {
+                    items[mem_index].keyStorage = data;
+                    items[mem_index].fetch_time = new Date().getTime();
                 }
             }
-        });
+        }
         return items;
     };
 
@@ -176,17 +168,15 @@ const NewsTimeline = () => {
         } else {
             items = await fetchFreshDataAPI(URL, name);
         }
-       
         for (let i = 0; i < items.length; i++) {
-            if (items[i].name === name) {
+            if (items[i].name.includes(name)) {
                 setData(items[i].keyStorage);
-                break;
+                return;
             }
         }
     };
 
     useEffect(() => {
-        console.log("News API updates to", selectedStock);
         getNewsAPIData(URL_NEWS(), getStockParameter());
     }, [selectedStock]);
 
