@@ -43,25 +43,29 @@ const cardRender = (data) => {
 
 /* Function to render newspapers */
 const NewsTimeline = () => {
-    const [dataItem, setData] = useState([]);
-    const selectedStock = useSelector((state) => state.selectedStock);
-    const [stock, setstock] = useState(selectedStock);
-
     const getAPINewsKey = API_NEWS_KEY;
     const getAPINewsURL = API_NEWS_URL;
+
+    const [dataItem, setData] = useState([]);
+
+    const selectedStock = useSelector((state) => state.selectedStock);
+    const [stock, setStock] = useState(selectedStock);
+
+    const init_url = `https://newsapi.org/v2/everything?qInTitle=stock&from=${currentDate()}&sortBy=relevancy&pageSize=5&apiKey=${getAPINewsKey}`
+    const [urlNews, setURLNews] = useState(init_url)
 
     const URL_NEWS = () => {
         let url = getAPINewsURL;
         url = url.concat(
             "qInTitle=",
-            `${stock === null ? "" : stock.stockName.split(" ")[0]}`,
+            `${stock === null ? "" : stock.stockName.split(" ").join(" OR ")}`,
             " +stock"
         );
         url = url.concat("&language=en");
         url = url.concat("&from=", `${getThreeDaysAgo()}`);
         url = url.concat("&to=", `${currentDate()}`);
         url = url.concat("&sortBy=relevancy");
-        url = url.concat("&pageSize=15");
+        url = url.concat("&pageSize=5");
         url = url.concat("&apiKey=", `${getAPINewsKey}`);
         return url;
     };
@@ -145,38 +149,41 @@ const NewsTimeline = () => {
         return items;
     };
 
-    const getNewsAPIData = async (URL, keyStorage) => {
-        let items;
-        setData([]);
-
-        let cachedData = readFromCache("NewsAPI");
-
-        if (cachedData.length === 0) {
-            writeToCache("NewsAPI", []);
-            items = await fetchNewDataAPI(URL, keyStorage);
-        } else {
-            items = await fetchFreshDataAPI(URL, keyStorage);
-        }
-
-        for (let i = 0; i < items.length; i++) {
-            if (items[i]["name"] === keyStorage) {
-                setData(items[i]["keyStorage"]);
-                break;
-            }
-        }
-    };
-
     useEffect(() => {
-        setstock(selectedStock);
+        const cur_url = URL_NEWS();
+        setURLNews(cur_url);
+        setStock(selectedStock);
         console.log("News API updates to", selectedStock);
+
+        const getNewsAPIData = async (URL, keyStorage) => {
+            let items;
+            setData([]);
+    
+            let cachedData = readFromCache("NewsAPI");
+    
+            if (cachedData.length === 0) {
+                writeToCache("NewsAPI", []);
+                items = await fetchNewDataAPI(URL, keyStorage);
+            } else {
+                items = await fetchFreshDataAPI(URL, keyStorage);
+            }
+    
+            for (let i = 0; i < items.length; i++) {
+                if (items[i]["name"] === keyStorage) {
+                    setData(items[i]["keyStorage"]);
+                    break;
+                }
+            }
+        };
+
         getNewsAPIData(
-            URL_NEWS(),
+            urlNews,
             "".concat(
                 `${stock === null ? "" : stock.stockName.split(" ")[0]}`,
                 " +stock"
             )
         );
-    }, [selectedStock]);
+    }, [selectedStock, stock]);
 
     return (
         <div className="timeline-container">
