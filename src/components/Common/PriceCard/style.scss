@@ -1,12 +1,24 @@
 @import './../../../assets/styles/general';
 
-.price-card {
-    background-color: $component-background-color;
-    color: $component-text-color;
+
+
+.index-component {
+    @include component-color;
     @include component-spacing;
-    border-radius: 15px;
-}
-.react-stockchart {
-    width: 100% !important;
-    
+
+    .index-header {
+        @include component-header-color;
+    }
+    .border-radius-20 {
+        margin: 0 !important;
+        padding: 0 !important;
+        border-radius: 0 !important;
+    }
+    .chart-index {
+        margin-top: 3em;
+    }
+    .index-score {
+        max-width: 200px;
+    }
+
 }

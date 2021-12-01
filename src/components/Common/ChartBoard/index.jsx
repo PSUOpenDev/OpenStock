@@ -95,7 +95,7 @@ function ChartBoard({
                             choosePeriod = getStringOfDurationFromCurrentTo(
                                 cache.lastDate
                             );
-                      
+
                         if (choosePeriod !== "") {
                             apiParameter.queryString =
                                 selectedStock.symbol +
