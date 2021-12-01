@@ -56,12 +56,10 @@ function ChartBoard({
     const [isLoading, data, callAPI] = useAPI({
         noRun: "yes",
     });
-   
 
     useEffect(() => {
         const handleSelecting = ({ apiParameter, data }) => {
             if (selectedStock !== null && selectedStock.symbol !== undefined) {
-                console.log("Range in date = ",  getDateOfDurationString(range));
                 let cache;
                 let choosePeriod = "";
                 let chooseInterval = "";
@@ -97,8 +95,7 @@ function ChartBoard({
                             choosePeriod = getStringOfDurationFromCurrentTo(
                                 cache.lastDate
                             );
-                            console.log("update Period = ", choosePeriod);
-
+                      
                         if (choosePeriod !== "") {
                             apiParameter.queryString =
                                 selectedStock.symbol +
@@ -209,12 +206,9 @@ function ChartBoard({
         });
     }, [selectedStock, range]);
 
-
-
     return (
         <>
             <div
-               
                 style={width !== null ? { width, height } : null}
                 className="chart border-radius-20"
             >
@@ -240,7 +234,6 @@ function ChartBoard({
                                     >
                                         <ButtonGroup>
                                             <Button
-                                               
                                                 variant="secondary"
                                                 onClick={() => {
                                                     setRange("1d");

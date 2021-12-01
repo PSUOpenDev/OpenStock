@@ -3,16 +3,10 @@ import "./style.scss";
 import {
     API_STOCK_QUOTE_KEY,
     API_URL_MARKET_SUMMARY,
-    TIME_TO_REFRESH_INDEXES
+    TIME_TO_REFRESH_INDEXES,
 } from "./../../Common/APIUtils/Yahoo/ApiParameter";
-import {
-    Col,
-    Container,
-    Row
-} from "react-bootstrap";
-import React, {
-    useEffect
-} from "react";
+import { Col, Container, Row } from "react-bootstrap";
+import React, { useEffect } from "react";
 import {
     dateToTimestamp,
     isExpired,
@@ -33,6 +27,8 @@ function BriefBoard() {
     useEffect(() => {
         const handleParsingAndFiltering = ({ rawData }) => {
             const currentTimeStamp = dateToTimestamp(new Date());
+
+
             for (const item of rawData.marketSummaryResponse.result) {
                 if (item.symbol !== undefined) {
                     if (stockIndex.indexDic[item.symbol] !== undefined) {
@@ -44,10 +40,12 @@ function BriefBoard() {
                             item.symbol
                         ].currentValueChangePercent =
                             item.regularMarketChangePercent.raw;
-                        stockIndex.indexDic[item.symbol].apiTime =
-                            currentTimeStamp;
                     }
                 }
+            }
+            //Update time
+            for (const item of stockIndex.allAllIndexes) {
+                item.apiTime = currentTimeStamp;
             }
             return stockIndex.allAllIndexes;
         };
@@ -92,17 +90,18 @@ function BriefBoard() {
     }, []);
 
     return (
-        <Container className="dark-bg mt-4 mb-3">
+        <Container className="dark-bg mt-4 mb-3" fluid>
             <Row>
-                {
-                    isLoading === false &&
+                {isLoading === false &&
                     data &&
                     data.map((symbol, index) => (
-                        <Col xs={12} sm={6} lg={4}>
-                            <PriceCard key={index} stockSymbol={symbol}></PriceCard>
+                        <Col key={index} xs={12} sm={6} lg={4}>
+                            <PriceCard
+                                key={index}
+                                stockSymbol={symbol}
+                            ></PriceCard>
                         </Col>
-                    ))
-                }
+                    ))}
             </Row>
         </Container>
     );

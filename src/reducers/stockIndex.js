@@ -1,4 +1,5 @@
 import { UPDATE_STOCK_INDEX } from "../actions/stockIndex";
+import { dateToTimestamp } from "../utils/timeStamp";
 
 //Load initial State from local storage
 const item = localStorage.getItem("stockIndex");
@@ -69,9 +70,11 @@ const stockIndexReducer = (state = initState, action) => {
     switch (action.type) {
         case UPDATE_STOCK_INDEX: {
             if (action.payLoad !== undefined) {
+              
                 const newAllIndexes = [...action.payLoad];
                 const newIndexDic = {};
                 for (let item of newAllIndexes) {
+                 
                     if (newIndexDic[item.symbol] === undefined) {
                         newIndexDic[item.symbol] = item;
                     }

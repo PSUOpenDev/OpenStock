@@ -6,12 +6,6 @@
     @include component-spacing;
     border-radius: 20px;
 }
-/*.card-index {
-    display: inline;
-    width: 45%;
-}*/
-.chart-index .react-stockcharts-crosshair-cursor {
-    height: 100px !important;
-}
-.chart-index > .chart.border-radius-20 {
+.react-stockchart {
+    width: 100% !important;
 }
