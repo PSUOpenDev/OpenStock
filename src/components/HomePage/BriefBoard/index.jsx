@@ -63,7 +63,7 @@ function BriefBoard() {
                         TIME_TO_REFRESH_INDEXES
                     )
                 ) {
-                    console.log("call api in breafboard");
+                    console.log("call api in BriefBoard");
                     return null;
                 }
             }
@@ -89,7 +89,7 @@ function BriefBoard() {
             onSelecting: handleSelecting,
             onError: handleError,
         });
-    }, [dispatch, callAPI, stockIndex]);
+    }, []);
 
     return (
         <Container className="dark-bg mt-4 mb-3">

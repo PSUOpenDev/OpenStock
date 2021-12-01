@@ -48,7 +48,6 @@ function ChartBoard({
 }) {
     const [range, setRange] = useState(dataRange);
     const stockHistory = useSelector((state) => state.stockHistory);
-    const chartRef = useRef(null);
     const stockHistoryInMinute = useSelector(
         (state) => state.stockHistoryInMinute
     );
@@ -57,11 +56,12 @@ function ChartBoard({
     const [isLoading, data, callAPI] = useAPI({
         noRun: "yes",
     });
-    const buttonFocus = useRef(null);
+   
 
     useEffect(() => {
         const handleSelecting = ({ apiParameter, data }) => {
             if (selectedStock !== null && selectedStock.symbol !== undefined) {
+                console.log("Range in date = ",  getDateOfDurationString(range));
                 let cache;
                 let choosePeriod = "";
                 let chooseInterval = "";
@@ -97,6 +97,7 @@ function ChartBoard({
                             choosePeriod = getStringOfDurationFromCurrentTo(
                                 cache.lastDate
                             );
+                            console.log("update Period = ", choosePeriod);
 
                         if (choosePeriod !== "") {
                             apiParameter.queryString =
@@ -208,17 +209,12 @@ function ChartBoard({
         });
     }, [selectedStock, range]);
 
-    useEffect(() => {
-        if (buttonFocus.current !== null) {
-            console.log("Focus")
-            buttonFocus.current.click();
-        }
-    }, [buttonFocus.current]);
+
 
     return (
         <>
             <div
-                ref={chartRef}
+               
                 style={width !== null ? { width, height } : null}
                 className="chart border-radius-20"
             >
@@ -244,21 +240,13 @@ function ChartBoard({
                                     >
                                         <ButtonGroup>
                                             <Button
-                                                ref={buttonFocus}
+                                               
                                                 variant="secondary"
                                                 onClick={() => {
                                                     setRange("1d");
                                                 }}
                                             >
                                                 1d
-                                            </Button>{" "}
-                                            <Button
-                                                variant="secondary"
-                                                onClick={() => {
-                                                    setRange("5d");
-                                                }}
-                                            >
-                                                5d
                                             </Button>{" "}
                                             <Button
                                                 variant="secondary"
@@ -310,7 +298,7 @@ function ChartBoard({
                                             </Button>{" "}
                                         </ButtonGroup>{" "}
                                     </ButtonToolbar>
-                                    <HeikinAshi data={data} />
+                                    <HeikinAshi data={data} range={range} />
                                 </div>
                             )}
                             {chartType === "AreaChart" && (

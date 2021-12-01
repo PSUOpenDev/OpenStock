@@ -28,4 +28,7 @@
     rect {
         stroke: $chart-bar-color;
     }
+    .btn-secondary {
+        background-color: $component-background-color !important;
+    }
 }

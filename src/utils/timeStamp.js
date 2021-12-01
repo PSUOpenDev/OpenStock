@@ -85,10 +85,10 @@ export const getDateOfDurationString = (durationString) => {
             date.setMonth(date.getMonth() - 6);
             break;
         case "1y":
-            date.setYear(date.getYear() - 1);
+            date.setYear(date.getFullYear() - 1);
             break;
         case "5y":
-            date.setYear(date.getYear() - 5);
+            date.setYear(date.getFullYear() - 5);
             break;
         default:
             return null;
