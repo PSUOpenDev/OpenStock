@@ -1,3 +1,6 @@
+//Source: https://codesandbox.io/s/github/rrag/react-stockcharts-examples2/tree/master/examples/AreaChart
+//More references: https://github.com/rrag/react-stockcharts-examples2
+
 import { Chart, ChartCanvas } from "react-stockcharts";
 import {
     createVerticalLinearGradient,

@@ -1,3 +1,6 @@
+//Source: https://codesandbox.io/s/github/rrag/react-stockcharts-examples2/tree/master/examples/HeikinAshi
+//More references: https://github.com/rrag/react-stockcharts-examples2
+
 import {
     AreaSeries,
     BarSeries,

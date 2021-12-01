@@ -89,7 +89,6 @@ function StockDetails({ selectedStock }) {
                 const cachingData =
                     stockInfo.stockInfoDic[selectedStock.symbol];
                 if (cachingData === undefined && data === null) {
-                    console.log("call api in stock detail");
                     return null;
                 }
                 if (cachingData !== undefined) {

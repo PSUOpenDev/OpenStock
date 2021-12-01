@@ -2,15 +2,22 @@
 
 .stock-details {
     @include component-style;
-}
-.alert-secondary,
-.accordion-body,
-.accordion-button  {
-    @include component-color;
-}
-.accordion-button::after {
-    color:$component-text-color;
-}
-.accordion-item {
-    border: $border-accordion-color 1px solid;
+
+    .alert-secondary,
+    .accordion-body,
+    .accordion-button {
+        @include component-color;
+    }
+
+    .accordion-button::after {
+        color: $component-text-color;
+    }
+
+    .accordion-item {
+        border: $border-accordion-color 1px solid;
+    }
+
+    .nav-tabs {
+        border-bottom: $border-accordion-color 1px solid !important;
+    }
 }
