@@ -9,16 +9,36 @@
     .index-header {
         @include component-header-color;
     }
+
     .border-radius-20 {
         margin: 0 !important;
         padding: 0 !important;
         border-radius: 0 !important;
     }
+
     .chart-index {
-        margin-top: 3em;
+        margin-top: 2em;
     }
-    .index-score {
-        max-width: 200px;
+
+    .index-score-col {
+        width: 1em;
+        max-width: 6em;
     }
 
 }
+
+// @media only screen and (max-width: 1024px) {
+//     .index-component {
+//         .index-score-col {
+//             width: 10%;
+//             background-color: grey !important;
+
+//         }
+
+//         .chart-index-col {
+//             width: 90%;
+//         }
+
+//     }
+
+// }
