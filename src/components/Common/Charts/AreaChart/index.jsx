@@ -16,15 +16,25 @@ import { scaleTime } from "d3-scale";
 
 // import { XAxis, YAxis } from "react-stockcharts/lib/axes";
 
-const canvasGradient = createVerticalLinearGradient([
+const canvasGradientUp = createVerticalLinearGradient([
+    { stop: 0, color: hexToRGBA("#99CC66f", 0.2) },
+    { stop: 0.7, color: hexToRGBA("#99CC66", 0.4) },
+    { stop: 1, color: hexToRGBA("#99CC66", 0.8) },
+]);
+const canvasGradientNone = createVerticalLinearGradient([
     { stop: 0, color: hexToRGBA("#b5d0ff", 0.2) },
     { stop: 0.7, color: hexToRGBA("#6fa4fc", 0.4) },
     { stop: 1, color: hexToRGBA("#4286f4", 0.8) },
 ]);
+const canvasGradientDown = createVerticalLinearGradient([
+    { stop: 0, color: hexToRGBA("#F07470", 0.2) },
+    { stop: 0.7, color: hexToRGBA("#EA4C46", 0.4) },
+    { stop: 1, color: hexToRGBA("#DC1C13", 0.8) },
+]);
 
 class AreaChart extends React.Component {
     render() {
-        const { data, type, width, ratio } = this.props;
+        const { data, type, width, ratio, updown } = this.props;
         return (
             <ChartCanvas
                 ratio={ratio}
@@ -71,7 +81,13 @@ class AreaChart extends React.Component {
                         fill="url(#MyGradient)"
                         strokeWidth={2}
                         interpolation={curveMonotoneX}
-                        canvasGradient={canvasGradient}
+                        canvasGradient={
+                            updown === 1
+                                ? canvasGradientUp
+                                : updown === 0
+                                ? canvasGradientNone
+                                : canvasGradientDown
+                        }
                     />
                 </Chart>
             </ChartCanvas>
@@ -84,10 +100,12 @@ AreaChart.propTypes = {
     width: PropTypes.number.isRequired,
     ratio: PropTypes.number.isRequired,
     type: PropTypes.oneOf(["svg", "hybrid"]).isRequired,
+    updown: PropTypes.number,
 };
 
 AreaChart.defaultProps = {
     type: "svg",
+    updown: 0,
 };
 AreaChart = fitWidth(AreaChart);
 

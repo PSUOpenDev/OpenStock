@@ -31,11 +31,13 @@ ChartBoard.propTypes = {
     dataRange: PropTypes.string,
     width: PropTypes.number,
     height: PropTypes.number,
+    updown:PropTypes.number
 };
 ChartBoard.defaultProps = {
     chartType: "AreaChart",
     showStockName: false,
     dataRange: "1d",
+    updown:0
 };
 
 function ChartBoard({
@@ -45,6 +47,7 @@ function ChartBoard({
     dataRange,
     width,
     height,
+    updown
 }) {
     const [range, setRange] = useState(dataRange);
     const stockHistory = useSelector((state) => state.stockHistory);
@@ -296,7 +299,7 @@ function ChartBoard({
                                 </div>
                             )}
                             {chartType === "AreaChart" && (
-                                <AreaChart data={data} />
+                                <AreaChart data={data} updown = {updown}/>
                             )}
                         </div>
                     </div>

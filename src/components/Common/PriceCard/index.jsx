@@ -69,13 +69,29 @@ function PriceCard({ stockSymbol }) {
                             </Row>
                         </Col>
                         <Col sm={9}>
-                            <div className="chart-index">
+                            <div
+                                className={
+                                    stockSymbol.currentValueChange > 0
+                                        ? "chart-index chart-up"
+                                        : "chart-index chart-down"
+                                }
+                            >
                                 {stockSymbol !== null &&
                                     stockSymbol.symbol !== undefined && (
                                         <ChartBoard
                                             selectedStock={stockSymbol}
                                             chartType="AreaChart"
                                             showStockName={false}
+                                            range="1m"
+                                            updown={
+                                                stockSymbol.currentValueChange >
+                                                0
+                                                    ? 1
+                                                    : stockSymbol.currentValueChange ===
+                                                      0
+                                                    ? 0
+                                                    : -1
+                                            }
                                         />
                                     )}
                             </div>
