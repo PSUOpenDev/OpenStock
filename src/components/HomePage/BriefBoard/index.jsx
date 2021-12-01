@@ -3,11 +3,11 @@ import "./style.scss";
 import {
     API_STOCK_QUOTE_KEY,
     API_URL_MARKET_SUMMARY,
+    TIME_TO_REFRESH_INDEXES
 } from "./../../Common/APIUtils/Yahoo/ApiParameter";
 import React, { useEffect } from "react";
 import {
     dateToTimestamp,
-    durationInMilliseconds,
     isExpired,
     timestampToDate,
 } from "../../../utils/timeStamp";
@@ -55,9 +55,10 @@ function BriefBoard() {
                     isExpired(
                         timestampToDate(item.apiTime),
                         currentTime,
-                        durationInMilliseconds(0, 1, 0, 0, 0)
+                        TIME_TO_REFRESH_INDEXES
                     )
                 ) {
+                    console.log("call api in breafboard");
                     return null;
                 }
             }
@@ -90,7 +91,7 @@ function BriefBoard() {
             {isLoading === false &&
                 data &&
                 data.map((symbol, index) => (
-                    <PriceCard key={index} stockSymbol={symbol}></PriceCard>
+                    <PriceCard key={index} stockSymbol={symbol} range={"1d"}> </PriceCard>
                 ))}
         </CardGroup>
     );

@@ -2,7 +2,6 @@ import "./style.scss";
 
 import {
     API_STOCK_QUOTE_KEY,
-    API_URI_STOCK_QUOTE,
     API_URL_MARKET_SUMMARY,
     API_URL_STOCK_SUMMARY,
     TIME_TO_REFRESH_STOCK_DETAILS,
@@ -37,19 +36,41 @@ function StockDetails({ selectedStock }) {
         //Parse data and filter data
         const handleParsingAndFiltering = ({ rawData }) => {
             let data;
-            if (
-                rawData.quoteSummary !== undefined &&
-                rawData.quoteSummary.result[0] !== undefined
-            )
-                data = convertJSONtoNodes(
-                    { id: 0, label: "#", data: "", nodes: [] },
-                    rawData.quoteSummary.result[0]
-                );
-            else
-                data = convertJSONtoNodes(
-                    { id: 0, label: "#", data: "", nodes: [] },
-                    rawData.quoteResponse.result[0]
-                );
+            while (true) {
+                if (
+                    rawData.quoteSummary !== undefined &&
+                    rawData.quoteSummary.result[0] !== undefined
+                ) {
+                    data = convertJSONtoNodes(
+                        { id: 0, label: "#", data: "", nodes: [] },
+                        rawData.quoteSummary.result[0]
+                    );
+                    break;
+                }
+
+                if (
+                    rawData.quoteResponse !== undefined &&
+                    rawData.quoteResponse.result[0] !== undefined
+                ) {
+                    data = convertJSONtoNodes(
+                        { id: 0, label: "#", data: "", nodes: [] },
+                        rawData.quoteResponse.result[0]
+                    );
+                    break;
+                }
+
+                if (
+                    rawData.marketSummaryResponse !== undefined &&
+                    rawData.marketSummaryResponse.result[0] !== undefined
+                ) {
+                    data = convertJSONtoNodes(
+                        { id: 0, label: "#", data: "", nodes: [] },
+                        rawData.marketSummaryResponse.result
+                    );
+                    break;
+                }
+                break;
+            }
 
             return data.nodes;
         };
@@ -68,6 +89,7 @@ function StockDetails({ selectedStock }) {
                 const cachingData =
                     stockInfo.stockInfoDic[selectedStock.symbol];
                 if (cachingData === undefined && data === null) {
+                    console.log("call api in stock detail");
                     return null;
                 }
                 if (cachingData !== undefined) {
@@ -80,8 +102,10 @@ function StockDetails({ selectedStock }) {
                             TIME_TO_REFRESH_STOCK_DETAILS
                         )
                     ) {
-                        if (data === null) return null;
-                        else return data;
+                        if (data === null) {
+                            console.log("call api in stock detail");
+                            return null;
+                        } else return data;
                     }
 
                     return cachingData.stockInfo;
@@ -121,7 +145,6 @@ function StockDetails({ selectedStock }) {
                 });
             }
     }, [selectedStock]);
-    console.log(" data[0].label ", data !== null ? data[0].label : "null");
     return (
         <div className="stock-details border-radius-20">
             <div className="fs-4 fw-bold text-center clear-yellow ms-5">

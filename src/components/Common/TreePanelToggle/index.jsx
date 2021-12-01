@@ -82,7 +82,7 @@ function TreePanelToggle({ id, label, data, nodes, tab }) {
                     defaultActiveKey={"Share Ratio"}
                     style={{ margin: "1em" }}
                 >
-                    <Accordion.Item eventKey={"Share Ratio"} expand={true}>
+                    <Accordion.Item eventKey={"Share Ratio"} expand={1}>
                         <Accordion.Header>{"Share Ratio"}</Accordion.Header>
                         <Accordion.Body>
                             <div className="chart-container">
@@ -127,7 +127,7 @@ function TreePanelToggle({ id, label, data, nodes, tab }) {
                     defaultActiveKey={label}
                     style={{ margin: "1em" }}
                 >
-                    <Accordion.Item eventKey={label} expand={true}>
+                    <Accordion.Item eventKey={label} expand={1}>
                         <Accordion.Header>{label}</Accordion.Header>
                         <Accordion.Body>
                             <Bar
@@ -189,7 +189,7 @@ function TreePanelToggle({ id, label, data, nodes, tab }) {
                     defaultActiveKey={label}
                     style={{ margin: "1em" }}
                 >
-                    <Accordion.Item eventKey={label} expand={true}>
+                    <Accordion.Item eventKey={label} expand={1}>
                         <Accordion.Header>{label}</Accordion.Header>
                         <Accordion.Body>
                             <Bar
@@ -264,7 +264,7 @@ function TreePanelToggle({ id, label, data, nodes, tab }) {
                         defaultActiveKey={label}
                         style={{ margin: "1em" }}
                     >
-                        <Accordion.Item eventKey={label}  expand={true}>
+                        <Accordion.Item eventKey={label}  expand={1}>
                             <Accordion.Header>{label}</Accordion.Header>
                             <Accordion.Body>
                                 {nodes.map((item) => (

@@ -72,7 +72,7 @@ const NewsTimeline = () => {
 
     const URL_NEWS = () => {
         let url = getAPINewsURL;
-        url = url.concat("qInTitle=", getStockParameter(), " OR stock AND stock ");
+        url = url.concat("q=", getStockParameter());
         url = url.concat("&language=en");
         url = url.concat("&from=", `${getThreeDaysAgo()}`);
         url = url.concat("&to=", `${currentDate()}`);
@@ -174,9 +174,11 @@ const NewsTimeline = () => {
                 return;
             }
         }
+        console.log("No news match!");
     };
 
     useEffect(() => {
+        console.log("news change to ",  getStockParameter())
         getNewsAPIData(URL_NEWS(), getStockParameter());
     }, [selectedStock]);
 

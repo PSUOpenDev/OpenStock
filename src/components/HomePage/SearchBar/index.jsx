@@ -77,7 +77,6 @@ function SearchBar() {
     };
 
     const handleSelectedStock = (e) => {
-        console.log("real selected = ", e);
         dispatch(setSelectedStock(e[0]));
         setSymbolSelected(e);
     };

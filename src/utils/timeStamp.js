@@ -60,15 +60,13 @@ export const getStringOfDurationFromCurrentTo = (comparedDate) => {
     return choosePeriod;
 };
 
-
 export const getDateOfDurationString = (durationString) => {
-    
     const date = new Date();
-    
-    date.setHours(0);
-    date.setMinutes(0);
-    date.setSeconds(0);
-    date.setMilliseconds(0);
+
+    // date.setHours(0);
+    // date.setMinutes(0);
+    // date.setSeconds(0);
+    // date.setMilliseconds(0);
 
     switch (durationString) {
         case "1d":
@@ -93,7 +91,7 @@ export const getDateOfDurationString = (durationString) => {
             date.setYear(date.getYear() - 5);
             break;
         default:
-            break;
+            return null;
     }
     return date;
 };

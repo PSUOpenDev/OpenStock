@@ -1,5 +1,4 @@
 import { Chart, ChartCanvas } from "react-stockcharts";
-import { XAxis, YAxis } from "react-stockcharts/lib/axes";
 import {
     createVerticalLinearGradient,
     hexToRGBA,
@@ -11,6 +10,16 @@ import React from "react";
 import { curveMonotoneX } from "d3-shape";
 import { fitWidth } from "react-stockcharts/lib/helper";
 import { scaleTime } from "d3-scale";
+
+// import { XAxis, YAxis } from "react-stockcharts/lib/axes";
+
+
+
+
+
+
+
+
 
 const canvasGradient = createVerticalLinearGradient([
     { stop: 0, color: hexToRGBA("#b5d0ff", 0.2) },

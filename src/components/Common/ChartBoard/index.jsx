@@ -3,52 +3,27 @@ import "./style.scss";
 import {
     API_STOCK_QUOTE_KEY,
     API_URL_STOCK_CHART,
+    TIME_TO_REFRESH_CHART_IN_CALL,
+    TIME_TO_REFRESH_CHART_OVER_DATE,
 } from "./../../Common/APIUtils/Yahoo/ApiParameter";
+import { Button, ButtonGroup, ButtonToolbar, Spinner } from "react-bootstrap";
 import React, { useEffect, useRef, useState } from "react";
 import {
     getDateOfDurationString,
     getStringOfDurationFromCurrentTo,
+    isExpired,
+    timestampToDate,
 } from "./../../../utils/timeStamp";
 import { useDispatch, useSelector } from "react-redux";
 
 import AreaChart from "../Charts/AreaChart";
 import HeikinAshi from "../Charts/HeikinAshi";
 import PropTypes from "prop-types";
-import { Spinner } from "react-bootstrap";
+import { convertData } from "./../../../utils/formatData";
 import { updateStockHistory } from "../../../actions/stockHistory";
 import { updateStockHistoryInMinute } from "../../../actions/stockHistoryInMinute";
 import useAPI from "./../../Common/APIUtils/useAPI";
 
-const convertData = (arr, fromDate) => {
-    if (arr !== null && arr !== undefined) {
-        const result = [];
-        const length = arr.length;
-        for (let i = 0; i < length; i++) {
-            if (
-                arr[i].close !== null &&
-                arr[i].date !== null &&
-                arr[i].open !== null &&
-                arr[i].high !== null &&
-                arr[i].low !== null &&
-                arr[i].volume !== null
-            ) {
-                const newDate = new Date(arr[i].date * 1000);
-
-                if (fromDate !== null && newDate < fromDate) continue;
-                result.push({
-                    close: arr[i].close,
-                    open: arr[i].open,
-                    high: arr[i].high,
-                    low: arr[i].low,
-                    volume: arr[i].volume,
-                    date: newDate,
-                });
-            }
-        }
-        return result;
-    }
-    return null;
-};
 ChartBoard.propTypes = {
     selectedStock: PropTypes.object.isRequired,
     chartType: PropTypes.string,
@@ -60,7 +35,7 @@ ChartBoard.propTypes = {
 ChartBoard.defaultProps = {
     chartType: "AreaChart",
     showStockName: false,
-    dataRange: "1mo",
+    dataRange: "1d",
 };
 
 function ChartBoard({
@@ -82,72 +57,80 @@ function ChartBoard({
     const [isLoading, data, callAPI] = useAPI({
         noRun: "yes",
     });
+    const buttonFocus = useRef(null);
 
     useEffect(() => {
         const handleSelecting = ({ apiParameter, data }) => {
-            let choosePeriod;
-            let chooseInterval;
+            if (selectedStock !== null && selectedStock.symbol !== undefined) {
+                let cache;
+                let choosePeriod = "";
+                let chooseInterval = "";
+                let timeRefresh = 0;
 
-            if (selectedStock.symbol === undefined) {
-                return undefined;
-            }
-            if (range === "1d") {
-                choosePeriod = "1d";
-                chooseInterval = "1m";
-            } else {
-                choosePeriod = "5y";
-                chooseInterval = "1d";
-            }
-            if (
-                (range !== "1d" &&
-                    stockHistory[selectedStock.symbol] === undefined) ||
-                (range === "1d" && data === null)
-            ) {
-                apiParameter.queryString =
-                    selectedStock.symbol +
-                    "?range=" +
-                    choosePeriod +
-                    "&region=US&interval=" +
-                    chooseInterval +
-                    "&lang=en&events=div%2Csplit";
-                return null;
-            }
+                if (range === "1d") {
+                    choosePeriod = "1d";
+                    chooseInterval = "1m";
+                    cache = stockHistoryInMinute[selectedStock.symbol];
+                    timeRefresh = TIME_TO_REFRESH_CHART_OVER_DATE;
+                } else {
+                    choosePeriod = "10y";
+                    chooseInterval = "1d";
+                    cache = stockHistory[selectedStock.symbol];
+                    timeRefresh = TIME_TO_REFRESH_CHART_IN_CALL;
+                }
 
-            if (range !== "1d") {
-                choosePeriod = getStringOfDurationFromCurrentTo(
-                    stockHistory[selectedStock.symbol].lastDate
+                if (data === null) {
+                    if (cache === undefined) {
+                        apiParameter.queryString =
+                            selectedStock.symbol +
+                            "?range=" +
+                            choosePeriod +
+                            "&region=US&interval=" +
+                            chooseInterval +
+                            "&lang=en&events=div%2Csplit";
+                        console.log("call api in chartboard");
+                        return null;
+                    }
+                    const lastDate = timestampToDate(cache.lastDate);
+                    if (isExpired(lastDate, new Date(), timeRefresh)) {
+                        if (range !== "1d")
+                            choosePeriod = getStringOfDurationFromCurrentTo(
+                                cache.lastDate
+                            );
+
+                        if (choosePeriod !== "") {
+                            apiParameter.queryString =
+                                selectedStock.symbol +
+                                "?range=" +
+                                choosePeriod +
+                                "&region=US&interval=" +
+                                chooseInterval +
+                                "&lang=en&events=div%2Csplit";
+                            console.log("call api in chartboard");
+                            return null;
+                        } else {
+                            const returnValue = convertData(
+                                cache,
+                                getDateOfDurationString(range)
+                            );
+
+                            return returnValue;
+                        }
+                    }
+                }
+
+                const returnValue = convertData(
+                    cache,
+                    getDateOfDurationString(range)
                 );
-                chooseInterval = "1d";
+
+                return returnValue;
             }
 
-            if (range !== "1d" && choosePeriod !== "") {
-                apiParameter.queryString =
-                    selectedStock.symbol +
-                    "?range=" +
-                    choosePeriod +
-                    "&region=US&interval=" +
-                    chooseInterval +
-                    "&lang=en&events=div%2Csplit";
-                return null;
-            }
-            let returnValue;
-
-            if (range !== "1d") {
-                const fromDate = getDateOfDurationString(range);
-
-                returnValue = convertData(
-                    stockHistory[selectedStock.symbol],
-                    fromDate
-                );
-            } else {
-                returnValue = convertData(
-                    stockHistoryInMinute[selectedStock.symbol],
-                    null
-                );
-            }
-            return returnValue;
+            //Return undefine means it will not get from API
+            // and will not get from cache
+            return undefined;
         };
-
         const handleParsingAndFiltering = ({ rawData }) => {
             if (rawData !== null) {
                 const symbol = rawData.chart.result[0].meta.symbol;
@@ -190,30 +173,27 @@ function ChartBoard({
         };
 
         const handleError = ({ setData }) => {
+            if (selectedStock === null) {
+                return null;
+            }
+
+            const caching = stockHistoryInMinute[selectedStock.symbol];
+            if (caching === undefined) {
+                return null;
+            }
+
             if (range === "1d") {
-                if (
-                    selectedStock !== null &&
-                    stockHistoryInMinute[selectedStock.symbol] !== undefined
-                )
-                    setData(
-                        convertData(
-                            stockHistoryInMinute[selectedStock.symbol],
-                            null
-                        )
-                    );
+                setData(
+                    convertData(
+                        stockHistoryInMinute[selectedStock.symbol],
+                        null
+                    )
+                );
             } else {
-                if (
-                    selectedStock !== null &&
-                    stockHistoryInMinute[selectedStock.symbol] !== undefined
-                ) {
-                    const fromDate = getDateOfDurationString(range);
-                    setData(
-                        convertData(
-                            stockHistory[selectedStock.symbol],
-                            fromDate
-                        )
-                    );
-                }
+                const fromDate = getDateOfDurationString(range);
+                setData(
+                    convertData(stockHistory[selectedStock.symbol], fromDate)
+                );
             }
         };
 
@@ -226,7 +206,14 @@ function ChartBoard({
             onSelecting: handleSelecting,
             onError: handleError,
         });
-    }, [selectedStock, dispatch, callAPI, stockHistory]);
+    }, [selectedStock, range]);
+
+    useEffect(() => {
+        if (buttonFocus.current !== null) {
+            console.log("Focus")
+            buttonFocus.current.click();
+        }
+    }, [buttonFocus.current]);
 
     return (
         <>
@@ -250,7 +237,81 @@ function ChartBoard({
                         )}
                         <div>
                             {chartType === "HeikinAshi" && (
-                                <HeikinAshi data={data} />
+                                <div>
+                                    <ButtonToolbar
+                                        variant="outline-primary"
+                                        size="sm"
+                                    >
+                                        <ButtonGroup>
+                                            <Button
+                                                ref={buttonFocus}
+                                                variant="secondary"
+                                                onClick={() => {
+                                                    setRange("1d");
+                                                }}
+                                            >
+                                                1d
+                                            </Button>{" "}
+                                            <Button
+                                                variant="secondary"
+                                                onClick={() => {
+                                                    setRange("5d");
+                                                }}
+                                            >
+                                                5d
+                                            </Button>{" "}
+                                            <Button
+                                                variant="secondary"
+                                                onClick={() => {
+                                                    setRange("1mo");
+                                                }}
+                                            >
+                                                1mo
+                                            </Button>{" "}
+                                            <Button
+                                                variant="secondary"
+                                                onClick={() => {
+                                                    setRange("3mo");
+                                                }}
+                                            >
+                                                3mo
+                                            </Button>{" "}
+                                            <Button
+                                                variant="secondary"
+                                                onClick={() => {
+                                                    setRange("6mo");
+                                                }}
+                                            >
+                                                6mo
+                                            </Button>{" "}
+                                            <Button
+                                                variant="secondary"
+                                                onClick={() => {
+                                                    setRange("1y");
+                                                }}
+                                            >
+                                                1y
+                                            </Button>{" "}
+                                            <Button
+                                                variant="secondary"
+                                                onClick={() => {
+                                                    setRange("5y");
+                                                }}
+                                            >
+                                                5y
+                                            </Button>{" "}
+                                            <Button
+                                                variant="secondary"
+                                                onClick={() => {
+                                                    setRange("10y");
+                                                }}
+                                            >
+                                                10y
+                                            </Button>{" "}
+                                        </ButtonGroup>{" "}
+                                    </ButtonToolbar>
+                                    <HeikinAshi data={data} />
+                                </div>
                             )}
                             {chartType === "AreaChart" && (
                                 <AreaChart data={data} />
