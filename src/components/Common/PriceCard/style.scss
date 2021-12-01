@@ -4,12 +4,14 @@
     background-color: $component-background-color;
     color: $component-text-color;
     @include component-spacing;
-    border-radius: 15px;
+    border-radius: 20px;
 }
 /*.card-index {
     display: inline;
     width: 45%;
 }*/
-.chart-index .react-stockcharts-crosshair-cursor{
+.chart-index .react-stockcharts-crosshair-cursor {
     height: 100px !important;
+}
+.chart-index > .chart.border-radius-20 {
 }

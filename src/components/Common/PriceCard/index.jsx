@@ -2,7 +2,6 @@ import "./style.scss";
 import {
     Badge, 
     Card,
-    CardGroup
 } from "react-bootstrap";
 import React, {
     useRef
@@ -25,15 +24,15 @@ function PriceCard({ stockSymbol }) {
         <div className="index-component">
             <div ref = {priceCarRef} className="card-index">
                 <Card className="price-card">
-                    <Card.Title className="fs-4 text-white fw-bold">
+                    <Card.Title className="fs-4 text-white fw-bold ms-3 mt-2">
                         {stockSymbol.shortName}
                     </Card.Title>
-                    <Card.Text className="price-card-value fw-bold fs-5">
+                    <Card.Text className="price-card-value fw-bold fs-5 ms-3">
                         {stockSymbol.currentValue.toLocaleString()}
                     </Card.Text>
                     <Card.Text
                         style={stockSymbol.currentValueChange > 0 ? up : down}
-                        className="price-card-change fw-bold"
+                        className="price-card-change fw-bold ms-3"
                     >
                         {stockSymbol.currentValueChange > 0
                             ? "+" + stockSymbol.currentValueChange.toFixed(3)
