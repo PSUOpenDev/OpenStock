@@ -1,8 +1,5 @@
 import { durationInMilliseconds } from "./../../../../utils/timeStamp";
 
-//export const API_STOCK_QUOTE_KEY = "pc48d4pb9NG6pzf22DWl7zBJ2ijSHAcaVg7eFaRg";
-//export const API_STOCK_QUOTE_KEY = "XkGayMNwgD72jDvJExXpw3PFjxoUMH5f41zxhG99";
-//export const API_STOCK_QUOTE_KEY = "oJDrYLOmyI2zFi0V2pEBU9OeS639BMXIabdtpr0J";
 export const API_URL_AUTO_COMPLETE =
     "https://yfapi.net/v6/finance/autocomplete?region=US&lang=en&query=";
 

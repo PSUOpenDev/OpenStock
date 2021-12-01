@@ -86,161 +86,160 @@ function TreePanelToggle({ id, label, data, nodes, tab }) {
                         <Accordion.Header>{"Share Ratio"}</Accordion.Header>
                         <Accordion.Body>
                             <div className="chart-container">
-                            <Doughnut
-                               
-                               options={{
-                                   responsive: true,
-                                   maintainAspectRatio: true,
-                                 
-                               }}
-                               data={{
-                                   labels: nodes.map((item) => {
-                                       return item.label;
-                                   }),
-                                   datasets: [
-                                       {
-                                           label: "",
-                                           backgroundColor: nodes.map(
-                                               (item, index) =>
-                                                   backgroundColors[index]
-                                           ),
-                                           borderColor: nodes.map(
-                                               (item, index) =>
-                                                   borderColors[index]
-                                           ),
-                                           borderWidth: 1,
-                                           data: nodes.map((item) => {
-                                               return item.data;
-                                           }),
-                                       },
-                                   ],
-                               }}
-                           />
+                                <Doughnut
+                                    options={{
+                                        responsive: true,
+                                        maintainAspectRatio: true,
+                                    }}
+                                    data={{
+                                        labels: nodes.map((item) => {
+                                            return item.label;
+                                        }),
+                                        datasets: [
+                                            {
+                                                label: "",
+                                                backgroundColor: nodes.map(
+                                                    (item, index) =>
+                                                        backgroundColors[index]
+                                                ),
+                                                borderColor: nodes.map(
+                                                    (item, index) =>
+                                                        borderColors[index]
+                                                ),
+                                                borderWidth: 1,
+                                                data: nodes.map((item) => {
+                                                    return item.data;
+                                                }),
+                                            },
+                                        ],
+                                    }}
+                                />
                             </div>
-                           
                         </Accordion.Body>
                     </Accordion.Item>
                 </Accordion>
             )}
             {label === "Quarterly" && (
-                <Accordion
-                    defaultActiveKey={label}
-                    style={{ margin: "1em" }}
-                >
+                <Accordion defaultActiveKey={label} style={{ margin: "1em" }}>
                     <Accordion.Item eventKey={label} expand={1}>
                         <Accordion.Header>{label}</Accordion.Header>
                         <Accordion.Body>
-                            <Bar
-                                options={{
-                                    indexAxis: "y",
-                                    elements: {
-                                        bar: {
-                                            borderWidth: 2,
+                            <div className="bart-chart">
+                                <Bar
+                                    options={{
+                                        indexAxis: "y",
+                                        elements: {
+                                            bar: {
+                                                borderWidth: 2,
+                                            },
                                         },
-                                    },
-                                    responsive: true,
-                                    plugins: {
-                                        legend: {
-                                            position: "right",
+                                        responsive: true,
+                                        plugins: {
+                                            legend: {
+                                                position: "right",
+                                            },
+                                            title: {
+                                                display: true,
+                                                text: label,
+                                            },
                                         },
-                                        title: {
-                                            display: true,
-                                            text: "Bar Chart",
-                                        },
-                                    },
-                                }}
-                                data={{
-                                    labels: nodes.map(
-                                        (item) => item.nodes[0].data
-                                    ),
-                                    datasets: [
-                                        {
-                                            label: nodes[0].nodes[1].label,
-                                            data: nodes.map((item) =>
-                                                convertStringToNumber(
-                                                    item.nodes[1].data
-                                                )
-                                            ),
-                                            borderColor: "rgb(255, 99, 132)",
-                                            backgroundColor:
-                                                "rgba(255, 99, 132, 0.5)",
-                                        },
-                                        {
-                                            label: nodes[0].nodes[2].label,
-                                            data: nodes.map((item) =>
-                                                convertStringToNumber(
-                                                    item.nodes[2].data
-                                                )
-                                            ),
-                                            borderColor: "rgb(53, 162, 235)",
-                                            backgroundColor:
-                                                "rgba(53, 162, 235, 0.5)",
-                                        },
-                                    ],
-                                }}
-                            />
+                                    }}
+                                    data={{
+                                        labels: nodes.map(
+                                            (item) => item.nodes[0].data
+                                        ),
+                                        datasets: [
+                                            {
+                                                label: nodes[0].nodes[1].label,
+                                                data: nodes.map((item) =>
+                                                    convertStringToNumber(
+                                                        item.nodes[1].data
+                                                    )
+                                                ),
+                                                borderColor:
+                                                    "rgb(255, 99, 132)",
+                                                backgroundColor:
+                                                    "rgba(255, 99, 132, 0.5)",
+                                            },
+                                            {
+                                                label: nodes[0].nodes[2].label,
+                                                data: nodes.map((item) =>
+                                                    convertStringToNumber(
+                                                        item.nodes[2].data
+                                                    )
+                                                ),
+                                                borderColor:
+                                                    "rgb(53, 162, 235)",
+                                                backgroundColor:
+                                                    "rgba(53, 162, 235, 0.5)",
+                                            },
+                                        ],
+                                    }}
+                                />
+                            </div>
                         </Accordion.Body>
                     </Accordion.Item>
                 </Accordion>
             )}
 
             {label === "Yearly" && (
-                <Accordion
-                    defaultActiveKey={label}
-                    style={{ margin: "1em" }}
-                >
+                <Accordion defaultActiveKey={label} style={{ margin: "1em" }}>
                     <Accordion.Item eventKey={label} expand={1}>
                         <Accordion.Header>{label}</Accordion.Header>
                         <Accordion.Body>
-                            <Bar
-                                options={{
-                                    indexAxis: "y",
-                                    elements: {
-                                        bar: {
-                                            borderWidth: 2,
+                            <div className="bart-chart">
+                                <Bar
+                                    options={{
+                                        indexAxis: "y",
+                                        elements: {
+                                            bar: {
+                                                borderWidth: 2,
+                                            },
                                         },
-                                    },
-                                    responsive: true,
-                                    plugins: {
-                                        legend: {
-                                            position: "right",
+                                        responsive: true,
+                                        plugins: {
+                                            legend: {
+                                                position: "right",
+                                            },
+                                            title: {
+                                                display: true,
+                                                text: label,
+                                            },
                                         },
-                                        title: {
-                                            display: true,
-                                            text: "Bar Chart",
-                                        },
-                                    },
-                                }}
-                                data={{
-                                    labels: nodes.map(
-                                        (item) => item.nodes[0].data
-                                    ),
-                                    datasets: [
-                                        {
-                                            label: nodes[0].nodes[1].label,
-                                            data: nodes.map((item) =>
-                                                convertStringToNumber(
-                                                    item.nodes[1].data
-                                                )
-                                            ),
-                                            borderColor: "rgb(255, 99, 132)",
-                                            backgroundColor:
-                                                "rgba(255, 99, 132, 0.5)",
-                                        },
-                                        {
-                                            label: nodes[0].nodes[2].label,
-                                            data: nodes.map((item) =>
-                                                convertStringToNumber(
-                                                    item.nodes[2].data
-                                                )
-                                            ),
-                                            borderColor: "rgb(53, 162, 235)",
-                                            backgroundColor:
-                                                "rgba(53, 162, 235, 0.5)",
-                                        },
-                                    ],
-                                }}
-                            />
+                                    }}
+                                    data={{
+                                        labels: nodes.map(
+                                            (item) => item.nodes[0].data
+                                        ),
+                                        datasets: [
+                                            {
+                                                label: nodes[0].nodes[1].label,
+                                                data: nodes.map((item) =>
+                                                    convertStringToNumber(
+                                                        item.nodes[1].data
+                                                    )
+                                                ),
+                                                borderColor:
+                                                    "rgb(255, 99, 132)",
+                                                backgroundColor:
+                                                    "rgba(255, 99, 132, 0.5)",
+                                            },
+                                            {
+                                                label: nodes[0].nodes[2].label,
+                                                data: nodes.map((item) =>
+                                                    convertStringToNumber(
+                                                        item.nodes[2].data
+                                                    )
+                                                ),
+                                                borderColor:
+                                                    "rgb(53, 162, 235)",
+                                                backgroundColor:
+                                                    "rgba(53, 162, 235, 0.5)",
+                                            },
+                                        ],
+                                    }}
+                                />
+                            </div>
                         </Accordion.Body>
                     </Accordion.Item>
                 </Accordion>
@@ -264,7 +263,7 @@ function TreePanelToggle({ id, label, data, nodes, tab }) {
                         defaultActiveKey={label}
                         style={{ margin: "1em" }}
                     >
-                        <Accordion.Item eventKey={label}  expand={1}>
+                        <Accordion.Item eventKey={label} expand={1}>
                             <Accordion.Header>{label}</Accordion.Header>
                             <Accordion.Body>
                                 {nodes.map((item) => (

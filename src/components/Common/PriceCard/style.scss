@@ -1,7 +1,5 @@
 @import './../../../assets/styles/general';
 
-
-
 .index-component {
     @include component-color;
     @include component-spacing;
@@ -20,25 +18,5 @@
         margin-top: 2em;
     }
 
-    .index-score-col {
-        width: 1em;
-        max-width: 6em;
-    }
 
 }
-
-// @media only screen and (max-width: 1024px) {
-//     .index-component {
-//         .index-score-col {
-//             width: 10%;
-//             background-color: grey !important;
-
-//         }
-
-//         .chart-index-col {
-//             width: 90%;
-//         }
-
-//     }
-
-// }
