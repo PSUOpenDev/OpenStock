@@ -217,7 +217,7 @@ function ChartBoard({
                 {isLoading === false && data != null && (
                     <div>
                         {selectedStock && showStockName && (
-                            <h6>
+                            <h6 className="m-2">
                                 {" "}
                                 {selectedStock.stockName +
                                     " (" +
@@ -230,11 +230,12 @@ function ChartBoard({
                                 <div>
                                     <ButtonToolbar
                                         variant="outline-primary"
-                                        size="sm"
+                                        size={"sm"}
+                                        className="m-2"
                                     >
-                                        <ButtonGroup>
+                                        <ButtonGroup size={"sm"}>
                                             <Button
-                                                variant="secondary"
+                                                variant="outline-warning"
                                                 onClick={() => {
                                                     setRange("1d");
                                                 }}
@@ -242,7 +243,7 @@ function ChartBoard({
                                                 1d
                                             </Button>{" "}
                                             <Button
-                                                variant="secondary"
+                                                variant="outline-warning"
                                                 onClick={() => {
                                                     setRange("1mo");
                                                 }}
@@ -250,7 +251,7 @@ function ChartBoard({
                                                 1mo
                                             </Button>{" "}
                                             <Button
-                                                variant="secondary"
+                                                variant="outline-warning"
                                                 onClick={() => {
                                                     setRange("3mo");
                                                 }}
@@ -258,7 +259,7 @@ function ChartBoard({
                                                 3mo
                                             </Button>{" "}
                                             <Button
-                                                variant="secondary"
+                                                variant="outline-warning"
                                                 onClick={() => {
                                                     setRange("6mo");
                                                 }}
@@ -266,7 +267,7 @@ function ChartBoard({
                                                 6mo
                                             </Button>{" "}
                                             <Button
-                                                variant="secondary"
+                                                variant="outline-warning"
                                                 onClick={() => {
                                                     setRange("1y");
                                                 }}
@@ -274,7 +275,7 @@ function ChartBoard({
                                                 1y
                                             </Button>{" "}
                                             <Button
-                                                variant="secondary"
+                                                variant="outline-warning"
                                                 onClick={() => {
                                                     setRange("5y");
                                                 }}
@@ -282,7 +283,7 @@ function ChartBoard({
                                                 5y
                                             </Button>{" "}
                                             <Button
-                                                variant="secondary"
+                                                variant="outline-warning"
                                                 onClick={() => {
                                                     setRange("10y");
                                                 }}

@@ -27,7 +27,7 @@ function HomePage() {
     return (
         <Container className="home-page-container" fluid>
             <Row>
-                <Col md={3} className="font-pacifico clear-yellow text-center fs-4">OpenStock</Col>
+                <Col md={3} className="font-pacifico clear-yellow text-center fs-4 mb-3">OpenStock</Col>
                 <Col md={6}><SearchBar /></Col>
                 <Col md={3}></Col>
             </Row>
