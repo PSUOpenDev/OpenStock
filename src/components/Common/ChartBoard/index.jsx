@@ -1,13 +1,12 @@
 import "./style.scss";
 
 import {
-    API_STOCK_QUOTE_KEY,
     API_URL_STOCK_CHART,
     TIME_TO_REFRESH_CHART_IN_CALL,
     TIME_TO_REFRESH_CHART_OVER_DATE,
 } from "./../../Common/APIUtils/Yahoo/ApiParameter";
 import { Button, ButtonGroup, ButtonToolbar, Spinner } from "react-bootstrap";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
     getDateOfDurationString,
     getStringOfDurationFromCurrentTo,
@@ -19,6 +18,7 @@ import { useDispatch, useSelector } from "react-redux";
 import AreaChart from "../Charts/AreaChart";
 import HeikinAshi from "../Charts/HeikinAshi";
 import PropTypes from "prop-types";
+import apiKeyProvider from "./../../Common/APIUtils/apiKeyProvider";
 import { convertData } from "./../../../utils/formatData";
 import { updateStockHistory } from "../../../actions/stockHistory";
 import { updateStockHistoryInMinute } from "../../../actions/stockHistoryInMinute";
@@ -198,7 +198,7 @@ function ChartBoard({
         callAPI({
             url: API_URL_STOCK_CHART,
             queryString: "",
-            apiKey: API_STOCK_QUOTE_KEY,
+            apiKey: apiKeyProvider("YahooAPI"),
             onParsingAnFiltering: handleParsingAndFiltering,
             onSaving: handleSaving,
             onSelecting: handleSelecting,

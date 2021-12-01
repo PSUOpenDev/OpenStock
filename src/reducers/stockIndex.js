@@ -1,5 +1,4 @@
 import { UPDATE_STOCK_INDEX } from "../actions/stockIndex";
-import { dateToTimestamp } from "../utils/timeStamp";
 
 //Load initial State from local storage
 const item = localStorage.getItem("stockIndex");

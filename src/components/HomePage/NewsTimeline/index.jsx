@@ -1,10 +1,6 @@
 import "react-vertical-timeline-component/style.min.css";
 import "./style.scss";
 
-import {
-    API_NEWS_KEY,
-    API_NEWS_URL,
-} from "../../Common/APIUtils/News/ApiParameter";
 import React, 
 {
     useEffect,
@@ -27,7 +23,11 @@ import {
     writeToCache
 } from "../../../utils/cache";
 
+import {
+    API_NEWS_URL,
+} from "../../Common/APIUtils/News/ApiParameter";
 import { Card } from "react-bootstrap";
+import apiKeyProvider from "./../../Common/APIUtils/apiKeyProvider";
 import axios from "axios";
 import { useSelector } from "react-redux";
 
@@ -58,8 +58,7 @@ const cardRender = (data) => {
 const NewsTimeline = () => {
     const [dataItem, setData] = useState([]);
     const selectedStock = useSelector((state) => state.selectedStock);
-    const getAPINewsKey = API_NEWS_KEY;
-    const getAPINewsURL = API_NEWS_URL;
+    const getAPINewsURL = API_NEWS_URL
 
     const getKeyWord = (orString) => {
         const keywords = orString.split(" ");
@@ -91,7 +90,7 @@ const NewsTimeline = () => {
         url = url.concat("&to=", `${currentDate()}`);
         url = url.concat("&sortBy=relevancy");
         url = url.concat("&pageSize=5");
-        url = url.concat("&apiKey=", `${getAPINewsKey}`);
+        url = url.concat("&apiKey=", `${ apiKeyProvider("NewsAPI")}`);
         url = encodeURI(url);
 
         return url;

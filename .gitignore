@@ -125,3 +125,4 @@ dist
 .env.production.local
 
 .ini
+.env

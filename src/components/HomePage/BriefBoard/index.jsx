@@ -1,9 +1,8 @@
 import "./style.scss";
 
 import {
-    API_STOCK_QUOTE_KEY,
-    API_URL_MARKET_SUMMARY,
-    TIME_TO_REFRESH_INDEXES,
+   API_URL_MARKET_SUMMARY,
+   TIME_TO_REFRESH_INDEXES,
 } from "./../../Common/APIUtils/Yahoo/ApiParameter";
 import { Col, Container, Row } from "react-bootstrap";
 import React, { useEffect } from "react";
@@ -15,6 +14,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 
 import PriceCard from "../../Common/PriceCard";
+import apiKeyProvider from "./../../Common/APIUtils/apiKeyProvider";
 import { updateStockIndex } from "./../../../actions/stockIndex";
 import useAPI from "./../../Common/APIUtils/useAPI";
 
@@ -81,7 +81,7 @@ function BriefBoard() {
         callAPI({
             url: API_URL_MARKET_SUMMARY,
             queryString: "",
-            apiKey: API_STOCK_QUOTE_KEY,
+            apiKey: apiKeyProvider("YahooAPI"),
             onParsingAnFiltering: handleParsingAndFiltering,
             onSaving: handleSaving,
             onSelecting: handleSelecting,

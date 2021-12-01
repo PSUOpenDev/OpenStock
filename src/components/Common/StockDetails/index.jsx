@@ -1,7 +1,6 @@
 import "./style.scss";
 
 import {
-    API_STOCK_QUOTE_KEY,
     API_URL_MARKET_SUMMARY,
     API_URL_STOCK_SUMMARY,
     TIME_TO_REFRESH_STOCK_DETAILS,
@@ -18,6 +17,7 @@ import { useDispatch, useSelector } from "react-redux";
 import PropTypes from "prop-types";
 import TreePanelToggle from "../TreePanelToggle";
 import { addStockInfo } from "./../../../actions/stockInfo";
+import apiKeyProvider from "./../../Common/APIUtils/apiKeyProvider";
 import { convertJSONtoNodes } from "../../../utils/formatData";
 import useAPI from "./../../Common/APIUtils/useAPI";
 
@@ -125,7 +125,7 @@ function StockDetails({ selectedStock }) {
                 callAPI({
                     url: API_URL_MARKET_SUMMARY,
                     queryString: "",
-                    apiKey: API_STOCK_QUOTE_KEY,
+                    apiKey: apiKeyProvider("YahooAPI"),
                     onParsingAnFiltering: handleParsingAndFiltering,
                     onSaving: handleSaving,
                     onSelecting: handleSelecting,
@@ -137,7 +137,7 @@ function StockDetails({ selectedStock }) {
                     queryString:
                         selectedStock.symbol +
                         "?lang=en&region=US&modules=summaryDetail%2CdefaultKeyStatistics%2CassetProfile%2Cprice%2Cearnings%2CcalendarEvents",
-                    apiKey: API_STOCK_QUOTE_KEY,
+                    apiKey: apiKeyProvider("YahooAPI"),
                     onParsingAnFiltering: handleParsingAndFiltering,
                     onSaving: handleSaving,
                     onSelecting: handleSelecting,
