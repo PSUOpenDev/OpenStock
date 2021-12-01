@@ -1,13 +1,7 @@
 import "./style.scss";
 
-import {
-    Badge,
-    Card,
-    CardGroup
-} from "react-bootstrap";
-import React, {
-    useRef
-} from "react";
+import { Badge, Card, CardGroup } from "react-bootstrap";
+import React, { useRef } from "react";
 
 import ChartBoard from "../../Common/ChartBoard";
 import PropTypes from "prop-types";
@@ -25,7 +19,7 @@ function PriceCard({ stockSymbol }) {
     const priceCarRef = useRef(null);
     return (
         <div className="index-component">
-            <div ref = {priceCarRef} className="card-index">
+            <div ref={priceCarRef} className="card-index">
                 <Card className="price-card">
                     <Card.Title className="fs-4 text-white fw-bold">
                         {stockSymbol.shortName}
@@ -61,14 +55,16 @@ function PriceCard({ stockSymbol }) {
                             </Badge>
                         </span>
                     </Card.Text>
-                    <div className ="chart-index">
-                        {stockSymbol !== null && stockSymbol.symbol !== undefined && (
-                            <ChartBoard
-                                selectedStock={stockSymbol}
-                                chartType="AreaChart"
-                                showStockName={false}
-                            />
-                        )}
+                    <div className="chart-index">
+                        {stockSymbol !== null &&
+                            stockSymbol.symbol !== undefined && (
+                                <ChartBoard
+                                    style={{ margin: 0, padding: 0 }}
+                                    selectedStock={stockSymbol}
+                                    chartType="AreaChart"
+                                    showStockName={false}
+                                />
+                            )}
                     </div>
                 </Card>
             </div>

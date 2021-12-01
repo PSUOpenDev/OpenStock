@@ -13,14 +13,6 @@ import { scaleTime } from "d3-scale";
 
 // import { XAxis, YAxis } from "react-stockcharts/lib/axes";
 
-
-
-
-
-
-
-
-
 const canvasGradient = createVerticalLinearGradient([
     { stop: 0, color: hexToRGBA("#b5d0ff", 0.2) },
     { stop: 0.7, color: hexToRGBA("#6fa4fc", 0.4) },
@@ -34,7 +26,7 @@ class AreaChart extends React.Component {
             <ChartCanvas
                 ratio={ratio}
                 width={width}
-                height = {100}
+                height={75}
                 margin={{ left: 0, right: 0, top: 0, bottom: 0 }}
                 seriesName="MSFT"
                 data={data}

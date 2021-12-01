@@ -4,5 +4,11 @@
 .card-group {
     background: $body-background-color;
     border-radius: 20px;
+
+    .chart {
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
     @include component-spacing;
 }
