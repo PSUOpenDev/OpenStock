@@ -5,7 +5,14 @@ import {
     API_URL_MARKET_SUMMARY,
     TIME_TO_REFRESH_INDEXES
 } from "./../../Common/APIUtils/Yahoo/ApiParameter";
-import React, { useEffect } from "react";
+import {
+    Col,
+    Container,
+    Row
+} from "react-bootstrap";
+import React, {
+    useEffect
+} from "react";
 import {
     dateToTimestamp,
     isExpired,
@@ -13,7 +20,6 @@ import {
 } from "../../../utils/timeStamp";
 import { useDispatch, useSelector } from "react-redux";
 
-import { CardGroup } from "react-bootstrap";
 import PriceCard from "../../Common/PriceCard";
 import { updateStockIndex } from "./../../../actions/stockIndex";
 import useAPI from "./../../Common/APIUtils/useAPI";
@@ -43,7 +49,6 @@ function BriefBoard() {
                     }
                 }
             }
-
             return stockIndex.allAllIndexes;
         };
 
@@ -87,13 +92,19 @@ function BriefBoard() {
     }, [dispatch, callAPI, stockIndex]);
 
     return (
-        <CardGroup className="dark-bg">
-            {isLoading === false &&
-                data &&
-                data.map((symbol, index) => (
-                    <PriceCard key={index} stockSymbol={symbol} range={"1d"}> </PriceCard>
-                ))}
-        </CardGroup>
+        <Container className="dark-bg mt-4 mb-3">
+            <Row>
+                {
+                    isLoading === false &&
+                    data &&
+                    data.map((symbol, index) => (
+                        <Col xs={12} sm={6} lg={4}>
+                            <PriceCard key={index} stockSymbol={symbol}></PriceCard>
+                        </Col>
+                    ))
+                }
+            </Row>
+        </Container>
     );
 }
 
