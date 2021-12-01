@@ -3,3 +3,5 @@ export const writeToCache = (keyStorage, valueStorage) =>
 
 export const readFromCache = (keyStorage) =>
     JSON.parse(localStorage.getItem(keyStorage)) || [];
+
+

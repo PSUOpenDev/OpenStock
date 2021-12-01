@@ -9,7 +9,7 @@ import React,
 import {
     SIX_HOURS,
     getExecutionTimeToNow
-} from "../../../utils/getTime";
+} from "./../../../utils/getTime";
 import {
     VerticalTimeline,
     VerticalTimelineElement,
@@ -17,15 +17,15 @@ import {
 import {
     currentDate,
     getThreeDaysAgo
-} from "../../../utils/getDate";
+} from "./../../../utils/getDate";
 import {
     readFromCache,
     writeToCache
-} from "../../../utils/cache";
+} from "./../../../utils/cache";
 
 import {
     API_NEWS_URL,
-} from "../../Common/APIUtils/News/ApiParameter";
+} from "./../../Common/APIUtils/News/ApiParameter";
 import { Card } from "react-bootstrap";
 import apiKeyProvider from "./../../Common/APIUtils/apiKeyProvider";
 import axios from "axios";
