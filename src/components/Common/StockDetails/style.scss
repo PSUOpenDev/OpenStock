@@ -13,11 +13,29 @@
         color: $component-text-color;
     }
 
+
     .accordion-item {
-        border: $border-accordion-color 1px solid;
+        @include component-color;
+        border: $border-accordion-color 1px solid !important;
     }
 
     .nav-tabs {
         border-bottom: $border-accordion-color 1px solid !important;
     }
+
+    .accordion-header,
+    .accordion-button {
+        @include component-color;
+        @include component-header-color;
+        font-weight: bold;
+    }
+
+    .nav-link,
+    .nav-item,
+    .nav-tabs {
+        background-color: $component-background-color !important;
+        color: $component-header-text-color !important;
+        font-weight: bold;
+    }
+
 }

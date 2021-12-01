@@ -54,7 +54,6 @@ function PriceCard({ stockSymbol }) {
                                                 : badge_down.bg
                                         }
                                         className="fs-7"
-                                        
                                     >
                                         {stockSymbol.currentValueChange > 0
                                             ? "+" +

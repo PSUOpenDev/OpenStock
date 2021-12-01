@@ -1,8 +1,8 @@
 import "./style.scss";
 
 import {
-   API_URL_MARKET_SUMMARY,
-   TIME_TO_REFRESH_INDEXES,
+    API_URL_MARKET_SUMMARY,
+    TIME_TO_REFRESH_INDEXES,
 } from "./../../Common/APIUtils/Yahoo/ApiParameter";
 import { Col, Container, Row } from "react-bootstrap";
 import React, { useEffect } from "react";
@@ -27,7 +27,6 @@ function BriefBoard() {
     useEffect(() => {
         const handleParsingAndFiltering = ({ rawData }) => {
             const currentTimeStamp = dateToTimestamp(new Date());
-
 
             for (const item of rawData.marketSummaryResponse.result) {
                 if (item.symbol !== undefined) {
@@ -61,7 +60,7 @@ function BriefBoard() {
                         TIME_TO_REFRESH_INDEXES
                     )
                 ) {
-                    console.log("call api in BriefBoard");
+                   
                     return null;
                 }
             }

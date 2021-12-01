@@ -8,11 +8,12 @@ $search-menu-hover:#25294e;
 $border-accordion-color: rgb(66, 66, 66);
 
 @mixin component-color {
-    background-color: $component-background-color !important;
-    color: $component-text-color !important;
+    background-color: $component-background-color ;
+    color: $component-text-color ;
 }
 
 @mixin component-header-color {
-    background-color: $component-background-color !important;
-    color: $component-header-text-color !important;
+    background-color: $component-background-color ;
+    color: $component-header-text-color ;
 }
+

@@ -1,11 +1,5 @@
 @import './../../../assets/styles/general';
 
-.nav-link,
-.nav-item,
-.nav-tabs {
-    @include component-header-color;
-    font-weight: bold;
-}
 
 .tree-panel-toggle {
 
@@ -13,12 +7,13 @@
         width: 30%;
     }
 
-    .accordion-header,
-    .accordion-button {
-        @include component-header-color;
-        font-weight: bold;
-    }
+
     .bart-chart {
         width: 70%;
     }
+
+    .data-entry {
+        max-width: 30em;
+    }
+
 }

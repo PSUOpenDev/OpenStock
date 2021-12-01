@@ -25,7 +25,7 @@ function SearchBar() {
         return (
             <div className="auto-complete">
                 <div key={index}>
-                    <strong>{option.stockName}</strong>
+                    <strong className="text-warning">{option.stockName}</strong>
                     <div>
                         <small>Symbol: {option.symbol}</small>
                     </div>

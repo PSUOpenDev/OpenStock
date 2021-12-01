@@ -1,6 +1,6 @@
 import "./style.scss";
 
-import { Accordion, ListGroup } from "react-bootstrap";
+import { Accordion, Col, ListGroup, Row } from "react-bootstrap";
 import {
     ArcElement,
     BarElement,
@@ -70,12 +70,17 @@ function TreePanelToggle({ id, label, data, nodes, tab }) {
                 nodes.length === 0 &&
                 data !== null &&
                 data !== "N/A" && (
-                    <ListGroup.Item className="bg-transparent text-white">
-                        <span className="clear-yellow fw-bold me-2">
-                            {label + ": "}
-                        </span>
-                        {formatData(data, label)}
-                    </ListGroup.Item>
+                    <Row className="data-entry bg-transparent">
+                        <Col className="d-flex justify-content-between">
+                            <span className="text-warning mr-2">
+                                {label + ": "}
+                            </span>
+
+                            <p className="text-secondary">
+                                {formatData(data, label)}
+                            </p>
+                        </Col>
+                    </Row>
                 )}
             {label === "##drawChart##" && (
                 <Accordion

@@ -1,8 +1,13 @@
 @import './../../../assets/styles/general';
 
 // .search-bar input {
-//     @include component-color;
+
 // }
+.rbt-input-main, .form-control, .rbt-input {
+    @include component-color;
+    border: $border-accordion-color 1px solid !important;
+}
+
 
 .search-bar input:focus {
     @include component-color;
@@ -17,6 +22,9 @@
 }
 
 .auto-complete:hover {
+    background-color: $search-menu-hover;
+}
+.active-item-2 {
     background-color: $search-menu-hover;
 }
 
