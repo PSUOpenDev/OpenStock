@@ -230,9 +230,9 @@ function ChartBoard({
                                 <div>
                                     <ButtonToolbar
                                         variant="outline-primary"
-                                        size="sm"
+                                        size={"sm"}
                                     >
-                                        <ButtonGroup>
+                                        <ButtonGroup size={"sm"}>
                                             <Button
                                                 variant="secondary"
                                                 onClick={() => {
