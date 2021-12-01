@@ -1,23 +1,25 @@
 import "./style.scss";
+
 import {
     API_STOCK_QUOTE_KEY,
     API_URL_MARKET_SUMMARY,
+    TIME_TO_REFRESH_INDEXES
 } from "./../../Common/APIUtils/Yahoo/ApiParameter";
-import React, { 
-    useEffect 
+import {
+    Col,
+    Container,
+    Row
+} from "react-bootstrap";
+import React, {
+    useEffect
 } from "react";
 import {
     dateToTimestamp,
-    durationInMilliseconds,
     isExpired,
     timestampToDate,
 } from "../../../utils/timeStamp";
 import { useDispatch, useSelector } from "react-redux";
-import {
-    Container,
-    Row,
-    Col 
-} from "react-bootstrap";
+
 import PriceCard from "../../Common/PriceCard";
 import { updateStockIndex } from "./../../../actions/stockIndex";
 import useAPI from "./../../Common/APIUtils/useAPI";
@@ -58,9 +60,10 @@ function BriefBoard() {
                     isExpired(
                         timestampToDate(item.apiTime),
                         currentTime,
-                        durationInMilliseconds(0, 1, 0, 0, 0)
+                        TIME_TO_REFRESH_INDEXES
                     )
                 ) {
+                    console.log("call api in BriefBoard");
                     return null;
                 }
             }
@@ -86,7 +89,7 @@ function BriefBoard() {
             onSelecting: handleSelecting,
             onError: handleError,
         });
-    }, [dispatch, callAPI, stockIndex]);
+    }, []);
 
     return (
         <Container className="dark-bg mt-4 mb-3">

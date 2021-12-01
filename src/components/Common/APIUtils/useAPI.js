@@ -31,7 +31,9 @@ const useAPI = (initialParam = initialState) => {
                         apiParameter: parameter,
                         data: tempData,
                     });
+                  
                 }
+                
                 if (tempData === undefined) {
                     return;
                 }

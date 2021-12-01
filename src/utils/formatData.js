@@ -1,3 +1,5 @@
+import { timestampToDate } from "./timeStamp";
+
 export const formatData = (data, fieldName) => {
     //console.log(data);
 
@@ -200,4 +202,35 @@ export const convertJSONtoNodes = (result, rawData) => {
         return result;
     };
     return convert(result, rawData);
+};
+
+export const convertData = (arr, fromDate) => {
+    if (arr !== null && arr !== undefined) {
+        const result = [];
+        const length = arr.length;
+        for (let i = 0; i < length; i++) {
+            if (
+                arr[i].close !== null &&
+                arr[i].date !== null &&
+                arr[i].open !== null &&
+                arr[i].high !== null &&
+                arr[i].low !== null &&
+                arr[i].volume !== null
+            ) {
+                const newDate = timestampToDate(arr[i].date);
+
+                if (fromDate !== null && newDate < fromDate) continue;
+                result.push({
+                    close: arr[i].close,
+                    open: arr[i].open,
+                    high: arr[i].high,
+                    low: arr[i].low,
+                    volume: arr[i].volume,
+                    date: newDate,
+                });
+            }
+        }
+        return result;
+    }
+    return null;
 };

@@ -54,7 +54,7 @@ class HeikinAshi extends React.Component {
             })
             .accessor((d) => d.smaVolume50);
 
-        const { type, data: initialData, width, ratio } = this.props;
+        const { type, data: initialData, width, ratio ,range} = this.props;
 
         const calculatedData = smaVolume50(ema50(ema20(ha(initialData))));
         const xScaleProvider = discontinuousTimeScaleProvider.inputDateAccessor(
@@ -195,7 +195,7 @@ class HeikinAshi extends React.Component {
                     <MouseCoordinateX
                         at="bottom"
                         orient="bottom"
-                        displayFormat={timeFormat("%Y-%m-%d")}
+                        displayFormat={range !=="1d"? timeFormat("%Y-%m-%d"):timeFormat("%H:%M:%S")}
                     />
                     <MouseCoordinateY
                         at="left"
@@ -266,10 +266,12 @@ HeikinAshi.propTypes = {
     width: PropTypes.number.isRequired,
     ratio: PropTypes.number.isRequired,
     type: PropTypes.oneOf(["svg", "hybrid"]).isRequired,
+    range: PropTypes.string,
 };
 
 HeikinAshi.defaultProps = {
     type: "svg",
+    range:"1d"
 };
 
 HeikinAshi = fitWidth(HeikinAshi);

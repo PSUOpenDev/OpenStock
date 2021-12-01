@@ -1,30 +1,32 @@
 import "react-vertical-timeline-component/style.min.css";
 import "./style.scss";
+
 import {
     API_NEWS_KEY,
     API_NEWS_URL,
 } from "../../Common/APIUtils/News/ApiParameter";
 import React, 
-{ 
-    useEffect, 
-    useState 
+{
+    useEffect,
+    useState
 } from "react";
-import { 
-    SIX_HOURS, 
-    getExecutionTimeToNow 
+import {
+    SIX_HOURS,
+    getExecutionTimeToNow
 } from "../../../utils/getTime";
 import {
     VerticalTimeline,
     VerticalTimelineElement,
 } from "react-vertical-timeline-component";
-import { 
-    currentDate, 
-    getThreeDaysAgo 
+import {
+    currentDate,
+    getThreeDaysAgo
 } from "../../../utils/getDate";
-import { 
-    readFromCache, 
-    writeToCache 
+import {
+    readFromCache,
+    writeToCache
 } from "../../../utils/cache";
+
 import { Card } from "react-bootstrap";
 import axios from "axios";
 import { useSelector } from "react-redux";
@@ -184,9 +186,11 @@ const NewsTimeline = () => {
                 return;
             }
         }
+        console.log("No news match!");
     };
 
     useEffect(() => {
+        console.log("news change to ",  getStockParameter())
         getNewsAPIData(URL_NEWS(), getStockParameter());
     }, [selectedStock]);
 
