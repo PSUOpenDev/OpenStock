@@ -68,25 +68,18 @@ const initState =
 const stockIndexReducer = (state = initState, action) => {
     switch (action.type) {
         case UPDATE_STOCK_INDEX: {
-            if (action.payLoad !== undefined) {
-              
-                const newAllIndexes = [...action.payLoad];
-                const newIndexDic = {};
-                for (let item of newAllIndexes) {
-                 
-                    if (newIndexDic[item.symbol] === undefined) {
-                        newIndexDic[item.symbol] = item;
-                    }
-                }
-                const newState = {
-                    indexDic: newIndexDic,
-                    allAllIndexes: newAllIndexes,
-                };
-                localStorage.setItem("stockIndex", JSON.stringify(newState));
+            // if (action.payLoad !== undefined) {
+            //     for (let item of action.payLoad) {
+            //         if (state.indexDic[item.symbol] === undefined) {
+            //             state.indexDic[item.symbol] = item;
+            //         }
+            //     }
+            //     localStorage.setItem("stockIndex", JSON.stringify(state));
 
-                return newState;
-            }
-            break;
+            //     return state;
+            // }
+            // break;
+            return state;
         }
 
         default:

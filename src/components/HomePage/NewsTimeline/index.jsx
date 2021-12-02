@@ -170,11 +170,9 @@ const NewsTimeline = () => {
                 return;
             }
         }
-        console.log("No news match!");
     };
 
     useEffect(() => {
-        console.log("news change to ", getStockParameter());
         getNewsAPIData(URL_NEWS(), getStockParameter());
     }, [selectedStock]);
 

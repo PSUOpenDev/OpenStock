@@ -12,9 +12,7 @@ const stockHistoryReducer = (state = initState, action) => {
                 const symbol = action.payLoad.symbol;
                 const symbolData = action.payLoad.history;
                 state[symbol] = symbolData;
-                const returnState = {
-                    ...state,
-                };
+                const returnState = state;
 
                 localStorage.setItem(
                     "stockHistory",
@@ -22,7 +20,7 @@ const stockHistoryReducer = (state = initState, action) => {
                 );
                 return returnState;
             } else {
-                const newState = { ...state };
+                const newState = state;
                 const firstDateOfNewData = action.payLoad.history.firstDate;
                 const firstDateOfCurrentData =
                     state[action.payLoad.symbol].firstDate;

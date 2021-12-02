@@ -21,54 +21,48 @@ function PriceCard({ stockSymbol }) {
             <div className="card-index">
                 <Container>
                     <Row>
-                        <Col sm={3}>
-                            <Row className="index-header  fw-bold fs-5 ">
+                        <Col sm={2}>
+                            <div className="index-header  fw-bold fs-5 ">
                                 {stockSymbol.shortName}
-                            </Row>
-                            <Row className="fw-bold fs-6">
+                            </div>
+                            <div className="fw-bold fs-6">
                                 {stockSymbol.currentValue.toLocaleString()}
-                            </Row>
-                            <Row>
-                                <Row
-                                    style={
+                            </div>
+                            <div
+                                style={
+                                    stockSymbol.currentValueChange > 0
+                                        ? up
+                                        : down
+                                }
+                                className="price-card-change fw-bold fs-6"
+                            >
+                                {stockSymbol.currentValueChange > 0
+                                    ? "+" +
+                                      stockSymbol.currentValueChange.toFixed(3)
+                                    : stockSymbol.currentValueChange.toFixed(3)}
+                            </div>
+                            <div>
+                                <Badge
+                                    bg={
                                         stockSymbol.currentValueChange > 0
-                                            ? up
-                                            : down
+                                            ? badge_up.bg
+                                            : badge_down.bg
                                     }
-                                    className="price-card-change fw-bold fs-6"
+                                    className="fs-7"
                                 >
                                     {stockSymbol.currentValueChange > 0
                                         ? "+" +
-                                          stockSymbol.currentValueChange.toFixed(
+                                          stockSymbol.currentValueChangePercent.toFixed(
                                               3
-                                          )
-                                        : stockSymbol.currentValueChange.toFixed(
+                                          ) +
+                                          "%"
+                                        : stockSymbol.currentValueChangePercent.toFixed(
                                               3
-                                          )}
-                                </Row>
-                                <Row>
-                                    <Badge
-                                        bg={
-                                            stockSymbol.currentValueChange > 0
-                                                ? badge_up.bg
-                                                : badge_down.bg
-                                        }
-                                        className="fs-7"
-                                    >
-                                        {stockSymbol.currentValueChange > 0
-                                            ? "+" +
-                                              stockSymbol.currentValueChangePercent.toFixed(
-                                                  3
-                                              ) +
-                                              "%"
-                                            : stockSymbol.currentValueChangePercent.toFixed(
-                                                  3
-                                              ) + "%"}
-                                    </Badge>
-                                </Row>
-                            </Row>
+                                          ) + "%"}
+                                </Badge>
+                            </div>
                         </Col>
-                        <Col sm={9}>
+                        <Col sm={10}>
                             <div
                                 className={
                                     stockSymbol.currentValueChange > 0
