@@ -18,15 +18,18 @@ import { useSelector } from "react-redux";
 
 /* Function to render card newspaper item */
 const cardRender = (data) => {
+    const backupImage = "backupnewpaper.svg"
     return (
         <Card className="border-0">
-            <Card.Img variant="top" src={data.urlToImage} />
+            <Card.Img variant="top" 
+                src={data.image !== null ? data.image : backupImage} 
+            />
             <Card.Body>
                 <Card.Subtitle className="fw-bold text-white">
                     {data.title}
                 </Card.Subtitle>
                 <Card.Text className="fw-normal mb-2 d-none d-lg-block">
-                    {data.content.slice(0, 70) + "..."}
+                    {data.description.slice(0, 70) + "..."}
                 </Card.Text>
                 <a
                     href={data.url}
@@ -69,22 +72,22 @@ const NewsTimeline = () => {
 
     const URL_NEWS = () => {
         let url = getAPINewsURL;
-        url = url.concat("qInTitle=", getStockParameter(), " AND stock");
-        url = url.concat("&language=en");
-        url = url.concat("&from=", `${getThreeDaysAgo()}`);
-        url = url.concat("&to=", `${currentDate()}`);
-        url = url.concat("&sortBy=relevancy");
-        url = url.concat("&pageSize=5");
-        url = url.concat("&apiKey=", `${apiKeyProvider("NewsAPI")}`);
+        url = url.concat("?access_key=", `${apiKeyProvider("NewsAPI")}`);
+        url = url.concat("&keywords=", getStockParameter());
+        url = url.concat(" stock");
+        url = url.concat("&categories=business");
+        url = url.concat("&languages=en");
+        url = url.concat("&date=", `${getThreeDaysAgo()}`, ",", `${currentDate()}`);
+        url = url.concat("&sortBy=popularity");
+        url = url.concat("&limit=10");
         url = encodeURI(url);
-
         return url;
     };
 
     const fetchAPI = async (URL) => {
         return await axios.get(URL).then((res) => {
-            if (res.data.status === "ok") {
-                return res.data.articles;
+            if (res.data.data.length > 0) {
+                return res.data.data;
             } else {
                 return [];
             }
@@ -170,11 +173,9 @@ const NewsTimeline = () => {
                 return;
             }
         }
-        console.log("No news match!");
     };
 
     useEffect(() => {
-        console.log("news change to ", getStockParameter());
         getNewsAPIData(URL_NEWS(), getStockParameter());
     }, [selectedStock]);
 
