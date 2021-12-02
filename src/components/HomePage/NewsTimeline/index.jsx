@@ -53,6 +53,9 @@ const NewsTimeline = () => {
         for (let keyword of keywords) {
             keyword = keyword.toLowerCase();
             if (keyword !== "and" && keyword !== "the" && keyword.length > 3) {
+                if (keyword[keyword.length - 1] === ',') {
+                    keyword = keyword.slice(0, -1);
+                }
                 return keyword;
             }
         }
@@ -73,8 +76,7 @@ const NewsTimeline = () => {
     const URL_NEWS = () => {
         let url = getAPINewsURL;
         url = url.concat("?access_key=", `${apiKeyProvider("NewsAPI")}`);
-        url = url.concat("&keywords=", getStockParameter());
-        url = url.concat(" stock");
+        url = url.concat("&keywords=", getStockParameter(), " stock");
         url = url.concat("&categories=business");
         url = url.concat("&languages=en");
         url = url.concat("&date=", `${getThreeDaysAgo()}`, ",", `${currentDate()}`);
