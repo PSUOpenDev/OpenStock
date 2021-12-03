@@ -21,10 +21,12 @@ function PriceCard({ stockSymbol }) {
             <div className="card-index">
                 <Container>
                     <Row>
+                        <div className="index-header  fw-bold fs-5 ">
+                            {stockSymbol.shortName}
+                        </div>
+                    </Row>
+                    <Row>
                         <Col sm={2}>
-                            <div className="index-header  fw-bold fs-5 ">
-                                {stockSymbol.shortName}
-                            </div>
                             <div className="fw-bold fs-6">
                                 {stockSymbol.currentValue.toLocaleString()}
                             </div>
