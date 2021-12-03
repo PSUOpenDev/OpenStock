@@ -225,7 +225,7 @@ function ChartBoard({
             >
                 {isLoading && <Spinner animation="border" />}
 
-                {isLoading === false && data != null && (
+                {isLoading === false && data != null && data.length > 3&& (
                     <div>
                         {selectedStock && showStockName && (
                             <h6 className="m-2">
