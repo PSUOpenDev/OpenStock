@@ -95,20 +95,7 @@ function BriefBoard() {
     }, [callAPI, dispatch, stockIndex.allAllIndexes, stockIndex.indexDic]);
 
     return (
-        <Container className="dark-bg mt-4 mb-3" fluid>
-            <Row>
-                {isLoading === false &&
-                    data &&
-                    data.map((symbol, index) => (
-                        <Col key={index} xs={12} sm={6} lg={4}>
-                            <PriceCard
-                                key={index}
-                                stockSymbol={symbol}
-                            ></PriceCard>
-                        </Col>
-                    ))}
-            </Row>
-        </Container>
+        <></>
     );
 }
 
