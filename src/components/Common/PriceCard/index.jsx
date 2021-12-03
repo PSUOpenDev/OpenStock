@@ -1,21 +1,19 @@
 import "./style.scss";
-
 import {
     Badge,
     Col,
     Container,
     Row
 } from "react-bootstrap";
-
 import ChartBoard from "../../Common/ChartBoard";
 import PropTypes from "prop-types";
 import React from "react";
-
 const badge_up = { bg: "success" };
 const badge_down = { bg: "danger" };
 const up = { color: "green" };
 const down = { color: "red" };
 
+// Price card component type
 PriceCard.propTypes = {
     stockSymbol: PropTypes.object.isRequired,
 };
@@ -64,9 +62,7 @@ function PriceCard({ stockSymbol }) {
                         <Col sm={9}>
                             <div
                                 className={
-                                    stockSymbol.currentValueChange > 0
-                                        ? "chart-index chart-up"
-                                        : "chart-index chart-down"
+                                    stockSymbol.currentValueChange > 0 ? "chart-index chart-up" : "chart-index chart-down"
                                 }
                             >
                                 {stockSymbol !== null &&
@@ -77,13 +73,7 @@ function PriceCard({ stockSymbol }) {
                                             showStockName={false}
                                             range="1d"
                                             updown={
-                                                stockSymbol.currentValueChange >
-                                                0
-                                                    ? 1
-                                                    : stockSymbol.currentValueChange ===
-                                                      0
-                                                    ? 0
-                                                    : -1
+                                                stockSymbol.currentValueChange > 0 ? 1 : stockSymbol.currentValueChange === 0 ? 0 : -1
                                             }
                                         />
                                     )}
