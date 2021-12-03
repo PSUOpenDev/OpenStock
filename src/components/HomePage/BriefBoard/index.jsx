@@ -27,25 +27,31 @@ function BriefBoard() {
     useEffect(() => {
         const handleParsingAndFiltering = ({ rawData }) => {
             const currentTimeStamp = dateToTimestamp(new Date());
+            stockIndex.allAllIndexes.splice(0, stockIndex.allAllIndexes.length);
+            stockIndex.indexDic = Object.keys(stockIndex.indexDic).map(
+                (key) => delete stockIndex.indexDic[key]
+            );
+            let count = 0;
 
             for (const item of rawData.marketSummaryResponse.result) {
+                count = count + 1;
+
                 if (item.symbol !== undefined) {
-                    if (stockIndex.indexDic[item.symbol] !== undefined) {
-                        stockIndex.indexDic[item.symbol].currentValue =
-                            item.regularMarketPrice.raw;
-                        stockIndex.indexDic[item.symbol].currentValueChange =
-                            item.regularMarketChange.raw;
-                        stockIndex.indexDic[
-                            item.symbol
-                        ].currentValueChangePercent =
-                            item.regularMarketChangePercent.raw;
-                    }
+                    const index = {
+                        shortName: item.shortName,
+                        currentValue: item.regularMarketPrice.raw,
+                        currentValueChange: item.regularMarketChange.raw,
+                        currentValueChangePercent:
+                            item.regularMarketChangePercent.raw,
+                        apiTime: currentTimeStamp,
+                        symbol: item.symbol,
+                    };
+                    stockIndex.indexDic[item.symbol] = index;
+                    stockIndex.allAllIndexes.push(index);
                 }
+                if (count === 6) break;
             }
-            //Update time
-            for (const item of stockIndex.allAllIndexes) {
-                item.apiTime = currentTimeStamp;
-            }
+
             return stockIndex.allAllIndexes;
         };
 
@@ -60,7 +66,6 @@ function BriefBoard() {
                         TIME_TO_REFRESH_INDEXES
                     )
                 ) {
-                   
                     return null;
                 }
             }
@@ -73,7 +78,8 @@ function BriefBoard() {
             return stockIndex.allAllIndexes;
         };
 
-        const handleError = ({ setData }) => {
+        const handleError = ({ setData, error }) => {
+            console.log("error=", error);
             setData(stockIndex.allAllIndexes);
         };
 
@@ -86,7 +92,7 @@ function BriefBoard() {
             onSelecting: handleSelecting,
             onError: handleError,
         });
-    }, [callAPI,dispatch,stockIndex.allAllIndexes,stockIndex.indexDic]);
+    }, [callAPI, dispatch, stockIndex.allAllIndexes, stockIndex.indexDic]);
 
     return (
         <Container className="dark-bg mt-4 mb-3" fluid>
