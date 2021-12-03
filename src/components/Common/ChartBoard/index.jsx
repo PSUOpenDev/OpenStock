@@ -90,7 +90,6 @@ function ChartBoard({
                             "&region=US&interval=" +
                             chooseInterval +
                             "&lang=en&events=div%2Csplit";
-                       // console.log("call api in chartboard");
                         return null;
                     }
                     const lastDate = timestampToDate(cache.lastDate);
@@ -108,7 +107,6 @@ function ChartBoard({
                                 "&region=US&interval=" +
                                 chooseInterval +
                                 "&lang=en&events=div%2Csplit";
-                           // console.log("call api in chartboard");
                             return null;
                         } else {
                             const returnValue = convertData(
