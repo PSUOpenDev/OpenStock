@@ -14,10 +14,6 @@ import apiKeyProvider from "./../../Common/APIUtils/apiKeyProvider";
 import axios from "axios";
 import { useSelector } from "react-redux";
 
-//import { API_NEWS_URL } from "./../../Common/APIUtils/News/ApiParameter";
-
-//import { currentDate, getThreeDaysAgo } from "./../../../utils/getDate";
-
 /* Function to render card newspaper item */
 const cardRender = (data) => {
     const backupImage = "backupnewpaper.svg";
@@ -49,7 +45,6 @@ const cardRender = (data) => {
 const NewsTimeline = () => {
     const [dataItem, setData] = useState([]);
     const selectedStock = useSelector((state) => state.selectedStock);
-    //const getAPINewsURL = API_NEWS_URL;
 
     const getKeyWord = (orString) => {
         const keywords = orString.split(" ");
@@ -77,16 +72,22 @@ const NewsTimeline = () => {
     };
 
     const URL_NEWS = () => {
-        let url = getAPINewsURL;
-        url = url.concat("?access_key=", `${apiKeyProvider("NewsAPI")}`);
-        url = url.concat("&keywords=", getStockParameter(), " stock");
-        url = url.concat("&categories=business");
-        url = url.concat("&languages=en");
-        url = url.concat("&date=", `${getThreeDaysAgo()}`, ",", `${currentDate()}`);
-        url = url.concat("&sortBy=popularity");
-        url = url.concat("&limit=10");
-        url = encodeURI(url);
-        return url;
+        const today = new Date();
+        today.setDate(today.getDate - 10);
+        return {
+            method: "GET",
+            url: encodeURI(
+                "https://google-search3.p.rapidapi.com/api/v1/search/q=" +
+                    getStockParameter() +
+                    "&num=100"
+            ),
+            headers: {
+                "x-user-agent": "desktop",
+                "x-proxy-location": "US",
+                "x-rapidapi-host": "google-search3.p.rapidapi.com",
+                "x-rapidapi-key": apiKeyProvider("NewsAPI"),
+            },
+        };
     };
 
     const fetchAPI = async (URL) => {
