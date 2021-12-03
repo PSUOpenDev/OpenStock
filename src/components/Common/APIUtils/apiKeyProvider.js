@@ -1,10 +1,11 @@
-let currentYahooIndex = -1;
 const arrayYahoo = JSON.parse(process.env.REACT_APP_YAHOO_API_KEY_ARRAY);
-let currentNewsIndex = -1;
 const arrayNews = JSON.parse(process.env.REACT_APP_NEWS_API_KEY_ARRAY);
-
-
-function apiKeyProvider(name) {
+function randomNumber(min, max) {
+    return Math.floor(Math.random() * (max - min) + min);
+}
+let currentYahooIndex = randomNumber(0, arrayYahoo.length - 1);
+let currentNewsIndex = randomNumber(0, arrayNews.length - 1);
+export function apiKeyProvider(name) {
     switch (name) {
         case "YahooAPI": {
             currentYahooIndex = currentYahooIndex + 1;
@@ -22,4 +23,5 @@ function apiKeyProvider(name) {
     }
     return "";
 }
+
 export default apiKeyProvider;
