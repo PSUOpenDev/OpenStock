@@ -10,10 +10,10 @@ import PropTypes from "prop-types";
 import React from "react";
 
 
-const up = { color: "green" };
-const down = { color: "red" };
 const badge_up = { bg: "success" };
 const badge_down = { bg: "danger" };
+const up = { color: "green" };
+const down = { color: "red" };
 
 PriceCard.propTypes = {
     stockSymbol: PropTypes.object.isRequired,
@@ -25,11 +25,40 @@ function PriceCard({ stockSymbol }) {
             <div className="card-index">
                 <Container>
                     <Row>
-                        <div className="index-header  fw-bold fs-5 ">
+                        <div className="index-header fw-bold fs-5 ">
                             {stockSymbol.shortName}
                         </div>
                     </Row>
                     <Row>
+                        
+                        <Col sm={9}>
+                            <div
+                                className={
+                                    stockSymbol.currentValueChange > 0
+                                        ? "chart-index chart-up"
+                                        : "chart-index chart-down"
+                                }
+                            >
+                                {stockSymbol !== null &&
+                                    stockSymbol.symbol !== undefined && (
+                                        <ChartBoard
+                                            selectedStock={stockSymbol}
+                                            chartType="AreaChart"
+                                            showStockName={false}
+                                            range="1d"
+                                            updown={
+                                                stockSymbol.currentValueChange >
+                                                0
+                                                    ? 1
+                                                    : stockSymbol.currentValueChange ===
+                                                      0
+                                                    ? 0
+                                                    : -1
+                                            }
+                                        />
+                                    )}
+                            </div>
+                        </Col>
                         <Col sm={2}>
                             <div className="fw-bold fs-6">
                                 {stockSymbol.currentValue.toLocaleString()}
@@ -37,8 +66,8 @@ function PriceCard({ stockSymbol }) {
                             <div
                                 style={
                                     stockSymbol.currentValueChange > 0
-                                        ? up
-                                        : down
+                                    ? up
+                                    : down
                                 }
                                 className="price-card-change fw-bold fs-6"
                             >
@@ -68,7 +97,6 @@ function PriceCard({ stockSymbol }) {
                                 </Badge>
                             </div>
                         </Col>
-                        
                     </Row>
                 </Container>
             </div>
