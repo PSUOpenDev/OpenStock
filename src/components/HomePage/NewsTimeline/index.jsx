@@ -77,32 +77,16 @@ const NewsTimeline = () => {
     };
 
     const URL_NEWS = () => {
-        // let url = getAPINewsURL;
-        // url = url.concat("?access_key=", `${apiKeyProvider("NewsAPI")}`);
-        // url = url.concat("&keywords=", getStockParameter(), " stock");
-        // url = url.concat("&categories=business");
-        // url = url.concat("&languages=en");
-        // url = url.concat("&date=", `${getThreeDaysAgo()}`, ",", `${currentDate()}`);
-        // url = url.concat("&sortBy=popularity");
-        // url = url.concat("&limit=10");
-        // url = encodeURI(url);
-        // return url;
-        const today = new Date();
-        today.setDate(today.getDate - 10);
-        return {
-            method: "GET",
-            url: encodeURI(
-                "https://google-search3.p.rapidapi.com/api/v1/search/q=" +
-                    getStockParameter() +
-                    "&num=100"
-            ),
-            headers: {
-                "x-user-agent": "desktop",
-                "x-proxy-location": "US",
-                "x-rapidapi-host": "google-search3.p.rapidapi.com",
-                "x-rapidapi-key": apiKeyProvider("NewsAPI"),
-            },
-        };
+        let url = getAPINewsURL;
+        url = url.concat("?access_key=", `${apiKeyProvider("NewsAPI")}`);
+        url = url.concat("&keywords=", getStockParameter(), " stock");
+        url = url.concat("&categories=business");
+        url = url.concat("&languages=en");
+        url = url.concat("&date=", `${getThreeDaysAgo()}`, ",", `${currentDate()}`);
+        url = url.concat("&sortBy=popularity");
+        url = url.concat("&limit=10");
+        url = encodeURI(url);
+        return url;
     };
 
     const fetchAPI = async (URL) => {
