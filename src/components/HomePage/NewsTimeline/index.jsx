@@ -7,22 +7,25 @@ import {
     VerticalTimeline,
     VerticalTimelineElement,
 } from "react-vertical-timeline-component";
-import { currentDate, getThreeDaysAgo } from "./../../../utils/getDate";
 import { readFromCache, writeToCache } from "./../../../utils/cache";
 
-import { API_NEWS_URL } from "./../../Common/APIUtils/News/ApiParameter";
 import { Card } from "react-bootstrap";
 import apiKeyProvider from "./../../Common/APIUtils/apiKeyProvider";
 import axios from "axios";
 import { useSelector } from "react-redux";
 
+//import { API_NEWS_URL } from "./../../Common/APIUtils/News/ApiParameter";
+
+//import { currentDate, getThreeDaysAgo } from "./../../../utils/getDate";
+
 /* Function to render card newspaper item */
 const cardRender = (data) => {
-    const backupImage = "backupnewpaper.svg"
+    const backupImage = "backupnewpaper.svg";
     return (
         <Card className="border-0">
-            <Card.Img variant="top" 
-                src={data.image !== null ? data.image : backupImage} 
+            <Card.Img
+                variant="top"
+                src={data.image !== null ? data.image : backupImage}
             />
             <Card.Body>
                 <Card.Subtitle className="fw-bold text-white">
@@ -32,7 +35,7 @@ const cardRender = (data) => {
                     {data.description.slice(0, 70) + "..."}
                 </Card.Text>
                 <a
-                    href={data.url}
+                    href={data.link}
                     className="text-decoration-none text-warning fw-bold stretched-link d-none d-lg-block"
                 >
                     Continue reading
@@ -46,14 +49,14 @@ const cardRender = (data) => {
 const NewsTimeline = () => {
     const [dataItem, setData] = useState([]);
     const selectedStock = useSelector((state) => state.selectedStock);
-    const getAPINewsURL = API_NEWS_URL;
+    //const getAPINewsURL = API_NEWS_URL;
 
     const getKeyWord = (orString) => {
         const keywords = orString.split(" ");
         for (let keyword of keywords) {
             keyword = keyword.toLowerCase();
             if (keyword !== "and" && keyword !== "the" && keyword.length > 3) {
-                if (keyword[keyword.length - 1] === ',') {
+                if (keyword[keyword.length - 1] === ",") {
                     keyword = keyword.slice(0, -1);
                 }
                 return keyword;
@@ -69,27 +72,43 @@ const NewsTimeline = () => {
                 : selectedStock.stockName === null ||
                   selectedStock.stockName === undefined
                 ? "stock"
-                : getKeyWord(selectedStock.stockName)
+                : selectedStock.stockName
         }`;
     };
 
     const URL_NEWS = () => {
-        let url = getAPINewsURL;
-        url = url.concat("?access_key=", `${apiKeyProvider("NewsAPI")}`);
-        url = url.concat("&keywords=", getStockParameter(), " stock");
-        url = url.concat("&categories=business");
-        url = url.concat("&languages=en");
-        url = url.concat("&date=", `${getThreeDaysAgo()}`, ",", `${currentDate()}`);
-        url = url.concat("&sortBy=popularity");
-        url = url.concat("&limit=10");
-        url = encodeURI(url);
-        return url;
+        // let url = getAPINewsURL;
+        // url = url.concat("?access_key=", `${apiKeyProvider("NewsAPI")}`);
+        // url = url.concat("&keywords=", getStockParameter(), " stock");
+        // url = url.concat("&categories=business");
+        // url = url.concat("&languages=en");
+        // url = url.concat("&date=", `${getThreeDaysAgo()}`, ",", `${currentDate()}`);
+        // url = url.concat("&sortBy=popularity");
+        // url = url.concat("&limit=10");
+        // url = encodeURI(url);
+        // return url;
+        const today = new Date();
+        today.setDate(today.getDate - 10);
+        return {
+            method: "GET",
+            url: encodeURI(
+                "https://google-search3.p.rapidapi.com/api/v1/search/q=" +
+                    getStockParameter() +
+                    "&num=100"
+            ),
+            headers: {
+                "x-user-agent": "desktop",
+                "x-proxy-location": "US",
+                "x-rapidapi-host": "google-search3.p.rapidapi.com",
+                "x-rapidapi-key": apiKeyProvider("NewsAPI"),
+            },
+        };
     };
 
     const fetchAPI = async (URL) => {
-        return await axios.get(URL).then((res) => {
-            if (res.data.data.length > 0) {
-                return res.data.data;
+        return await axios.request(URL_NEWS()).then((res) => {
+            if (res.data !== null) {
+                return res.data.results;
             } else {
                 return [];
             }
