@@ -1,19 +1,21 @@
 import "./style.scss";
-
-import { Badge, Col, Container, Row } from "react-bootstrap";
-
+import { 
+    Badge, 
+    Col, 
+    Container, 
+    Row 
+} from "react-bootstrap";
 import ChartBoard from "../../Common/ChartBoard";
 import PropTypes from "prop-types";
 import React from "react";
 
-PriceCard.propTypes = {
-    stockSymbol: PropTypes.object.isRequired,
-};
 
 const up = { color: "green" };
 const down = { color: "red" };
 const badge_up = { bg: "success" };
 const badge_down = { bg: "danger" };
+
+
 
 function PriceCard({ stockSymbol }) {
     return (
