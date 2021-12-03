@@ -1,18 +1,25 @@
 import "./style.scss";
-
 import {
     API_URL_MARKET_SUMMARY,
     TIME_TO_REFRESH_INDEXES,
 } from "./../../Common/APIUtils/Yahoo/ApiParameter";
-import { Col, Container, Row } from "react-bootstrap";
-import React, { useEffect } from "react";
+import { 
+    Col, 
+    Container, 
+    Row 
+} from "react-bootstrap";
+import React, { 
+    useEffect 
+} from "react";
 import {
     dateToTimestamp,
     isExpired,
     timestampToDate,
 } from "../../../utils/timeStamp";
-import { useDispatch, useSelector } from "react-redux";
-
+import { 
+    useDispatch, 
+    useSelector 
+} from "react-redux";
 import PriceCard from "../../Common/PriceCard";
 import apiKeyProvider from "./../../Common/APIUtils/apiKeyProvider";
 import { updateStockIndex } from "./../../../actions/stockIndex";
@@ -55,7 +62,6 @@ function BriefBoard() {
 
         const handleSelecting = () => {
             const currentTime = new Date();
-
             for (let item of stockIndex.allAllIndexes) {
                 if (
                     isExpired(
@@ -96,12 +102,21 @@ function BriefBoard() {
             <Row>
                 {isLoading === false &&
                     data &&
-                    data.map((symbol, index) => (
-                        <Col key={index} xs={12} sm={6} lg={4}>
+                    data.map((
+                        symbol, 
+                        index
+                    ) => (
+                        <Col 
+                            key={index} 
+                            xs={12} 
+                            sm={6} 
+                            lg={4}
+                        >
                             <PriceCard
                                 key={index}
                                 stockSymbol={symbol}
-                            ></PriceCard>
+                            >
+                            </PriceCard>
                         </Col>
                     ))}
             </Row>
