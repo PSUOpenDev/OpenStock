@@ -32,18 +32,6 @@ const canvasGradientDown = createVerticalLinearGradient([
     { stop: 1, color: hexToRGBA("#DC1C13", 0.8) },
 ]);
 
-AreaChart.propTypes = {
-    data: PropTypes.array.isRequired,
-    width: PropTypes.number.isRequired,
-    ratio: PropTypes.number.isRequired,
-    type: PropTypes.oneOf(["svg", "hybrid"]).isRequired,
-    updown: PropTypes.number,
-};
-
-AreaChart.defaultProps = {
-    type: "svg",
-    updown: 0,
-};
 
 class AreaChart extends React.Component {
     render() {
@@ -110,6 +98,19 @@ class AreaChart extends React.Component {
         );
     }
 }
+
+AreaChart.propTypes = {
+    data: PropTypes.array.isRequired,
+    width: PropTypes.number.isRequired,
+    ratio: PropTypes.number.isRequired,
+    type: PropTypes.oneOf(["svg", "hybrid"]).isRequired,
+    updown: PropTypes.number,
+};
+
+AreaChart.defaultProps = {
+    type: "svg",
+    updown: 0,
+};
 
 AreaChart = fitWidth(AreaChart);
 
