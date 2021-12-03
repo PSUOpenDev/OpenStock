@@ -2,6 +2,11 @@
 
 
 .tree-panel-toggle {
+    .separator-bar {
+        width: 250px;
+        max-width: 250px;
+        display: inline-block;
+    }
 
     .chart-container {
         width: 30%;

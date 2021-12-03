@@ -70,14 +70,16 @@ function TreePanelToggle({ id, label, data, nodes, tab }) {
                 nodes.length === 0 &&
                 data !== null &&
                 data !== "N/A" && (
-                    <Row className="data-entry bg-transparent">
-                        <Col className="d-flex justify-content-between">
+                    <Row className="data-entry bg-transparent d-flex justify-content-between">
+                        <Col>
                             <span className="text-warning mr-2">
                                 {label + ": "}
                             </span>
-
-                            <p className="text-secondary">
-                                {formatData(data, label)}
+                        </Col>
+                        
+                        <Col  className="text-secondary  mr-2">
+                            <p>
+                            {formatData(data, label)}
                             </p>
                         </Col>
                     </Row>
@@ -130,60 +132,61 @@ function TreePanelToggle({ id, label, data, nodes, tab }) {
                         <Accordion.Header>{label}</Accordion.Header>
                         <Accordion.Body>
                             <div className="bart-chart">
-                               {
-                                   nodes.length > 0 && (
+                                {nodes.length > 0 && (
                                     <Bar
-                                    options={{
-                                        indexAxis: "y",
-                                        elements: {
-                                            bar: {
-                                                borderWidth: 2,
+                                        options={{
+                                            indexAxis: "y",
+                                            elements: {
+                                                bar: {
+                                                    borderWidth: 2,
+                                                },
                                             },
-                                        },
-                                        responsive: true,
-                                        plugins: {
-                                            legend: {
-                                                position: "right",
+                                            responsive: true,
+                                            plugins: {
+                                                legend: {
+                                                    position: "right",
+                                                },
+                                                title: {
+                                                    display: true,
+                                                    text: label,
+                                                },
                                             },
-                                            title: {
-                                                display: true,
-                                                text: label,
-                                            },
-                                        },
-                                    }}
-                                    data={{
-                                        labels: nodes.map(
-                                            (item) => item.nodes[0].data
-                                        ),
-                                        datasets: [
-                                            {
-                                                label: nodes[0].nodes[1].label,
-                                                data: nodes.map((item) =>
-                                                    convertStringToNumber(
-                                                        item.nodes[1].data
-                                                    )
-                                                ),
-                                                borderColor:
-                                                    "rgb(255, 99, 132)",
-                                                backgroundColor:
-                                                    "rgba(255, 99, 132, 0.5)",
-                                            },
-                                            {
-                                                label: nodes[0].nodes[2].label,
-                                                data: nodes.map((item) =>
-                                                    convertStringToNumber(
-                                                        item.nodes[2].data
-                                                    )
-                                                ),
-                                                borderColor:
-                                                    "rgb(53, 162, 235)",
-                                                backgroundColor:
-                                                    "rgba(53, 162, 235, 0.5)",
-                                            },
-                                        ],
-                                    }}
-                                />
-                                   )                               }
+                                        }}
+                                        data={{
+                                            labels: nodes.map(
+                                                (item) => item.nodes[0].data
+                                            ),
+                                            datasets: [
+                                                {
+                                                    label: nodes[0].nodes[1]
+                                                        .label,
+                                                    data: nodes.map((item) =>
+                                                        convertStringToNumber(
+                                                            item.nodes[1].data
+                                                        )
+                                                    ),
+                                                    borderColor:
+                                                        "rgb(255, 99, 132)",
+                                                    backgroundColor:
+                                                        "rgba(255, 99, 132, 0.5)",
+                                                },
+                                                {
+                                                    label: nodes[0].nodes[2]
+                                                        .label,
+                                                    data: nodes.map((item) =>
+                                                        convertStringToNumber(
+                                                            item.nodes[2].data
+                                                        )
+                                                    ),
+                                                    borderColor:
+                                                        "rgb(53, 162, 235)",
+                                                    backgroundColor:
+                                                        "rgba(53, 162, 235, 0.5)",
+                                                },
+                                            ],
+                                        }}
+                                    />
+                                )}
                             </div>
                         </Accordion.Body>
                     </Accordion.Item>
@@ -196,59 +199,61 @@ function TreePanelToggle({ id, label, data, nodes, tab }) {
                         <Accordion.Header>{label}</Accordion.Header>
                         <Accordion.Body>
                             <div className="bart-chart">
-                               { nodes.length > 0 && (
+                                {nodes.length > 0 && (
                                     <Bar
-                                    options={{
-                                        indexAxis: "y",
-                                        elements: {
-                                            bar: {
-                                                borderWidth: 2,
+                                        options={{
+                                            indexAxis: "y",
+                                            elements: {
+                                                bar: {
+                                                    borderWidth: 2,
+                                                },
                                             },
-                                        },
-                                        responsive: true,
-                                        plugins: {
-                                            legend: {
-                                                position: "right",
+                                            responsive: true,
+                                            plugins: {
+                                                legend: {
+                                                    position: "right",
+                                                },
+                                                title: {
+                                                    display: true,
+                                                    text: label,
+                                                },
                                             },
-                                            title: {
-                                                display: true,
-                                                text: label,
-                                            },
-                                        },
-                                    }}
-                                    data={{
-                                        labels: nodes.map(
-                                            (item) => item.nodes[0].data
-                                        ),
-                                        datasets: [
-                                            {
-                                                label: nodes[0].nodes[1].label,
-                                                data: nodes.map((item) =>
-                                                    convertStringToNumber(
-                                                        item.nodes[1].data
-                                                    )
-                                                ),
-                                                borderColor:
-                                                    "rgb(255, 99, 132)",
-                                                backgroundColor:
-                                                    "rgba(255, 99, 132, 0.5)",
-                                            },
-                                            {
-                                                label: nodes[0].nodes[2].label,
-                                                data: nodes.map((item) =>
-                                                    convertStringToNumber(
-                                                        item.nodes[2].data
-                                                    )
-                                                ),
-                                                borderColor:
-                                                    "rgb(53, 162, 235)",
-                                                backgroundColor:
-                                                    "rgba(53, 162, 235, 0.5)",
-                                            },
-                                        ],
-                                    }}
-                                />
-                               )}
+                                        }}
+                                        data={{
+                                            labels: nodes.map(
+                                                (item) => item.nodes[0].data
+                                            ),
+                                            datasets: [
+                                                {
+                                                    label: nodes[0].nodes[1]
+                                                        .label,
+                                                    data: nodes.map((item) =>
+                                                        convertStringToNumber(
+                                                            item.nodes[1].data
+                                                        )
+                                                    ),
+                                                    borderColor:
+                                                        "rgb(255, 99, 132)",
+                                                    backgroundColor:
+                                                        "rgba(255, 99, 132, 0.5)",
+                                                },
+                                                {
+                                                    label: nodes[0].nodes[2]
+                                                        .label,
+                                                    data: nodes.map((item) =>
+                                                        convertStringToNumber(
+                                                            item.nodes[2].data
+                                                        )
+                                                    ),
+                                                    borderColor:
+                                                        "rgb(53, 162, 235)",
+                                                    backgroundColor:
+                                                        "rgba(53, 162, 235, 0.5)",
+                                                },
+                                            ],
+                                        }}
+                                    />
+                                )}
                             </div>
                         </Accordion.Body>
                     </Accordion.Item>
