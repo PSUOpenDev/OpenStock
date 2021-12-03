@@ -33,13 +33,14 @@ const cardRender = (data) => {
                 </Card.Subtitle>
                 <Card.Text className="fw-normal mb-2 d-none d-lg-block">
                     {data.description.slice(0, 70) + "..."}
-                </Card.Text>
-                <a
+                    <a
                     href={data.link}
                     className="text-decoration-none text-warning fw-bold stretched-link d-none d-lg-block"
                 >
                     Continue reading
                 </a>
+                </Card.Text>
+              
             </Card.Body>
         </Card>
     );
