@@ -25,77 +25,24 @@ function BriefBoard() {
         noRun: "yes",
     });
     useEffect(() => {
-        const handleParsingAndFiltering = ({ rawData }) => {
-            const currentTimeStamp = dateToTimestamp(new Date());
-            stockIndex.allAllIndexes.splice(0, stockIndex.allAllIndexes.length);
-            stockIndex.indexDic = Object.keys(stockIndex.indexDic).map(
-                (key) => delete stockIndex.indexDic[key]
-            );
-            let count = 0;
-
-            for (const item of rawData.marketSummaryResponse.result) {
-                count = count + 1;
-
-                if (item.symbol !== undefined) {
-                    const index = {
-                        shortName: item.shortName,
-                        currentValue: item.regularMarketPrice.raw,
-                        currentValueChange: item.regularMarketChange.raw,
-                        currentValueChangePercent:
-                            item.regularMarketChangePercent.raw,
-                        apiTime: currentTimeStamp,
-                        symbol: item.symbol,
-                    };
-                    stockIndex.indexDic[item.symbol] = index;
-                    stockIndex.allAllIndexes.push(index);
-                }
-                if (count === 6) break;
-            }
-
-            return stockIndex.allAllIndexes;
-        };
-
-        const handleSelecting = () => {
-            const currentTime = new Date();
-
-            for (let item of stockIndex.allAllIndexes) {
-                if (
-                    isExpired(
-                        timestampToDate(item.apiTime),
-                        currentTime,
-                        TIME_TO_REFRESH_INDEXES
-                    )
-                ) {
-                    return null;
-                }
-            }
-
-            return stockIndex.allAllIndexes;
-        };
-
-        const handleSaving = ({ data }) => {
-            dispatch(updateStockIndex(data));
-            return stockIndex.allAllIndexes;
-        };
-
-        const handleError = ({ setData, error }) => {
-            console.log("error=", error);
-            setData(stockIndex.allAllIndexes);
-        };
-
-        callAPI({
-            url: API_URL_MARKET_SUMMARY,
-            queryString: "",
-            apiKey: apiKeyProvider("YahooAPI"),
-            onParsingAnFiltering: handleParsingAndFiltering,
-            onSaving: handleSaving,
-            onSelecting: handleSelecting,
-            onError: handleError,
-        });
+        
     }, [callAPI, dispatch, stockIndex.allAllIndexes, stockIndex.indexDic]);
 
     return (
-        <></>
+        <Container className="dark-bg mt-4 mb-3" fluid>
+            <Row>
+                {isLoading === false &&
+                    data &&
+                    data.map((symbol, index) => (
+                        <Col key={index} xs={12} sm={6} lg={4}>
+                            <PriceCard
+                                key={index}
+                                stockSymbol={symbol}
+                            ></PriceCard>
+                        </Col>
+                    ))}
+            </Row>
+        </Container>
     );
 }
 
