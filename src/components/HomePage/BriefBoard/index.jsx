@@ -1,25 +1,27 @@
 import "./style.scss";
+
 import {
     API_URL_MARKET_SUMMARY,
     TIME_TO_REFRESH_INDEXES,
 } from "./../../Common/APIUtils/Yahoo/ApiParameter";
-import { 
-    Col, 
-    Container, 
-    Row 
+import {
+    Col,
+    Container,
+    Row
 } from "react-bootstrap";
-import React, { 
-    useEffect 
+import React, {
+    useEffect
 } from "react";
 import {
     dateToTimestamp,
     isExpired,
     timestampToDate,
 } from "../../../utils/timeStamp";
-import { 
-    useDispatch, 
-    useSelector 
+import {
+    useDispatch,
+    useSelector
 } from "react-redux";
+
 import PriceCard from "../../Common/PriceCard";
 import apiKeyProvider from "./../../Common/APIUtils/apiKeyProvider";
 import { updateStockIndex } from "./../../../actions/stockIndex";
@@ -95,7 +97,7 @@ function BriefBoard() {
             onSelecting: handleSelecting,
             onError: handleError,
         });
-    }, [callAPI, dispatch, stockIndex.allAllIndexes, stockIndex.indexDic]);
+    }, [callAPI, dispatch,stockIndex, stockIndex.allAllIndexes, stockIndex.indexDic]);
 
     return (
         <Container className="dark-bg mt-4 mb-3" fluid>

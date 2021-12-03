@@ -130,7 +130,9 @@ function TreePanelToggle({ id, label, data, nodes, tab }) {
                         <Accordion.Header>{label}</Accordion.Header>
                         <Accordion.Body>
                             <div className="bart-chart">
-                                <Bar
+                               {
+                                   nodes.length > 0 && (
+                                    <Bar
                                     options={{
                                         indexAxis: "y",
                                         elements: {
@@ -181,6 +183,7 @@ function TreePanelToggle({ id, label, data, nodes, tab }) {
                                         ],
                                     }}
                                 />
+                                   )                               }
                             </div>
                         </Accordion.Body>
                     </Accordion.Item>
@@ -193,7 +196,8 @@ function TreePanelToggle({ id, label, data, nodes, tab }) {
                         <Accordion.Header>{label}</Accordion.Header>
                         <Accordion.Body>
                             <div className="bart-chart">
-                                <Bar
+                               { nodes.length > 0 && (
+                                    <Bar
                                     options={{
                                         indexAxis: "y",
                                         elements: {
@@ -244,6 +248,7 @@ function TreePanelToggle({ id, label, data, nodes, tab }) {
                                         ],
                                     }}
                                 />
+                               )}
                             </div>
                         </Accordion.Body>
                     </Accordion.Item>

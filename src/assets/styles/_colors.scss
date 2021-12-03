@@ -14,6 +14,6 @@ $border-accordion-color: rgb(66, 66, 66);
 
 @mixin component-header-color {
     background-color: $component-background-color ;
-    color: $component-header-text-color ;
+    color: $component-header-text-color !important;
 }
 
