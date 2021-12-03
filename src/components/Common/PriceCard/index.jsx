@@ -82,7 +82,7 @@ function PriceCard({ stockSymbol }) {
                                             selectedStock={stockSymbol}
                                             chartType="AreaChart"
                                             showStockName={false}
-                                            range="1m"
+                                            range="1d"
                                             updown={
                                                 stockSymbol.currentValueChange >
                                                 0
