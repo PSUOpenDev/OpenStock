@@ -143,7 +143,7 @@ function StockDetails({ selectedStock }) {
                     onError: handleError,
                 });
             }
-    }, [selectedStock]);
+    }, [selectedStock, callAPI, dispatch, stockInfo.stockInfoDic]);
     return (
         <div className="stock-details border-radius-20">
             <div className="fs-4 fw-bold text-center clear-yellow ms-5">

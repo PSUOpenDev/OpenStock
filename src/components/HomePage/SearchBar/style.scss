@@ -1,40 +1,44 @@
 @import './../../../assets/styles/general';
 
 
-.rbt-input-main, .form-control, .rbt-input {
+.rbt-input-main,
+.form-control,
+.rbt-input {
     @include component-color;
     border: $border-accordion-color 1px solid !important;
 }
+
 .search-bar input:focus {
     @include component-color;
 }
 
 #stock-search {
     @include component-color;
-  
+
     .auto-complete {
         @include component-color;
     }
-    
+
     .dropdown-item:hover {
         background-color: $search-menu-hover;
     }
-    
+
     .dropdown-item:active {
         background-color: $search-menu-hover !important;
     }
+
     .active {
         background-color: $search-menu-hover !important;
     }
-    
+
     .auto-complete:hover {
         background-color: $search-menu-hover;
     }
-    
+
     .auto-complete:active {
         background-color: $search-menu-hover !important;
     }
-    
+
 }
 
 // #stock-search:hover {

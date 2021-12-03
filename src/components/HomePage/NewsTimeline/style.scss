@@ -3,10 +3,12 @@
 .vertical-timeline-element-date {
     color: $component-text-color;
 }
+
 .vertical-timeline-element-content,
 .card-body {
     @include component-color;
 }
+
 .vertical-timeline-element-icon {
     display: none;
 }

@@ -5,7 +5,7 @@
 
 ---
 
-### Deploy: Link: [type here]()
+### Deploy: Link: [https://openstockapp2021.herokuapp.com/](https://openstockapp2021.herokuapp.com/)
 
 ---
 
@@ -21,7 +21,7 @@
 
 ### APIs used: 
 1. [Yahoo Finance API](https://www.yahoofinanceapi.com/)
-2. [News API](https://newsapi.org/).
+2. [News API](https://mediastack.com/).
 
 ### Stack and Dependencies:
 1. Language: Javascript

@@ -86,7 +86,7 @@ function BriefBoard() {
             onSelecting: handleSelecting,
             onError: handleError,
         });
-    }, []);
+    }, [callAPI,dispatch,stockIndex.allAllIndexes,stockIndex.indexDic]);
 
     return (
         <Container className="dark-bg mt-4 mb-3" fluid>

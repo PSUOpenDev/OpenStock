@@ -31,13 +31,13 @@ ChartBoard.propTypes = {
     dataRange: PropTypes.string,
     width: PropTypes.number,
     height: PropTypes.number,
-    updown:PropTypes.number
+    updown: PropTypes.number,
 };
 ChartBoard.defaultProps = {
     chartType: "AreaChart",
     showStockName: false,
     dataRange: "1d",
-    updown:0
+    updown: 0,
 };
 
 function ChartBoard({
@@ -47,18 +47,19 @@ function ChartBoard({
     dataRange,
     width,
     height,
-    updown
+    updown,
 }) {
     const [range, setRange] = useState(dataRange);
-    const stockHistory = useSelector((state) => state.stockHistory);
-    const stockHistoryInMinute = useSelector(
-        (state) => state.stockHistoryInMinute
-    );
+
     const dispatch = useDispatch();
 
     const [isLoading, data, callAPI] = useAPI({
         noRun: "yes",
     });
+    const stockHistory = useSelector((state) => state.stockHistory);
+    const stockHistoryInMinute = useSelector(
+        (state) => state.stockHistoryInMinute
+    );
 
     useEffect(() => {
         const handleSelecting = ({ apiParameter, data }) => {
@@ -89,7 +90,7 @@ function ChartBoard({
                             "&region=US&interval=" +
                             chooseInterval +
                             "&lang=en&events=div%2Csplit";
-                        console.log("call api in chartboard");
+                       // console.log("call api in chartboard");
                         return null;
                     }
                     const lastDate = timestampToDate(cache.lastDate);
@@ -107,7 +108,7 @@ function ChartBoard({
                                 "&region=US&interval=" +
                                 chooseInterval +
                                 "&lang=en&events=div%2Csplit";
-                            console.log("call api in chartboard");
+                           // console.log("call api in chartboard");
                             return null;
                         } else {
                             const returnValue = convertData(
@@ -207,7 +208,14 @@ function ChartBoard({
             onSelecting: handleSelecting,
             onError: handleError,
         });
-    }, [selectedStock, range]);
+    }, [
+        selectedStock,
+        range,
+        callAPI,
+        dispatch,
+        stockHistory,
+        stockHistoryInMinute,
+    ]);
 
     return (
         <>
@@ -217,7 +225,7 @@ function ChartBoard({
             >
                 {isLoading && <Spinner animation="border" />}
 
-                {isLoading === false && data != null && (
+                {isLoading === false && data != null && data.length > 3&& (
                     <div>
                         {selectedStock && showStockName && (
                             <h6 className="m-2">
@@ -299,7 +307,7 @@ function ChartBoard({
                                 </div>
                             )}
                             {chartType === "AreaChart" && (
-                                <AreaChart data={data} updown = {updown}/>
+                                <AreaChart data={data} updown={updown} />
                             )}
                         </div>
                     </div>

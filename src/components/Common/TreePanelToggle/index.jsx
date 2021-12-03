@@ -1,6 +1,6 @@
 import "./style.scss";
 
-import { Accordion, Col, ListGroup, Row } from "react-bootstrap";
+import { Accordion, Col, Row } from "react-bootstrap";
 import {
     ArcElement,
     BarElement,
