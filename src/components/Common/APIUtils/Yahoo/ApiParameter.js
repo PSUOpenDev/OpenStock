@@ -13,11 +13,11 @@ export const API_URI_STOCK_QUOTE =
     "https://yfapi.net/v6/finance/quote?region=US&lang=en&symbols=";
 
 export const TIME_TO_REFRESH_STOCK_DETAILS = durationInMilliseconds(1, 0, 0, 0);
-export const TIME_TO_REFRESH_INDEXES = durationInMilliseconds(0, 0, 1, 0);
+export const TIME_TO_REFRESH_INDEXES = durationInMilliseconds(0, 0, 10, 0);
 export const TIME_TO_REFRESH_CHART_OVER_DATE = durationInMilliseconds(
     1,
     0,
     0,
     0
 );
-export const TIME_TO_REFRESH_CHART_IN_CALL = durationInMilliseconds(0, 0, 1, 0);
+export const TIME_TO_REFRESH_CHART_IN_CALL = durationInMilliseconds(0, 0, 10, 0);
