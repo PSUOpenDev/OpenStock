@@ -36,7 +36,7 @@ ChartBoard.propTypes = {
 ChartBoard.defaultProps = {
     chartType: "AreaChart",
     showStockName: false,
-    dataRange: "3mo",
+    dataRange: "1d",
     updown: 0,
 };
 
@@ -68,6 +68,7 @@ function ChartBoard({
                 let choosePeriod = "";
                 let chooseInterval = "";
                 let timeRefresh = 0;
+                let dataDate = range !== '1d'?  getDateOfDurationString(range): null;
 
                 if (range === "1d") {
                     choosePeriod = "1d";
@@ -111,17 +112,17 @@ function ChartBoard({
                         } else {
                             const returnValue = convertData(
                                 cache,
-                                getDateOfDurationString(range)
+                                dataDate
                             );
 
                             return returnValue;
                         }
                     }
                 }
-
+                                           
                 const returnValue = convertData(
                     cache,
-                    getDateOfDurationString(range)
+                    dataDate
                 );
 
                 return returnValue;
