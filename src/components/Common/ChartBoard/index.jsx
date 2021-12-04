@@ -36,7 +36,7 @@ ChartBoard.propTypes = {
 ChartBoard.defaultProps = {
     chartType: "AreaChart",
     showStockName: false,
-    dataRange: "1d",
+    dataRange: "3mo",
     updown: 0,
 };
 
